@@ -96,3 +96,7 @@
 - [ ] Evaluate LangGraph only for demonstrated multi-agent, resumable, approval, escalation, or long-running workflow gaps not solved by native orchestration and Letta.
 - [ ] Define the Langflow visual-flow embedding, versioning, user role, validation, simulation, approval, publication, rollback, and audit model.
 - [ ] Prove one business-user visual-rule change through the governed lifecycle without allowing visual flows to bypass OpenProject permissions or transactional controls.
+- [ ] Define the exact PMO Agent, VRO Agent, OKR/KPI Agent, OCM Agent, Governance Agent, FinOps Agent, TMO Agent, and Business Planning Agent responsibilities, inputs, tools, outputs, escalation rules, and OpenProject permission boundaries.
+- [ ] Design and prove a refined OpenProject-native portfolio intelligence UI/UX that presents source-backed insights, recommendations, evidence, trend analysis, and safe user actions without fabricating agent results.
+- [ ] Define and prove secure external-data onboarding surfaces for structured file upload and governed connectors or MCP-style adapters for ServiceNow, Jira, Dynatrace, and FinOps sources.
+- [ ] Maintain autonomous execution for the delegated work window, record material decisions and blockers, and request input only for unavoidable credentials, access, payment, or irreversible production actions.
