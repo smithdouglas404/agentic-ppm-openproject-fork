@@ -19,8 +19,7 @@ namespace :agentic_ppm do
     )
     project.save!
 
-    role = Role.find_by(name: project_template.fetch("member_role")) || Role.first
-    raise "A project role is required before seeding the representative project" unless role
+    role = Role.find_by!(name: project_template.fetch("member_role"))
 
     member = Member.find_or_initialize_by(project:, principal: current_user)
     member.roles = [role]
@@ -28,10 +27,9 @@ namespace :agentic_ppm do
 
     created_work_packages = {}
     template.fetch("work_packages").each do |work_package_template|
-      type = Type.find_by(name: work_package_template.fetch("type")) || Type.first
-      status = Status.find_by(name: work_package_template.fetch("status")) || Status.default
-      raise "A work package type is required before seeding the representative project" unless type
-      raise "A work package status is required before seeding the representative project" unless status
+      type = Type.find_or_create_by!(name: work_package_template.fetch("type"))
+      ProjectType.find_or_create_by!(project:, type:)
+      status = Status.find_by!(name: work_package_template.fetch("status"))
 
       parent = created_work_packages[work_package_template["parent"]]
       work_package = WorkPackage.find_or_initialize_by(project:, subject: work_package_template.fetch("subject"))

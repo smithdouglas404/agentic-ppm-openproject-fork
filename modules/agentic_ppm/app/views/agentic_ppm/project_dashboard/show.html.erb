@@ -1,6 +1,6 @@
 <% html_title t(:label_agentic_ppm) %>
 
-<%= toolbar title: t(:label_agentic_ppm) %>
+<h1><%= t(:label_agentic_ppm) %></h1>
 
 <section class="op-enterprise-banner" aria-labelledby="agentic-ppm-heading">
   <h2 id="agentic-ppm-heading"><%= t(:agentic_ppm_project_intelligence) %></h2>
@@ -25,6 +25,49 @@
       <% end %>
     </tbody>
   </table>
+</section>
+
+<section class="op-card-container" aria-label="Ontology evidence">
+  <h3>Ontology evidence</h3>
+  <p>Source-backed records projected from this OpenProject project.</p>
+  <table class="generic-table" aria-label="Projected entity counts">
+    <thead>
+      <tr>
+        <th>Entity type</th>
+        <th>Records</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% projection_summary.sort.each do |entity_type, count| %>
+        <tr>
+          <td><%= entity_type.humanize %></td>
+          <td><%= count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if relationship_evidence.any? %>
+    <h4>Relationship evidence</h4>
+    <table class="generic-table" aria-label="Projected relationships">
+      <thead>
+        <tr>
+          <th>Relationship</th>
+          <th>From</th>
+          <th>To</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% relationship_evidence.each do |record| %>
+          <tr>
+            <td><%= record.payload["relationship_type"].to_s.humanize %></td>
+            <td><%= record.payload["from_key"] %></td>
+            <td><%= record.payload["to_key"] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 </section>
 
 <section class="op-card-container" aria-label="<%= t(:agentic_ppm_specialists) %>">

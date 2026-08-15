@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe AgenticPpm::Ontology::WorkPackageProjectionService do
   let(:project) { build_stubbed(:project, id: 42) }
-  let(:actor) { build_stubbed(:user, id: 8, name: "Portfolio Lead") }
+  let(:actor) { instance_double(User, id: 8, name: "Portfolio Lead") }
   let(:work_package) do
     instance_double(
       WorkPackage,
@@ -16,7 +16,7 @@ RSpec.describe AgenticPpm::Ontology::WorkPackageProjectionService do
       start_date: Date.new(2026, 8, 15),
       due_date: Date.new(2026, 9, 30),
       estimated_hours: 120,
-      percentage_done: 40,
+      done_ratio: 40,
       assigned_to: actor
     )
   end

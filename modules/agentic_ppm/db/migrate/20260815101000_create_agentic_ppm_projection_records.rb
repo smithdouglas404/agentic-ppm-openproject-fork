@@ -63,7 +63,9 @@ class CreateAgenticPpmProjectionRecords < ActiveRecord::Migration[8.0]
               name: "index_agentic_ppm_connection_project_provider_name"
 
     create_table :agentic_ppm_sync_runs do |t|
-      t.references :integration_connection, null: false, foreign_key: { on_delete: :cascade }
+      t.references :integration_connection,
+                   null: false,
+                   foreign_key: { to_table: :agentic_ppm_integration_connections, on_delete: :cascade }
       t.references :project, null: false, foreign_key: { on_delete: :cascade }
       t.string :mode, null: false
       t.string :state, null: false, default: "requested"

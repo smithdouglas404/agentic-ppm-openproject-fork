@@ -24,18 +24,17 @@ module OpenProject
           permission :manage_agentic_ppm_integrations,
                      { "agentic_ppm/integrations" => %i[index create update sync] },
                      permissible_on: :project
+          permission :administer_agentic_ppm,
+                     { "agentic_ppm/admin/settings" => %i[show update] },
+                     permissible_on: :global
         end
-
-        permission :administer_agentic_ppm,
-                   { "agentic_ppm/admin/settings" => %i[show update] },
-                   permissible_on: :global
 
         menu :project_menu,
              :agentic_ppm,
              { controller: "/agentic_ppm/project_dashboard", action: :show },
              after: :overview,
              caption: :label_agentic_ppm,
-             icon: "op-graph",
+             icon: "op-boards",
              if: ->(project) { project.module_enabled?(:agentic_ppm) }
 
         menu :admin_menu,

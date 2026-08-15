@@ -113,7 +113,7 @@ module AgenticPpm
           start_date: work_package.start_date,
           due_date: work_package.due_date,
           estimated_hours: work_package.estimated_hours,
-          percentage_done: work_package.percentage_done
+          done_ratio: work_package.done_ratio
         }
       end
     end
