@@ -36,3 +36,21 @@
     <% end %>
   </ul>
 </section>
+
+<% if User.current.allowed_in_project?(:run_agentic_ppm_agents, project) %>
+  <section class="op-card-container" aria-label="<%= t(:agentic_ppm_direct_conversations) %>">
+    <h3><%= t(:agentic_ppm_direct_conversations) %></h3>
+    <p><%= t(:agentic_ppm_direct_conversations_description) %></p>
+    <%= form_with url: project_agentic_ppm_agent_runs_path(project), method: :post do |form| %>
+      <p>
+        <%= form.label :specialist, t(:agentic_ppm_specialist) %>
+        <%= form.select :specialist, options_for_select(["PMO", "VRO"]) %>
+      </p>
+      <p>
+        <%= form.label :prompt, t(:agentic_ppm_prompt) %>
+        <%= form.text_area :prompt, required: true, rows: 4 %>
+      </p>
+      <%= form.submit t(:agentic_ppm_send_to_specialist), class: "button -primary" %>
+    <% end %>
+  </section>
+<% end %>

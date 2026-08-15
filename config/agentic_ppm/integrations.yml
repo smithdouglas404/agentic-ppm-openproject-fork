@@ -1,0 +1,21 @@
+providers:
+  jira:
+    source_entities: [project, issue, epic, sprint, release, dependency]
+    ontology_targets: [project, work_package, milestone, relationship]
+    credential_reference_environment: JIRA_AGENTIC_CREDENTIAL_REFERENCE
+  servicenow:
+    source_entities: [demand, change_request, incident, service_offering, risk]
+    ontology_targets: [demand, change, incident, service, risk]
+    credential_reference_environment: SERVICENOW_AGENTIC_CREDENTIAL_REFERENCE
+  dynatrace:
+    source_entities: [service, problem, sla, deployment]
+    ontology_targets: [service, incident, risk, relationship]
+    credential_reference_environment: DYNATRACE_AGENTIC_CREDENTIAL_REFERENCE
+  finops:
+    source_entities: [cost, budget, forecast, allocation, optimization]
+    ontology_targets: [cost, investment, forecast, relationship]
+    credential_reference_environment: FINOPS_AGENTIC_CREDENTIAL_REFERENCE
+  openproject:
+    source_entities: [project, work_package, membership, relation]
+    ontology_targets: [project, work_package, actor, relationship]
+    credential_reference_environment: OPENPROJECT_AGENTIC_CREDENTIAL_REFERENCE
