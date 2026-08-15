@@ -1,8 +1,8 @@
-# OpenProject Agentic PPM Module
+# OpenProject Agentic PPM Module — Unverified Scaffold
 
-This module is the OpenProject-native foundation for Agentic Portfolio and Transformation Management. Its first slice exposes a project-level capability page and a configuration-driven service registry. It intentionally does not require external agent, memory, graph, visual workflow, or event-processing services to boot.
+This module is an **unverified OpenProject-native scaffold** for Agentic Portfolio and Transformation Management. It has not yet been booted in a running OpenProject environment, migrated, exercised through a real project, or validated by the OpenProject test suite. It must not be described as an operational module, service integration, agent integration, visual-rule integration, or external-source integration.
 
-Read the architecture records in `docs/development/agentic-ppm/` before extending this module.
+Read the architecture records in `docs/development/agentic-ppm/` before extending this module, especially [Source-First Engineering Gate](../../docs/development/agentic-ppm/source-first-engineering-gate.md). No feature expansion is permitted until its runtime and proof requirements are passed.
 
 ## Current capability behavior
 

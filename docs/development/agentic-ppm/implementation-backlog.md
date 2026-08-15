@@ -1,0 +1,98 @@
+# Project TODO
+
+- [x] Create the enterprise command-center shell and polished navigation for Agentic PPM.
+- [x] Implement the eight required agent workspaces: PMO, VRO, OKR/KPI, OCM, Governance, FinOps, TMO, and Business Planning.
+- [x] Create database schema and tRPC contracts for workspaces, feature flags, agents, memory entries, insights, activity traces, integrations, graph entities, and relationships.
+- [x] Build the OpenProject connection configuration and synchronization control surface.
+- [x] Build integration connection cards for ServiceNow, Jira, Dynatrace, and FinOps data providers.
+- [x] Create CSV/JSON ingestion, schema-mapping, ontology-extension, and graph-ingestion workflow.
+- [x] Build the knowledge graph explorer with entity and relationship evidence panels.
+- [x] Implement workspace-level feature flags and module screens for OKR/KPI, OCM, and Governance.
+- [x] Implement database-backed Letta/Mem0-style agent memory and typed agent-routing behavior.
+- [x] Implement agent chat, insight generation, recommendations, interaction logs, and observability views.
+- [x] Add initial portfolio, risk, OKR/KPI, financial, governance, and transformation insight visualizations.
+- [x] Prepare safe background synchronization and anomaly-alert architecture without enabling unsupervised external calls.
+- [x] Add role-aware controls for configuration and sensitive data.
+- [x] Add automated tests for core schemas, routing, and module configuration behavior.
+- [x] Produce architecture documentation and implementation decisions for OpenProject, memory, and knowledge graph expansion.
+- [x] Validate responsive behavior, accessibility, and visual quality before delivery.
+- [x] Implement column-level file mapping, override controls, and approved ontology extension before ingestion.
+- [x] Bind graph exploration and evidence panels to persisted knowledge-graph entities and relationships.
+- [x] Add dedicated OKR/KPI, OCM, and Governance reporting surfaces controlled by workspace flags.
+- [x] Replace static observability and insight placeholders with persisted activity and recommendation records.
+- [x] Add explicit portfolio, risk, OKR/KPI, financial, governance, and transformation insight views.
+- [x] Implement persisted anomaly-rule and alert-event architecture without auto-enabling live alerts.
+- [x] Expand automated tests for workspace permissions, ingestion mapping, and connector security behavior.
+- [x] Perform and document keyboard, focus, semantic, and responsive accessibility checks.
+- [x] Replace overview recommendation placeholders with persisted workspace insights.
+- [x] Manage and evaluate persisted anomaly rules before creating alert events.
+- [x] Add connector credential and protected-configuration security tests.
+- [x] Run and document concrete keyboard, focus, semantic, and automated accessibility validation.
+- [x] Run and document a runtime keyboard/focus pass across core application screens.
+- [x] Add rendered accessibility checks for core interactive pages beyond source-level semantic assertions.
+- [ ] Review and document Jira and ServiceNow API contracts, authentication options, and ontology mappings.
+- [ ] Add encrypted Jira and ServiceNow connection configuration with administrator-only controls.
+- [ ] Implement Jira issue, epic, sprint, release, and dependency synchronization into the master ontology.
+- [ ] Implement ServiceNow demand, change, incident, service, and risk synchronization into the master ontology.
+- [ ] Add interactive relationship filtering, entity inspection, and anomaly-alert drill-down dashboard controls.
+- [ ] Add a dedicated PMO/VRO natural-language chat workspace grounded in graph evidence and persistent memory.
+- [ ] Add integration security, adapter mapping, dashboard interaction, and PMO/VRO chat tests.
+- [ ] Validate the extended flows and update activation documentation.
+- [ ] Determine the authorized OpenProject environment and feasible deployment approach for a live integration proof.
+- [ ] Create or connect a controlled OpenProject user and API credential using an approved target instance.
+- [ ] Create a representative hybrid delivery project in OpenProject with people, work packages, milestones, dependencies, and mixed delivery evidence.
+- [ ] Synchronize the real OpenProject project, validate ontology mappings and deduplication, and inspect the resulting graph evidence.
+- [ ] Document the verified OpenProject connection, project source data, mapping profile, and activation steps.
+- [x] Create a private fork of the upstream OpenProject repository under the connected GitHub account.
+- [x] Review the OpenProject module, engine, API, frontend navigation, and development environment extension points.
+- [x] Define an OpenProject-native Agentic PPM module set for PMO, VRO, ontology, graph, integrations, and workspace settings.
+- [x] Add an initial OpenProject-native Agentic PPM module scaffold and navigation entry in the fork.
+- [x] Prepare an in-fork demonstration project and source-to-ontology mapping approach for hybrid, scaled Agile, and waterfall evidence.
+- [x] Document the correction from companion layer to OpenProject fork and the required environment to run the fork locally.
+- [x] Create a binding Agentic PPM architecture charter inside the OpenProject fork that restates the original user requirements and non-negotiable native-extension posture.
+- [x] Create a persistent source-map and architectural-decision record for OpenProject backend, frontend, module, workflow, permission, migration, and test extension points.
+- [x] Perform a structured OpenProject codebase analysis before introducing native Agentic PPM code.
+- [x] Define a staged refactor plan that treats the knowledge graph as a primary portfolio intelligence source while preserving OpenProject as the system of record for project work.
+- [x] Define the OpenProject, Letta, Mem0, and Memgraph service boundaries, data ownership, and security model.
+- [ ] Provision an extended environment capable of running the OpenProject fork, PostgreSQL, Redis, Letta, Mem0, and Memgraph services.
+- [ ] Implement a master ontology and semantic graph synchronization contract for hybrid, scaled Agile, and waterfall project evidence.
+- [ ] Integrate Letta and Mem0 into the eight specialist-agent workflows with scoped memory, retrieval, and observability.
+- [ ] Define the Letta-first specialist-agent contract and a configurable model-provider boundary that may use Claude without coupling the product to a single model vendor.
+- [ ] Evaluate LangGraph only against explicit multi-agent workflow requirements after the OpenProject-native orchestration baseline is established.
+- [ ] Evaluate and integrate Langflow as the visual, versioned composition layer for agent, retrieval, integration, and approval flows without relocating OpenProject authorization or transactional rules.
+- [ ] Define and implement role-based visual business-rule editing with draft, validation, simulation, approval, publish, rollback, and audit lifecycle controls.
+- [ ] Maintain an autonomous decision log in the OpenProject fork documenting material architecture, service, security, and workflow choices made during the delegated implementation window.
+- [ ] Progress the Agentic PPM fork without routine confirmation, pausing only for unavoidable external credentials, payment, access, or irreversible production actions.
+- [x] Generate controlled evaluation credentials for OpenProject and supporting services, store them only in managed secret storage, and document the protected local configuration location without committing secrets.
+- [ ] Implement configuration-driven service adapters and local activation definitions so unavailable Langflow, Letta, Mem0, Memgraph, Inngest, or AgentKit services never block core OpenProject-native development.
+- [ ] Freeze additional feature scaffolding until a real OpenProject environment, executable test baseline, and one project-to-ontology proof have been demonstrated.
+- [ ] Add a binding source-first gate that requires a running demonstration, tests, and evidence before any service, agent, integration, or business module is reported as implemented.
+- [ ] Establish the actual OpenProject runtime and verify native module boot, migrations, permissions, routes, and test execution before expanding Agentic PPM scope.
+- [ ] Confirm the private fork’s branch policy, upstream synchronization approach, and native-module ownership model.
+- [ ] Install the OpenProject-supported Ruby, Node, PostgreSQL, Redis, and worker dependencies in the selected runtime environment.
+- [ ] Start the unmodified OpenProject fork before attempting to boot the Agentic PPM engine.
+- [ ] Record the OpenProject baseline version, module inventory, database migration state, and test command output.
+- [ ] Verify native authentication, administration access, project creation, work-package creation, and membership behavior in the running fork.
+- [ ] Load and verify the Agentic PPM engine, routes, menus, permissions, and locale resources in the running fork.
+- [ ] Apply the Agentic PPM migration only after inspecting the generated schema and verifying the runtime database backup posture.
+- [ ] Run targeted engine, model, service, request, and feature tests for the Agentic PPM module in the real fork environment.
+- [ ] Create one controlled OpenProject administrator account and document only the protected credential reference and recovery process.
+- [ ] Create one controlled project member account and validate project-scoped Agentic PPM permission behavior.
+- [ ] Create a real representative OpenProject project with hybrid, scaled Agile, and waterfall delivery evidence using supported project and work-package records.
+- [ ] Create real project people, memberships, milestones, dependencies, work-package hierarchy, statuses, and schedule evidence for the representative project.
+- [ ] Execute the native project-to-ontology projection job and inspect persisted source identities, idempotency keys, provenance, and error paths.
+- [ ] Define the canonical ontology entity types for project, work package, milestone, person, risk, decision, objective, KPI, cost, service, and change.
+- [ ] Define the canonical ontology relationship types for contains, depends on, assigned to, governed by, contributes to, funds, impacts, and mitigates.
+- [ ] Define confidence, observed-time, source-system, source-record, mapping-profile, and authorization provenance fields for every graph fact.
+- [ ] Prove that delivery-method classification is evidence-based and can represent hybrid, scaled Agile, and waterfall attributes concurrently.
+- [ ] Define the Memgraph projection contract, graph schema migration strategy, health check, rollback strategy, and graph query authorization boundary.
+- [ ] Install and health-check Memgraph only after the native ontology projection proof succeeds.
+- [ ] Define the Letta agent template, identity, policy, tool allow-list, conversation scope, and project-permission boundary for each of the eight agents.
+- [ ] Define Mem0 memory extraction, storage, retrieval, retention, deletion, source-citation, workspace, user, agent, and policy scopes.
+- [ ] Implement the PMO agent as the first Letta-backed vertical slice only after the Letta and Mem0 service proofs are complete.
+- [ ] Implement the VRO agent as the second Letta-backed vertical slice only after PMO agent evidence, controls, and tests are accepted.
+- [ ] Define Claude as a configurable model provider, including provider fallback, data handling, model selection, token limits, and evaluation criteria.
+- [ ] Evaluate Inngest AgentKit against OpenProject ActiveJob/Good Job for durable event workflow, retries, idempotency, scheduled execution, and observability.
+- [ ] Evaluate LangGraph only for demonstrated multi-agent, resumable, approval, escalation, or long-running workflow gaps not solved by native orchestration and Letta.
+- [ ] Define the Langflow visual-flow embedding, versioning, user role, validation, simulation, approval, publication, rollback, and audit model.
+- [ ] Prove one business-user visual-rule change through the governed lifecycle without allowing visual flows to bypass OpenProject permissions or transactional controls.
