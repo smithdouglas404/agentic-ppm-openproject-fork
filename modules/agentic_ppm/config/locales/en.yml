@@ -1,0 +1,11 @@
+en:
+  label_agentic_ppm: "Agentic PPM"
+  agentic_ppm_project_intelligence: "Portfolio intelligence"
+  agentic_ppm_project_intelligence_description: "Agentic PPM capability state for %{project}. Source-backed graph, memory, workflow, and integration services are shown only when configured."
+  agentic_ppm_capability_state: "Capability state"
+  agentic_ppm_service_capabilities: "Agentic PPM service capabilities"
+  agentic_ppm_specialists: "Specialist agents"
+  agentic_ppm_specialists_description: "Specialists become interactive only when their approved service adapters and project permissions are configured."
+  agentic_ppm_configured: "Configured"
+  agentic_ppm_not_configured: "Not configured"
+  agentic_ppm_configuration_not_available: "Agentic PPM service configuration is managed through the protected deployment configuration until the native administration workflow is enabled."

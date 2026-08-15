@@ -1,0 +1,60 @@
+version: 1
+source_systems:
+  openproject:
+    source_type: openproject
+    authoritative_for:
+      - project
+      - work_package
+      - membership
+      - workflow_state
+entity_mappings:
+  project:
+    source: Project
+    entity_type: project
+    identity: "openproject:project:%{id}"
+    attributes:
+      - identifier
+      - name
+      - active
+  work_package:
+    source: WorkPackage
+    entity_type: work_package
+    identity: "openproject:work_package:%{id}"
+    attributes:
+      - subject
+      - type
+      - status
+      - parent_id
+      - start_date
+      - due_date
+      - estimated_hours
+      - percentage_done
+  actor:
+    source: Principal
+    entity_type: actor
+    identity: "openproject:actor:%{id}"
+    attributes:
+      - name
+      - type
+relationship_mappings:
+  - relationship_type: contains
+    from: project
+    to: work_package
+    source: work_package.project_id
+  - relationship_type: assigned_to
+    from: work_package
+    to: actor
+    source: work_package.assigned_to_id
+  - relationship_type: child_of
+    from: work_package
+    to: work_package
+    source: work_package.parent_id
+delivery_method_evidence:
+  principle: "Delivery method is inferred from configured ontology mappings and source evidence, never hard-coded from a project label."
+  candidate_signals:
+    - work_package_type
+    - work_package_hierarchy
+    - status_workflow
+    - iteration_or_sprint_relation
+    - milestone_relation
+    - schedule_dates

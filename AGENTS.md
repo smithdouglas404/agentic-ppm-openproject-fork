@@ -6,6 +6,10 @@
 
 **OpenProject** is a web-based, open-source project management software written in Ruby on Rails with PostgreSQL for data persistence.
 
+## Agentic PPM Fork Direction
+
+Before making any Agentic PPM change, read the binding [Agentic PPM Architecture Charter](docs/development/agentic-ppm/architecture-charter.md), [Source Map and Extension Decision Record](docs/development/agentic-ppm/source-map.md), [OpenProject Architecture Analysis](docs/development/agentic-ppm/openproject-architecture-analysis.md), [OpenProject-Native Agentic PPM Module Design](docs/development/agentic-ppm/native-module-design.md), [Agent Runtime and Model Provider Contract](docs/development/agentic-ppm/agent-runtime-contract.md), [Orchestration and Visual Business-Rule Decision Record](docs/development/agentic-ppm/orchestration-decision-record.md), [Service Activation Contract](docs/development/agentic-ppm/service-activation-contract.md), and [Autonomous Decision Log](docs/development/agentic-ppm/autonomous-decision-log.md). This fork is the primary Agentic PPM application; contributions must extend OpenProject natively rather than create a separate product shell or a standalone copy of its UI.
+
 - **Size**: Large monorepo (~840MB, ~1M+ lines of code)
 - **Backend**: Ruby 3.4.7, Rails ~8.0.3
 - **Frontend**: Node.js 24.x (>= 24.15.0), npm 11.x, TypeScript

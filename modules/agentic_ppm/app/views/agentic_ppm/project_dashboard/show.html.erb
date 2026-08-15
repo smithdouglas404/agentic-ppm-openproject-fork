@@ -1,0 +1,38 @@
+<% html_title t(:label_agentic_ppm) %>
+
+<%= toolbar title: t(:label_agentic_ppm) %>
+
+<section class="op-enterprise-banner" aria-labelledby="agentic-ppm-heading">
+  <h2 id="agentic-ppm-heading"><%= t(:agentic_ppm_project_intelligence) %></h2>
+  <p><%= t(:agentic_ppm_project_intelligence_description, project: project.name) %></p>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_capability_state) %>">
+  <h3><%= t(:agentic_ppm_capability_state) %></h3>
+  <table class="generic-table" aria-label="<%= t(:agentic_ppm_service_capabilities) %>">
+    <thead>
+      <tr>
+        <th><%= t(:label_service) %></th>
+        <th><%= t(:label_status) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% capabilities.each do |service, state| %>
+        <tr>
+          <td><%= service.to_s.humanize %></td>
+          <td><%= state == :configured ? t(:agentic_ppm_configured) : t(:agentic_ppm_not_configured) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_specialists) %>">
+  <h3><%= t(:agentic_ppm_specialists) %></h3>
+  <p><%= t(:agentic_ppm_specialists_description) %></p>
+  <ul>
+    <% specialists.each do |specialist| %>
+      <li><%= specialist %></li>
+    <% end %>
+  </ul>
+</section>

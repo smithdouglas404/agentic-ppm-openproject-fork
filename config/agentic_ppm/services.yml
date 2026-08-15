@@ -1,0 +1,49 @@
+default: &default
+  enabled: false
+  health_check_timeout_seconds: 3
+  failure_mode: explicit_capability_state
+
+development:
+  <<: *default
+  memgraph:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::MemgraphAdapter
+    base_url: <%= ENV.fetch("MEMGRAPH_BASE_URL", "bolt://localhost:7687") %>
+    credential_key: MEMGRAPH_AGENTIC_PASSWORD
+  letta:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::LettaAdapter
+    base_url: <%= ENV.fetch("LETTA_BASE_URL", "ws://localhost:4500") %>
+    credential_key: LETTA_AGENTIC_AUTH_TOKEN
+  mem0:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::Mem0Adapter
+    base_url: <%= ENV.fetch("MEM0_BASE_URL", "") %>
+    credential_key: MEM0_AGENTIC_AUTH_TOKEN
+  langflow:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::LangflowAdapter
+    base_url: <%= ENV.fetch("LANGFLOW_BASE_URL", "http://localhost:7860") %>
+    credential_key: LANGFLOW_AGENTIC_AUTH_TOKEN
+  durable_workflow:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::NativeWorkflowAdapter
+    event_adapter: AgenticPpm::ServiceAdapters::NativeWorkflowAdapter
+
+test:
+  <<: *default
+  memgraph:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::MemgraphAdapter
+  letta:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::LettaAdapter
+  mem0:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::Mem0Adapter
+  langflow:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::LangflowAdapter
+  durable_workflow:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::NativeWorkflowAdapter

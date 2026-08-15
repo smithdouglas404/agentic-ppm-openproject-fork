@@ -1,0 +1,49 @@
+name: openproject-agentic-ppm
+
+services:
+  memgraph:
+    image: "${MEMGRAPH_IMAGE:-memgraph/memgraph-mage:latest}"
+    profiles: ["agentic-ppm"]
+    restart: unless-stopped
+    ports:
+      - "${MEMGRAPH_BOLT_PORT:-7687}:7687"
+      - "${MEMGRAPH_LAB_PORT:-3001}:3000"
+    volumes:
+      - agentic_ppm_memgraph:/var/lib/memgraph
+    networks: [agentic_ppm]
+
+  langflow:
+    image: "${LANGFLOW_IMAGE:-langflowai/langflow:latest}"
+    profiles: ["agentic-ppm"]
+    restart: unless-stopped
+    environment:
+      LANGFLOW_CONFIG_DIR: /app/langflow
+      LANGFLOW_HOST: 0.0.0.0
+      LANGFLOW_PORT: 7860
+    ports:
+      - "${LANGFLOW_PORT:-7860}:7860"
+    volumes:
+      - agentic_ppm_langflow:/app/langflow
+    networks: [agentic_ppm]
+
+  letta:
+    build:
+      context: ./letta
+    profiles: ["agentic-ppm"]
+    restart: unless-stopped
+    environment:
+      LETTA_AGENTIC_AUTH_TOKEN: ${LETTA_AGENTIC_AUTH_TOKEN:?Managed Letta token is required}
+    ports:
+      - "${LETTA_PORT:-4500}:4500"
+    volumes:
+      - agentic_ppm_letta:/data
+    networks: [agentic_ppm]
+
+networks:
+  agentic_ppm:
+    name: ${AGENTIC_PPM_NETWORK:-openproject-agentic-ppm}
+
+volumes:
+  agentic_ppm_memgraph:
+  agentic_ppm_langflow:
+  agentic_ppm_letta:

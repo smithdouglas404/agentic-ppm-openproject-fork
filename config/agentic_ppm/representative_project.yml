@@ -1,0 +1,38 @@
+project:
+  name: Enterprise Transformation Portfolio Pilot
+  identifier: enterprise-transformation-pilot
+  description: Controlled Agentic PPM demonstration project containing hybrid delivery evidence for ontology and graph projection validation.
+  enabled_modules:
+    - work_package_tracking
+    - agentic_ppm
+  member_role: Project admin
+work_packages:
+  - key: transformation_program
+    subject: Enterprise transformation program
+    type: Phase
+    status: New
+    description: Portfolio-level transformation outcome and governance context.
+  - key: stage_gate_design
+    parent: transformation_program
+    subject: Stage-gate design authority decision
+    type: Milestone
+    status: New
+    description: Waterfall-style governance evidence with explicit decision readiness.
+  - key: agile_increment
+    parent: transformation_program
+    subject: Digital operating model increment
+    type: Phase
+    status: New
+    description: Iterative delivery evidence that can be mapped through configured hierarchy, workflow, and schedule signals.
+  - key: change_readiness
+    parent: transformation_program
+    subject: Regional change readiness assessment
+    type: Task
+    status: New
+    description: Organizational change management evidence linked to the transformation hierarchy.
+  - key: value_hypothesis
+    parent: transformation_program
+    subject: Benefits and value hypothesis validation
+    type: Task
+    status: New
+    description: Value realization evidence for the VRO specialist agent.

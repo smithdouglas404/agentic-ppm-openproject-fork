@@ -147,3 +147,5 @@ acme.json
 
 # Generated seeders crowdin source file
 **/config/locales/en.seeders.yml
+# Agentic PPM local service credentials
+docker/dev/agentic-ppm.local.env
