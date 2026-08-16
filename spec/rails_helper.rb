@@ -70,6 +70,7 @@ require "paper_trail/frameworks/rspec"
 require_relative "support/parallel_helper"
 require_relative "support/download_list"
 require_relative "support/capybara"
+require_relative "support/shared_let"
 Rails.root.glob("spec/support/**/*.rb").each { |f| require_relative f }
 Rails.root.glob("spec/features/support/**/*.rb").each { |f| require f }
 Rails.root.glob("spec/lib/api/v3/support/**/*.rb").each { |f| require f }
