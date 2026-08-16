@@ -163,6 +163,12 @@ run_units() {
 	cleanup
 }
 
+run_agentic_ppm_specs() {
+	reset_dbs
+	execute "time bundle exec rspec modules/agentic_ppm/spec"
+	cleanup
+}
+
 run_features() {
 	shopt -s globstar nullglob
 	run_background start_hocuspocus
@@ -193,7 +199,7 @@ run_all() {
 	cleanup
 }
 
-export -f cleanup execute execute_quiet run_psql create_db_cluster reset_dbs setup_tests setup_hocuspocus start_hocuspocus backend_stuff frontend_stuff run_units run_features run_all
+export -f cleanup execute execute_quiet run_psql create_db_cluster reset_dbs setup_tests setup_hocuspocus start_hocuspocus backend_stuff frontend_stuff run_units run_agentic_ppm_specs run_features run_all
 
 if [ "$1" == "setup-tests" ]; then
 	shift
@@ -203,6 +209,11 @@ fi
 if [ "$1" == "run-units" ]; then
 	shift
 	run_units
+fi
+
+if [ "$1" == "run-agentic-ppm-specs" ]; then
+	shift
+	run_agentic_ppm_specs
 fi
 
 if [ "$1" == "run-features" ]; then

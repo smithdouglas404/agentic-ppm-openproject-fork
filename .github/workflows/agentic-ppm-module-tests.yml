@@ -35,7 +35,7 @@ jobs:
         run: bin/ci setup-tests
 
       - name: Run Agentic PPM module specifications
-        run: bin/ci bundle exec rspec modules/agentic_ppm/spec
+        run: bin/ci run-agentic-ppm-specs
 
       - name: Clean up isolated test runtime
         if: ${{ always() }}
