@@ -35,11 +35,17 @@ namespace :agentic_ppm do
       end
 
       parent = created_work_packages[work_package_template["parent"]]
-      work_package = WorkPackage.find_or_initialize_by(project:, subject: work_package_template.fetch("subject"))
+      source_key = work_package_template.fetch("key")
+      source_marker = "Agentic PPM source key: #{source_key}"
+      candidate_subjects = [work_package_template.fetch("subject"), *work_package_template.fetch("legacy_subjects", [])]
+      work_package = project.work_packages.detect { |candidate| candidate.description.to_s.include?(source_marker) }
+      work_package ||= project.work_packages.where(subject: candidate_subjects).order(:id).first
+      work_package ||= WorkPackage.new(project:)
       work_package.assign_attributes(
         author: current_user,
         assigned_to: current_user,
-        description: work_package_template.fetch("description"),
+        subject: work_package_template.fetch("subject"),
+        description: "#{work_package_template.fetch("description")}\n\n#{source_marker}",
         type:,
         status:,
         priority:,
@@ -48,7 +54,12 @@ namespace :agentic_ppm do
         parent:
       )
       work_package.save!
-      created_work_packages[work_package_template.fetch("key")] = work_package
+      work_package_template.fetch("legacy_subjects", []).each do |legacy_subject|
+        project.work_packages.where(subject: legacy_subject).where.not(id: work_package.id).find_each do |legacy_work_package|
+          legacy_work_package.update!(subject: "#{legacy_subject} (superseded controlled seed)")
+        end
+      end
+      created_work_packages[source_key] = work_package
     end
 
     template.fetch("relations", []).each do |relation_template|

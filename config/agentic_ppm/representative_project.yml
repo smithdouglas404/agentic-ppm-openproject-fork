@@ -25,6 +25,8 @@ work_packages:
   - key: agile_increment
     parent: transformation_program
     subject: Digital operating model program increment
+    legacy_subjects:
+      - Digital operating model increment
     type: Sprint
     status: New
     start_date: "2026-09-28"
