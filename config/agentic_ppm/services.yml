@@ -25,6 +25,11 @@ development:
     adapter: AgenticPpm::ServiceAdapters::LangflowAdapter
     base_url: <%= ENV.fetch("LANGFLOW_BASE_URL", "http://localhost:7860") %>
     credential_key: LANGFLOW_AGENTIC_AUTH_TOKEN
+  inngest_agentkit:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::InngestAgentkitAdapter
+    base_url: <%= ENV.fetch("INNGEST_BASE_URL", "") %>
+    credential_key: INNGEST_EVENT_KEY
   durable_workflow:
     <<: *default
     adapter: AgenticPpm::ServiceAdapters::NativeWorkflowAdapter
@@ -44,6 +49,9 @@ test:
   langflow:
     <<: *default
     adapter: AgenticPpm::ServiceAdapters::LangflowAdapter
+  inngest_agentkit:
+    <<: *default
+    adapter: AgenticPpm::ServiceAdapters::InngestAgentkitAdapter
   durable_workflow:
     <<: *default
     adapter: AgenticPpm::ServiceAdapters::NativeWorkflowAdapter

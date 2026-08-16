@@ -5,6 +5,7 @@ module AgenticPpm
       mem0: ServiceAdapters::Mem0Adapter,
       memgraph: ServiceAdapters::MemgraphAdapter,
       langflow: ServiceAdapters::LangflowAdapter,
+      inngest_agentkit: ServiceAdapters::InngestAgentkitAdapter,
       durable_workflow: ServiceAdapters::NativeWorkflowAdapter
     }.freeze
 

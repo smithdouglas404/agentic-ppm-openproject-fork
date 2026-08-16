@@ -6,13 +6,18 @@ RSpec.describe AgenticPpm::ServiceRegistry do
       allow(ENV).to receive(:fetch).and_call_original
       allow(ENV).to receive(:fetch).with("LETTA_AGENTIC_ENABLED", false).and_return("true")
 
-      expect(described_class.capability_states).to include(letta: :degraded, memgraph: :disabled)
+      expect(described_class.capability_states).to include(
+        letta: :degraded,
+        memgraph: :disabled,
+        inngest_agentkit: :disabled
+      )
     end
   end
 
   describe ".adapter_for" do
     it "resolves a native adapter for each service without making an external call" do
       expect(described_class.adapter_for(:memgraph)).to be_a(AgenticPpm::ServiceAdapters::MemgraphAdapter)
+      expect(described_class.adapter_for(:inngest_agentkit)).to be_a(AgenticPpm::ServiceAdapters::InngestAgentkitAdapter)
     end
   end
 
