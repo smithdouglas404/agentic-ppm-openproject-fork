@@ -33,7 +33,10 @@ module AgenticPpm
           payload: {
             identifier: project.identifier,
             name: project.name,
-            active: project.active?
+            active: project.active?,
+            delivery_method_evidence: DeliveryMethodEvidence.new(
+              work_packages: project.work_packages.includes(:type)
+            ).call
           },
           observed_at:,
           created_at: Time.current,

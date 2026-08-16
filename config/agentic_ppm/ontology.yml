@@ -29,6 +29,7 @@ entity_mappings:
       - due_date
       - estimated_hours
       - percentage_done
+      - delivery_method_evidence
   actor:
     source: Principal
     entity_type: actor
@@ -50,11 +51,17 @@ relationship_mappings:
     to: work_package
     source: work_package.parent_id
 delivery_method_evidence:
+  version: 1
   principle: "Delivery method is inferred from configured ontology mappings and source evidence, never hard-coded from a project label."
-  candidate_signals:
-    - work_package_type
-    - work_package_hierarchy
-    - status_workflow
-    - iteration_or_sprint_relation
-    - milestone_relation
-    - schedule_dates
+  evidence_rules:
+    waterfall:
+      work_package_types:
+        - Milestone
+    scaled_agile:
+      work_package_types:
+        - Sprint
+        - Iteration
+    hybrid:
+      requires_all:
+        - waterfall
+        - scaled_agile

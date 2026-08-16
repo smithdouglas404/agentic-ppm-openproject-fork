@@ -17,4 +17,24 @@ RSpec.describe AgenticPpm::Ontology::ProjectProjectionService do
       projection_state: "pending"
     )
   end
+
+  it "projects concurrent waterfall, scaled Agile, and hybrid evidence from configured work-package types" do
+    waterfall_milestone = instance_double(WorkPackage, id: 21, type: double(name: "Milestone"))
+    scaled_agile_sprint = instance_double(WorkPackage, id: 22, type: double(name: "Sprint"))
+    work_packages = double
+    allow(project).to receive(:work_packages).and_return(work_packages)
+    allow(work_packages).to receive(:includes).with(:type).and_return([waterfall_milestone, scaled_agile_sprint])
+
+    payload = described_class.new(project:, idempotency_key: "project-42-v2").send(:projection_attributes).fetch(:payload)
+
+    expect(payload.dig(:delivery_method_evidence, "candidate_methods")).to contain_exactly(
+      "waterfall", "scaled_agile", "hybrid"
+    )
+    expect(payload.dig(:delivery_method_evidence, "evidence", "waterfall", "matched_work_packages")).to include(
+      { "work_package_id" => 21, "type" => "Milestone" }
+    )
+    expect(payload.dig(:delivery_method_evidence, "evidence", "scaled_agile", "matched_work_packages")).to include(
+      { "work_package_id" => 22, "type" => "Sprint" }
+    )
+  end
 end

@@ -20,10 +20,10 @@ work_packages:
     description: Waterfall-style governance evidence with explicit decision readiness.
   - key: agile_increment
     parent: transformation_program
-    subject: Digital operating model increment
-    type: Phase
+    subject: Digital operating model program increment
+    type: Sprint
     status: New
-    description: Iterative delivery evidence that can be mapped through configured hierarchy, workflow, and schedule signals.
+    description: Scaled Agile delivery evidence represented by a supported Sprint work package and linked to the portfolio transformation hierarchy.
   - key: change_readiness
     parent: transformation_program
     subject: Regional change readiness assessment
