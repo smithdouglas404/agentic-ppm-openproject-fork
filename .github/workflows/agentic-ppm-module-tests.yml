@@ -1,0 +1,42 @@
+name: Agentic PPM native module tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agentic-ppm-runtime-proof
+    paths:
+      - 'modules/agentic_ppm/**'
+      - 'config/agentic_ppm/**'
+      - '.github/workflows/agentic-ppm-module-tests.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agentic-ppm-module-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  module-specs:
+    name: Native module specifications
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      DOCKER_BUILDKIT: 1
+      CI_REBUILD: true
+    steps:
+      - name: Check out source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+
+      - name: Build isolated OpenProject test runtime
+        run: bin/ci setup-tests
+
+      - name: Run Agentic PPM module specifications
+        run: bin/ci bundle exec rspec modules/agentic_ppm/spec
+
+      - name: Clean up isolated test runtime
+        if: ${{ always() }}
+        run: bin/ci down
