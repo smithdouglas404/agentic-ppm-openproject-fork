@@ -1,0 +1,27 @@
+name: Agentic PPM evidence gate
+
+on:
+  push:
+    branches:
+      - agentic-ppm-runtime-proof
+    paths:
+      - "modules/agentic_ppm/**"
+      - "docs/development/agentic-ppm/runtime-evidence.md"
+      - "script/agentic-ppm/check-evidence-gate.sh"
+  pull_request:
+    paths:
+      - "modules/agentic_ppm/**"
+      - "docs/development/agentic-ppm/runtime-evidence.md"
+      - "script/agentic-ppm/check-evidence-gate.sh"
+
+jobs:
+  require_runtime_evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require evidence update for native module changes
+        env:
+          GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: bash script/agentic-ppm/check-evidence-gate.sh "$GATE_BASE" "$GITHUB_SHA"
