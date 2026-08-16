@@ -25,6 +25,7 @@
 | Langflow visual business-user workflow | Inactive | Deploy and authorize Langflow, then demonstrate governed draft, validation, approval, publish, and rollback through OpenProject permissions. |
 | Inngest AgentKit runtime | Inactive | Adapter contract and CI coverage exist, but no external service is enabled. |
 | Jira, ServiceNow, Dynatrace, and FinOps data | Inactive | Obtain authorized connector credentials and demonstrate ingestion, mapping, provenance, and revocation behavior. |
+| Native dashboard evidence enhancement | Pending deployed proof | The source now adds delivery-method, schedule, dependency, and capability evidence panels; render it through the Cloud Computer route before treating the UI enhancement as verified. |
 
 ## Gate Operation
 

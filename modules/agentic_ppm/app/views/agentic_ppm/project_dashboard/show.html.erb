@@ -5,6 +5,14 @@
 <section class="op-enterprise-banner" aria-labelledby="agentic-ppm-heading">
   <h2 id="agentic-ppm-heading"><%= t(:agentic_ppm_project_intelligence) %></h2>
   <p><%= t(:agentic_ppm_project_intelligence_description, project: project.name) %></p>
+  <dl class="op-card-container" aria-label="<%= t(:agentic_ppm_evidence_baseline) %>">
+    <dt><%= t(:agentic_ppm_projected_records) %></dt>
+    <dd><%= projection_summary.values.sum %></dd>
+    <dt><%= t(:agentic_ppm_relationship_records) %></dt>
+    <dd><%= relationship_evidence.size %></dd>
+    <dt><%= t(:agentic_ppm_scheduled_work_packages) %></dt>
+    <dd><%= scheduled_work_packages.size %></dd>
+  </dl>
 </section>
 
 <section class="op-card-container" aria-label="<%= t(:agentic_ppm_capability_state) %>">
@@ -25,6 +33,75 @@
       <% end %>
     </tbody>
   </table>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_delivery_method_evidence) %>">
+  <h3><%= t(:agentic_ppm_delivery_method_evidence) %></h3>
+  <p><%= t(:agentic_ppm_delivery_method_description) %></p>
+  <% candidate_methods = delivery_method_evidence.fetch("candidate_methods", []) %>
+  <% method_evidence = delivery_method_evidence.fetch("evidence", {}) %>
+  <% if candidate_methods.any? %>
+    <table class="generic-table" aria-label="<%= t(:agentic_ppm_delivery_method_evidence) %>">
+      <thead>
+        <tr>
+          <th><%= t(:agentic_ppm_delivery_method) %></th>
+          <th><%= t(:agentic_ppm_source_evidence) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% candidate_methods.each do |method| %>
+          <% evidence = method_evidence.fetch(method, {}) %>
+          <tr>
+            <td><strong><%= method.to_s.humanize %></strong></td>
+            <td>
+              <% if evidence["matched_work_packages"].present? %>
+                <ul>
+                  <% evidence.fetch("matched_work_packages").each do |match| %>
+                    <li><%= t(:agentic_ppm_work_package_evidence, id: match["work_package_id"], type: match["type"]) %></li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <%= t(:agentic_ppm_composite_evidence, methods: evidence.fetch("requires_all", []).map(&:humanize).join(", ")) %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p><%= t(:agentic_ppm_no_delivery_method_evidence) %></p>
+  <% end %>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_schedule_evidence) %>">
+  <h3><%= t(:agentic_ppm_schedule_evidence) %></h3>
+  <p><%= t(:agentic_ppm_schedule_evidence_description) %></p>
+  <% if scheduled_work_packages.any? %>
+    <table class="generic-table" aria-label="<%= t(:agentic_ppm_schedule_evidence) %>">
+      <thead>
+        <tr>
+          <th><%= t(:label_work_package) %></th>
+          <th><%= t(:label_type) %></th>
+          <th><%= t(:label_status) %></th>
+          <th><%= t(:label_start_date) %></th>
+          <th><%= t(:label_due_date) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% scheduled_work_packages.each do |work_package| %>
+          <tr>
+            <td><%= work_package.subject %></td>
+            <td><%= work_package.type.name %></td>
+            <td><%= work_package.status.name %></td>
+            <td><%= format_date(work_package.start_date) %></td>
+            <td><%= format_date(work_package.due_date) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p><%= t(:agentic_ppm_no_schedule_evidence) %></p>
+  <% end %>
 </section>
 
 <section class="op-card-container" aria-label="Ontology evidence">
