@@ -26,6 +26,10 @@ jobs:
         working-directory: frontend
         run: npm ci --omit=optional --no-audit --no-fund
 
+      - name: Generate linked frontend plugins
+        working-directory: frontend
+        run: npm run ci:plugins:register_frontend
+
       - name: Build production Angular assets
         working-directory: frontend
         run: node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production --named-chunks --source-map=false
