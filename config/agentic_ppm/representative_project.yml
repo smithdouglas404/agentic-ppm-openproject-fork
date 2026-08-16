@@ -11,40 +11,40 @@ work_packages:
     subject: Enterprise transformation program
     type: Phase
     status: New
-    start_date: 2026-09-01
-    due_date: 2026-12-18
+    start_date: "2026-09-01"
+    due_date: "2026-12-18"
     description: Portfolio-level transformation outcome and governance context.
   - key: stage_gate_design
     parent: transformation_program
     subject: Stage-gate design authority decision
     type: Milestone
     status: New
-    start_date: 2026-09-25
-    due_date: 2026-09-25
+    start_date: "2026-09-25"
+    due_date: "2026-09-25"
     description: Waterfall-style governance evidence with explicit decision readiness.
   - key: agile_increment
     parent: transformation_program
     subject: Digital operating model program increment
     type: Sprint
     status: New
-    start_date: 2026-09-28
-    due_date: 2026-10-23
+    start_date: "2026-09-28"
+    due_date: "2026-10-23"
     description: Scaled Agile delivery evidence represented by a supported Sprint work package and linked to the portfolio transformation hierarchy.
   - key: change_readiness
     parent: transformation_program
     subject: Regional change readiness assessment
     type: Task
     status: New
-    start_date: 2026-10-01
-    due_date: 2026-10-16
+    start_date: "2026-10-01"
+    due_date: "2026-10-16"
     description: Organizational change management evidence linked to the transformation hierarchy.
   - key: value_hypothesis
     parent: transformation_program
     subject: Benefits and value hypothesis validation
     type: Task
     status: New
-    start_date: 2026-10-05
-    due_date: 2026-10-30
+    start_date: "2026-10-05"
+    due_date: "2026-10-30"
     description: Value realization evidence for the VRO specialist agent.
 relations:
   - from: agile_increment
