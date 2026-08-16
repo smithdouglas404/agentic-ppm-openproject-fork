@@ -8,6 +8,7 @@ module AgenticPpm
 
       AgenticPpm::Ontology::ProjectProjectionService.new(project:, idempotency_key:).call
       AgenticPpm::Ontology::WorkPackageProjectionService.new(project:, idempotency_key:).call
+      AgenticPpm::Ontology::WorkPackageRelationProjectionService.new(project:, idempotency_key:).call
     end
   end
 end

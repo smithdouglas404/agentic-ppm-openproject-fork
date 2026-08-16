@@ -50,6 +50,10 @@ relationship_mappings:
     from: work_package
     to: work_package
     source: work_package.parent_id
+  - relationship_type: follows
+    from: work_package
+    to: work_package
+    source: Relation.relation_type
 delivery_method_evidence:
   version: 1
   principle: "Delivery method is inferred from configured ontology mappings and source evidence, never hard-coded from a project label."

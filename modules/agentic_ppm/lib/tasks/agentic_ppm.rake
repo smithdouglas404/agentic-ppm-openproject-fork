@@ -43,10 +43,20 @@ namespace :agentic_ppm do
         type:,
         status:,
         priority:,
+        start_date: work_package_template["start_date"],
+        due_date: work_package_template["due_date"],
         parent:
       )
       work_package.save!
       created_work_packages[work_package_template.fetch("key")] = work_package
+    end
+
+    template.fetch("relations", []).each do |relation_template|
+      Relation.find_or_create_by!(
+        from: created_work_packages.fetch(relation_template.fetch("from")),
+        to: created_work_packages.fetch(relation_template.fetch("to")),
+        relation_type: relation_template.fetch("relation_type")
+      )
     end
 
     idempotency_key = "representative-project:#{project.id}:#{project.updated_at.to_i}"
