@@ -1,0 +1,30 @@
+[Unit]
+Description=Agentic PPM OpenProject native runtime
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/agentic-ppm-openproject
+EnvironmentFile=/etc/agentic-ppm/openproject.env
+Environment=PATH=/opt/ruby-4.0.6/bin:/usr/local/bin:/usr/bin:/bin
+Environment=HOME=/home/ubuntu
+Environment=RAILS_ENV=production
+Environment=BUNDLE_GEMFILE=/home/ubuntu/agentic-ppm-openproject/Gemfile
+Environment=BUNDLE_WITHOUT=development:production
+Environment=HOST=0.0.0.0
+Environment=PORT=3002
+Environment=OPENPROJECT_WEB__WORKERS=1
+Environment=OPENPROJECT_WEB__MIN_THREADS=1
+Environment=OPENPROJECT_WEB__MAX_THREADS=2
+ExecStart=/opt/ruby-4.0.6/bin/bundle exec rails server
+Restart=on-failure
+RestartSec=15
+TimeoutStartSec=infinity
+TimeoutStopSec=90
+MemoryMax=820M
+
+[Install]
+WantedBy=multi-user.target

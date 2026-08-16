@@ -19,7 +19,7 @@ namespace :agentic_ppm do
     )
     project.save!
 
-    role = Role.find_by!(name: project_template.fetch("member_role"))
+    role = ProjectRole.find_or_create_by!(name: project_template.fetch("member_role"))
 
     member = Member.find_or_initialize_by(project:, principal: current_user)
     member.roles = [role]
@@ -29,7 +29,10 @@ namespace :agentic_ppm do
     template.fetch("work_packages").each do |work_package_template|
       type = Type.find_or_create_by!(name: work_package_template.fetch("type"))
       ProjectType.find_or_create_by!(project:, type:)
-      status = Status.find_by!(name: work_package_template.fetch("status"))
+      status = Status.find_or_create_by!(name: work_package_template.fetch("status"))
+      priority = IssuePriority.default || IssuePriority.find_or_create_by!(name: "Normal") do |created_priority|
+        created_priority.is_default = true
+      end
 
       parent = created_work_packages[work_package_template["parent"]]
       work_package = WorkPackage.find_or_initialize_by(project:, subject: work_package_template.fetch("subject"))
@@ -39,7 +42,7 @@ namespace :agentic_ppm do
         description: work_package_template.fetch("description"),
         type:,
         status:,
-        priority: IssuePriority.default,
+        priority:,
         parent:
       )
       work_package.save!
@@ -50,5 +53,18 @@ namespace :agentic_ppm do
     AgenticPpm::ProjectProjectionJob.perform_later(project.id, idempotency_key:)
 
     puts "Representative Agentic PPM project ready: #{project.identifier} (#{project.id})"
+  end
+
+  desc "Project the controlled representative project and work packages into persisted ontology records"
+  task run_projection: :environment do
+    template_path = Rails.root.join("config/agentic_ppm/representative_project.yml")
+    template = YAML.safe_load_file(template_path, aliases: true)
+    identifier = template.fetch("project").fetch("identifier")
+    project = Project.find_by!(identifier:)
+    idempotency_key = "representative-projection:#{project.id}:#{project.updated_at.to_i}"
+
+    AgenticPpm::ProjectProjectionJob.perform_now(project.id, idempotency_key:)
+
+    puts "Representative Agentic PPM projection complete: #{project.identifier} (#{project.id})"
   end
 end
