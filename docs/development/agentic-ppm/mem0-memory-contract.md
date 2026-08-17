@@ -16,6 +16,10 @@ Only authorized conversation content, source-backed OpenProject evidence summari
 
 Retention is governed by workspace policy. User deletion requests, retention expiry, source revocation, and project-access revocation trigger deletion. The activation implementation must retain deletion evidence and must not return records whose source has been deleted or revoked.
 
+## Storage, Write, and Update Semantics
+
+A memory record must include a memory identifier; workspace, project, user, agent, and authorization scopes; content classification; source citations; observed time; policy version; retention classification; and record version. Writes require a current authorization decision, citations, classification, and a trace event. Updates preserve the prior record version and require a new authorization decision, observed time, and trace. Backend deletion is required, but an audit tombstone—without raw memory content—retains the identifier, deletion trigger, deletion time, authorization decision, and policy version. Tombstoned memories are never retrievable.
+
 ## Observability
 
 Memory operations must retain the scoped identity, agent, authorization decision, citations, and retention classification so use can be audited without exposing raw memory content in routine logs.

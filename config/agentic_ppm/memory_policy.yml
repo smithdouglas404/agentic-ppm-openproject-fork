@@ -1,6 +1,42 @@
 version: 1
 activation: requires_authorized_service_and_credentials
 memory_backend: mem0
+storage_contract:
+  record_shape:
+    required_fields:
+      - memory_id
+      - workspace_id
+      - project_id
+      - openproject_user_id
+      - agent_invocation_key
+      - authorization_policy
+      - content_classification
+      - source_citations
+      - observed_at
+      - memory_policy_version
+      - retention_classification
+      - record_version
+  write_semantics:
+    require_current_openproject_authorization: true
+    require_source_citations: true
+    require_content_classification: true
+    require_trace_event: true
+    reject_if_scope_is_incomplete: true
+  update_semantics:
+    preserve_prior_record_version: true
+    require_new_authorization_decision: true
+    require_new_observed_at: true
+    require_update_trace_event: true
+  deletion_semantics:
+    backend_delete_required: true
+    audit_tombstone_required: true
+    tombstone_fields:
+      - memory_id
+      - deletion_trigger
+      - deleted_at
+      - authorization_decision
+      - memory_policy_version
+    prohibit_retrieval_after_tombstone: true
 scope_dimensions:
   - workspace_id
   - project_id
