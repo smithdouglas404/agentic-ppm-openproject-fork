@@ -1,0 +1,50 @@
+version: 1
+activation: requires_authorized_service_and_credentials
+memory_backend: mem0
+scope_dimensions:
+  - workspace_id
+  - project_id
+  - openproject_user_id
+  - agent_invocation_key
+  - authorization_policy
+extraction_policy:
+  permit_only:
+    - user_authorized_conversation_content
+    - source_backed_openproject_evidence_summaries
+    - user_confirmed_preferences
+  prohibit:
+    - connector_credentials
+    - session_tokens
+    - unscoped_cross_project_content
+    - unverified_agent_inference_as_fact
+retrieval_policy:
+  require_all_scope_dimensions: true
+  require_current_openproject_authorization: true
+  require_source_citation: true
+  deny_when_source_is_deleted_or_revoked: true
+retention_policy:
+  default_classification: governed_project_memory
+  retention_period: workspace_policy_controlled
+  deletion_triggers:
+    - user_deletion_request
+    - workspace_retention_expiry
+    - source_revocation
+    - project_access_revocation
+  deletion_evidence: required
+source_citation:
+  required_fields:
+    - source_system
+    - source_record_identity
+    - observed_at
+    - authorization_provenance
+    - memory_policy_version
+observability:
+  required_trace_fields:
+    - memory_operation
+    - workspace_id
+    - project_id
+    - openproject_user_id
+    - agent_invocation_key
+    - authorization_decision
+    - source_citation_references
+    - retention_classification
