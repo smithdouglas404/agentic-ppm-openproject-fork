@@ -4,6 +4,7 @@
 <% method_evidence = delivery_method_evidence.fetch("evidence", {}) %>
 <% configured_services = capabilities.values.count { |state| state == :configured } %>
 <% attention_count = source_review_signals.size %>
+<% selected_source_review_key = selected_source_review_signal.respond_to?(:fetch) ? selected_source_review_signal.fetch(:key) : selected_source_review_signal %>
 
 <div class="agentic-ppm-workspace">
   <section class="agentic-ppm-hero" aria-labelledby="agentic-ppm-heading">
@@ -67,7 +68,7 @@
       <div class="agentic-ppm-filter-grid">
         <div><%= form.label :relationship_type, t(:agentic_ppm_relationship_filter) %><%= form.select :relationship_type, options_for_select([[t(:agentic_ppm_all_relationships), ""]] + relationship_types.map { |type| [type.humanize, type] }, selected_relationship_type) %></div>
         <div><%= form.label :entity_key, t(:agentic_ppm_entity_inspection) %><%= form.select :entity_key, options_for_select([[t(:agentic_ppm_select_entity), ""]] + entity_options, selected_entity_key) %></div>
-        <div><%= form.label :alert_key, t(:agentic_ppm_source_review_alert) %><%= form.select :alert_key, options_for_select([[t(:agentic_ppm_select_source_review_alert), ""]] + source_review_signal_options, selected_source_review_signal&.fetch(:key)) %></div>
+        <div><%= form.label :alert_key, t(:agentic_ppm_source_review_alert) %><%= form.select :alert_key, options_for_select([[t(:agentic_ppm_select_source_review_alert), ""]] + source_review_signal_options, selected_source_review_key) %></div>
       </div>
       <div class="agentic-ppm-filter-actions"><%= form.submit t(:agentic_ppm_apply_evidence_filters), class: "button -primary" %><%= link_to t(:agentic_ppm_clear_evidence_filters), project_agentic_ppm_path(project), class: "button -secondary" %></div>
     <% end %>
@@ -79,7 +80,7 @@
     <% else %>
       <p class="agentic-ppm-empty-state"><%= t(:agentic_ppm_no_relationship_evidence) %></p>
     <% end %>
-    <% if selected_source_review_signal.present? %>
+    <% if selected_source_review_signal.present? && source_review_signal_details.present? %>
       <details class="agentic-ppm-details" open><summary><%= t(:agentic_ppm_source_review_alert_details) %></summary><p><%= t(:agentic_ppm_source_review_alert_details_description) %></p><table class="generic-table"><tbody><% source_review_signal_details.each do |label, value| %><tr><th scope="row"><%= label %></th><td><%= value %></td></tr><% end %></tbody></table></details>
     <% end %>
   </section>
