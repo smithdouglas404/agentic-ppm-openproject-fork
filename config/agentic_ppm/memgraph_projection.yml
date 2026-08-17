@@ -1,0 +1,63 @@
+version: 1
+status: requires_authorized_activation
+activation:
+  environment_gate: MEMGRAPH_AGENTIC_ENABLED
+  endpoint_environment_key: MEMGRAPH_BASE_URL
+  required_preconditions:
+    - authorized_endpoint
+    - protected_credential
+    - health_check_passed
+    - project_scope_authorized
+schema:
+  managed_labels:
+    - AgenticProject
+    - WorkPackageEntity
+    - ActorEntity
+    - OntologyRelationship
+  identity_property: entity_key
+  required_constraints:
+    - "CREATE CONSTRAINT ON (node:AgenticProject) ASSERT node.entity_key IS UNIQUE"
+    - "CREATE CONSTRAINT ON (node:WorkPackageEntity) ASSERT node.entity_key IS UNIQUE"
+    - "CREATE CONSTRAINT ON (node:ActorEntity) ASSERT node.entity_key IS UNIQUE"
+  required_indexes:
+    - project_id
+    - source_system
+    - observed_at
+projection:
+  write_mode: idempotent_upsert
+  required_fact_envelope:
+    - entity_key
+    - project_id
+    - source_system
+    - source_record
+    - mapping_profile
+    - authorization_provenance
+    - observed_at
+    - confidence
+  batch_size: 100
+  correlation_id: required
+health_check:
+  query: "RETURN 1 AS agentic_ppm_health"
+  timeout_seconds: 5
+  failure_behavior: disable_adapter_and_record_non_secret_error
+query_authorization:
+  browser_direct_access: prohibited
+  server_side_scope_required: project_scoped_openproject_permission
+  write_permission_required: manage_agentic_ppm_integrations
+  read_permission_required: view_agentic_ppm
+  permitted_query_classes:
+    - evidence_lookup
+    - bounded_relationship_traversal
+    - aggregate_trend_analysis
+rollback:
+  strategy: projection_run_scoped_compensating_delete
+  immutable_source_systems:
+    - openproject
+  never_delete:
+    - openproject_source_records
+    - external_source_records
+  required_audit_fields:
+    - correlation_id
+    - projection_run_id
+    - authorized_by
+    - rollback_reason
