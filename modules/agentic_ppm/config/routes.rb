@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :agentic_ppm do
     namespace :admin do
       resource :settings, only: %i[show update]
+      resources :integration_connections, only: %i[create]
     end
   end
 

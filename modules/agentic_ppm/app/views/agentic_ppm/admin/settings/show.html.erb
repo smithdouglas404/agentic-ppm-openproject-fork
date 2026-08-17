@@ -1,0 +1,78 @@
+<% html_title(t(:label_agentic_ppm)) %>
+
+<div class="op-container">
+  <h2><%= t(:agentic_ppm_integration_onboarding_title) %></h2>
+  <p class="op-text--muted"><%= t(:agentic_ppm_integration_onboarding_boundary) %></p>
+
+  <div class="op-card op-mb-16">
+    <h3><%= t(:agentic_ppm_integration_onboarding_new_connection) %></h3>
+    <%= form_with(url: agentic_ppm_admin_integration_connections_path, scope: :integration_connection, method: :post) do |form| %>
+      <div class="form--field -required">
+        <%= form.label :project_id, t(:label_project) %>
+        <div class="form--field-container">
+          <%= form.collection_select :project_id, @projects, :id, :name, { include_blank: true }, required: true %>
+        </div>
+      </div>
+      <div class="form--field -required">
+        <%= form.label :provider, t(:agentic_ppm_integration_provider) %>
+        <div class="form--field-container">
+          <%= form.select :provider, @providers.map { |provider| [provider.humanize, provider] }, { include_blank: true }, required: true %>
+        </div>
+      </div>
+      <div class="form--field -required">
+        <%= form.label :name, t(:label_name) %>
+        <div class="form--field-container"><%= form.text_field :name, required: true %></div>
+      </div>
+      <div class="form--field">
+        <%= form.label :credential_reference, t(:agentic_ppm_integration_credential_reference) %>
+        <div class="form--field-container"><%= form.text_field :credential_reference, placeholder: "secret://agentic-ppm/provider/connection" %></div>
+        <div class="form--field-instructions"><%= t(:agentic_ppm_integration_credential_reference_hint) %></div>
+      </div>
+      <div class="form--field">
+        <%= form.label :endpoint_url, t(:agentic_ppm_integration_endpoint_url) %>
+        <div class="form--field-container"><%= form.url_field :endpoint_url %></div>
+      </div>
+      <div class="form--field">
+        <%= form.label :mapping_profile, t(:agentic_ppm_integration_mapping_profile) %>
+        <div class="form--field-container"><%= form.text_field :mapping_profile %></div>
+      </div>
+      <div class="form--field">
+        <%= form.label :authentication_mode, t(:agentic_ppm_integration_authentication_mode) %>
+        <div class="form--field-container"><%= form.text_field :authentication_mode, placeholder: "oauth2, api_token, mcp" %></div>
+      </div>
+      <%= styled_button_tag t(:button_create), class: "-primary" %>
+    <% end %>
+  </div>
+
+  <div class="op-card">
+    <h3><%= t(:agentic_ppm_integration_connection_inventory) %></h3>
+    <% if @connections.any? %>
+      <div class="generic-table--container">
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th><%= t(:label_project) %></th>
+              <th><%= t(:agentic_ppm_integration_provider) %></th>
+              <th><%= t(:label_name) %></th>
+              <th><%= t(:label_status) %></th>
+              <th><%= t(:agentic_ppm_integration_mapping_profile) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @connections.each do |connection| %>
+              <tr>
+                <td><%= connection.project.name %></td>
+                <td><%= connection.provider.humanize %></td>
+                <td><%= connection.name %></td>
+                <td><%= connection.enabled? ? t(:label_active) : t(:agentic_ppm_integration_pending_verification) %></td>
+                <td><%= connection.configuration["mapping_profile"].presence || "—" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="op-text--muted"><%= t(:agentic_ppm_integration_no_connections) %></p>
+    <% end %>
+  </div>
+</div>

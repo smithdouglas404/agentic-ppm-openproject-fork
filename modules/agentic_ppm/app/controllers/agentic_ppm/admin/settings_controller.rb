@@ -4,7 +4,9 @@ module AgenticPpm
       before_action :authorize_global
 
       def show
-        render plain: I18n.t(:agentic_ppm_configuration_not_available)
+        @projects = Project.active.order(:name)
+        @providers = AgenticPpm::IntegrationConnection::PROVIDERS
+        @connections = AgenticPpm::IntegrationConnection.includes(:project).order(:provider, :name)
       end
     end
   end
