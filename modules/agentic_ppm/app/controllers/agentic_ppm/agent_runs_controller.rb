@@ -1,6 +1,6 @@
 module AgenticPpm
   class AgentRunsController < ApplicationController
-    before_action -> { load_and_authorize_with_permission_in_project :run_agentic_ppm_agents }
+    load_and_authorize_with_permission_in_project :run_agentic_ppm_agents
 
     def create
       result = AgenticPpm::Agents::InvocationService.new(
