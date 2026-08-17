@@ -4,8 +4,7 @@ RSpec.describe AgenticPpm::Ontology::WorkPackageProjectionService do
   let(:project) { build_stubbed(:project, id: 42) }
   let(:actor) { instance_double(User, id: 8, name: "Portfolio Lead") }
   let(:work_package) do
-    instance_double(
-      WorkPackage,
+    double(
       id: 21,
       subject: "Enable regional rollout",
       type_id: 3,

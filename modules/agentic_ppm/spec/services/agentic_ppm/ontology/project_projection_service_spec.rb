@@ -4,6 +4,10 @@ RSpec.describe AgenticPpm::Ontology::ProjectProjectionService do
   let(:project) { build_stubbed(:project, id: 42, identifier: "hybrid-transformation", name: "Hybrid Transformation") }
 
   it "uses a stable OpenProject project entity identity" do
+    work_packages = double
+    allow(project).to receive(:work_packages).and_return(work_packages)
+    allow(work_packages).to receive(:includes).with(:type).and_return([])
+
     service = described_class.new(project:, idempotency_key: "project-42-v1")
 
     attributes = service.send(:projection_attributes)
@@ -19,8 +23,8 @@ RSpec.describe AgenticPpm::Ontology::ProjectProjectionService do
   end
 
   it "projects concurrent waterfall, scaled Agile, and hybrid evidence from configured work-package types" do
-    waterfall_milestone = instance_double(WorkPackage, id: 21, type: double(name: "Milestone"))
-    scaled_agile_sprint = instance_double(WorkPackage, id: 22, type: double(name: "Sprint"))
+    waterfall_milestone = double(id: 21, type: double(name: "Milestone"))
+    scaled_agile_sprint = double(id: 22, type: double(name: "Sprint"))
     work_packages = double
     allow(project).to receive(:work_packages).and_return(work_packages)
     allow(work_packages).to receive(:includes).with(:type).and_return([waterfall_milestone, scaled_agile_sprint])
