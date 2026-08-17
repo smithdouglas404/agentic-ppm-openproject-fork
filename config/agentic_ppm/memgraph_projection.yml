@@ -34,6 +34,7 @@ projection:
     - authorization_provenance
     - observed_at
     - confidence
+    - correlation_id
   batch_size: 100
   correlation_id: required
 health_check:
