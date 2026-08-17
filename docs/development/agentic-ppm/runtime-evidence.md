@@ -24,6 +24,7 @@
 | Module regressions | The private-fork isolated PostgreSQL module workflow passed after test-support load-order repair; business-rule publish and rollback coverage is included. | 2026-08-16 |
 | Native business-rule administration | Protected administrator authentication reached the project-scoped Business Rules interface with HTTP 200 and the rendered `Governed business-rule lifecycle` boundary. The interface remains unable to fabricate external visual-flow validation. | 2026-08-17 |
 | Native integration onboarding | Protected administrator authentication reached the global-admin integration onboarding interface with HTTP 200 and rendered its protected credential-reference boundary plus connection inventory. The Jira/ServiceNow policy allows only configured read-only modes; a protected disallowed Jira `basic` mode POST returned HTTP 302 and created no connection. | 2026-08-17 |
+| Governed connector metadata validation | The isolated module suite passed model regression coverage that accepts only configured HTTPS endpoint, mapping profile, authorization mode, disabled activation, read-only modes, policy version, and provenance metadata for Jira. An authenticated Cloud Computer administrator view returned HTTP 200 and rendered both approved Jira/ServiceNow mapping profiles plus the required endpoint control. No connector was enabled or credentials entered. | 2026-08-17 |
 
 ## Explicitly Unverified or Inactive
 
