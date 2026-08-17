@@ -25,7 +25,10 @@ module OpenProject
                      { "agentic_ppm/integrations" => %i[index create update sync] },
                      permissible_on: :project
           permission :administer_agentic_ppm,
-                     { "agentic_ppm/admin/settings" => %i[show update] },
+                     {
+                       "agentic_ppm/admin/settings" => %i[show update],
+                       "agentic_ppm/admin/integration_connections" => %i[create]
+                     },
                      permissible_on: :global
         end
 
