@@ -29,6 +29,7 @@ providers:
       sprint: milestone
       fix_version: milestone
       issue_link: relationship
+    mapping_profiles: [jira_issue_epic_sprint_release_dependency_v1]
     required_provenance: [source_id, source_key, authorizing_account, project_scope, requested_scopes, mapping_profile, observed_at, correlation_id]
     prohibited_operations: [issue_write, webhook_registration, scope_expansion, browser_direct_credential_entry]
   servicenow:
@@ -60,6 +61,7 @@ providers:
       incident: incident
       cmdb_ci_service: service
       sn_risk_risk: risk
+    mapping_profiles: [servicenow_demand_change_incident_service_risk_v1]
     required_provenance: [source_sys_id, authorizing_principal, instance_url, table_name, field_allow_list, mapping_profile, observed_at, correlation_id]
     prohibited_operations: [record_write, role_elevation, unapproved_table_discovery, unapproved_field_ingestion, browser_direct_credential_entry]
   dynatrace:

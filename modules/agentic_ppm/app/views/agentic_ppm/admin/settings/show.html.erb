@@ -28,13 +28,14 @@
         <div class="form--field-container"><%= form.text_field :credential_reference, placeholder: "secret://agentic-ppm/provider/connection" %></div>
         <div class="form--field-instructions"><%= t(:agentic_ppm_integration_credential_reference_hint) %></div>
       </div>
-      <div class="form--field">
+      <div class="form--field -required">
         <%= form.label :endpoint_url, t(:agentic_ppm_integration_endpoint_url) %>
-        <div class="form--field-container"><%= form.url_field :endpoint_url %></div>
+        <div class="form--field-container"><%= form.url_field :endpoint_url, required: true, placeholder: "https://provider.example" %></div>
       </div>
-      <div class="form--field">
+      <div class="form--field -required">
         <%= form.label :mapping_profile, t(:agentic_ppm_integration_mapping_profile) %>
-        <div class="form--field-container"><%= form.text_field :mapping_profile %></div>
+        <div class="form--field-container"><%= form.select :mapping_profile, @mapping_profiles.map { |profile| [profile.humanize, profile] }, { include_blank: true }, required: true %></div>
+        <div class="form--field-instructions"><%= t(:agentic_ppm_integration_mapping_profile_hint) %></div>
       </div>
       <div class="form--field">
         <%= form.label :authentication_mode, t(:agentic_ppm_integration_authentication_mode) %>

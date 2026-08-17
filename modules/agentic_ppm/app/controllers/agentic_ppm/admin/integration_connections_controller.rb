@@ -47,7 +47,8 @@ module AgenticPpm
       end
 
       def onboarding_metadata(policy:, authentication_mode:)
-        connection_params.slice(:endpoint_url, :mapping_profile).to_h.compact_blank.merge(
+        connection_params.slice(:endpoint_url).to_h.compact_blank.merge(
+          "mapping_profile" => connection_params[:mapping_profile].presence || policy.fetch("mapping_profiles").first,
           "authentication_mode" => authentication_mode,
           "policy_version" => policy.fetch("policy_version"),
           "allowed_sync_modes" => policy.fetch("allowed_sync_modes"),

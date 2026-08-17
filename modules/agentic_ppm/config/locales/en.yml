@@ -67,6 +67,7 @@ en:
   agentic_ppm_integration_credential_reference_hint: "Use a managed secret reference. Never enter a token, password, or client secret here."
   agentic_ppm_integration_endpoint_url: "Endpoint URL"
   agentic_ppm_integration_mapping_profile: "Mapping profile"
+  agentic_ppm_integration_mapping_profile_hint: "Select the provider-approved mapping profile. The connection remains disabled and read-only after validation."
   agentic_ppm_integration_authentication_mode: "Authentication mode"
   agentic_ppm_integration_connection_inventory: "Connection inventory"
   agentic_ppm_integration_pending_verification: "Disabled pending verification"
