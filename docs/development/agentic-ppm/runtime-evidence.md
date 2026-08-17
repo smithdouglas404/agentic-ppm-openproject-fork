@@ -21,6 +21,7 @@
 | Exact browser assets | A CI-built frontend artifact from this fork was installed with native manifest and Rails assets. Login and manifest-mapped entrypoints returned HTTP 200. | 2026-08-16 |
 | Module regressions | The private-fork isolated PostgreSQL module workflow passed after test-support load-order repair; business-rule publish and rollback coverage is included. | 2026-08-16 |
 | Native business-rule administration | Protected administrator authentication reached the project-scoped Business Rules interface with HTTP 200 and the rendered `Governed business-rule lifecycle` boundary. The interface remains unable to fabricate external visual-flow validation. | 2026-08-17 |
+| Native integration onboarding | Protected administrator authentication reached the global-admin integration onboarding interface with HTTP 200 and rendered its protected credential-reference boundary plus connection inventory. New connections are forced disabled pending authorized endpoint, mapping, and permission proof. | 2026-08-17 |
 
 ## Explicitly Unverified or Inactive
 
@@ -38,7 +39,6 @@
 | Langflow visual governance contract | Inactive | Embedding, role, validation, simulation, publication, rollback, and audit policy is defined; no Langflow service, credential, embedded editor, external validation result, or visual-flow execution proof exists. |
 | Inngest AgentKit evaluation | Native GoodJob retained | The documented decision matrix keeps Inngest AgentKit disabled because no demonstrated workflow gap or authorized service proof currently justifies a second durable workflow authority. |
 | Memgraph projection contract | Inactive | Managed labels, provenance envelope, idempotent projection, health, server-side authorization, and projection-run-scoped rollback are defined; no authorized endpoint or graph write proof exists. |
-| Native integration onboarding | Pending deployed proof | A global-admin interface registers provider metadata and protected credential references only, with all connections forced disabled pending authorized health, mapping, and permission proof. |
 | Lightweight isolated module-test path | Pending workflow proof | The hosted workflow now uses a module-specific Rails/PostgreSQL image and avoids frontend and browser setup; a completed current-branch module-suite run is still required before it is treated as verified. |
 
 ## Gate Operation
