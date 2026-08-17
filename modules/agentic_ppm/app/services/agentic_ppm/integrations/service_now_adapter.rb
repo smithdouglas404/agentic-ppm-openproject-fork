@@ -28,8 +28,12 @@ module AgenticPpm
 
       private
 
+      def policy_provider
+        "servicenow"
+      end
+
       def client
-        HttpClient.new(base_url: connection.configuration.fetch("base_url"), authorization: authorization_header)
+        HttpClient.new(base_url: endpoint_url, authorization: authorization_header)
       end
 
       def authorization_header
