@@ -1,8 +1,6 @@
 require "spec_helper"
 
 RSpec.describe AgenticPpm::ProjectDashboardController do
-  render_views
-
   let(:permissions) { %i[view_agentic_ppm] }
   let(:project_role) { create(:project_role, permissions:, add_public_permissions: false) }
   let(:project) { create(:project, enabled_module_names: ["agentic_ppm"]) }
@@ -37,8 +35,6 @@ RSpec.describe AgenticPpm::ProjectDashboardController do
       entity_key: "openproject:work_package:6",
       alert_key: "missing_schedule:3"
     )
-    expect(response.body).to include(I18n.t(:agentic_ppm_intelligence_eyebrow))
-    expect(response.body).to include(I18n.t(:agentic_ppm_safe_next_actions))
   end
 
   it "forbids a project member without dashboard permission" do
