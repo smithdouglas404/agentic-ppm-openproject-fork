@@ -47,7 +47,7 @@
           <td><strong><%= contract.fetch("name") %></strong></td>
           <td><%= contract.fetch("responsibility") %></td>
           <td><%= contract.fetch("escalation") %></td>
-          <td><%= contract.fetch("permitted_tools").join(", ") %></td>
+          <td><%= Array(contract.fetch("permitted_tools")).flat_map { |tools| tools.to_s.split(",") }.map(&:strip).join(", ") %></td>
         </tr>
       <% end %>
     </tbody>
