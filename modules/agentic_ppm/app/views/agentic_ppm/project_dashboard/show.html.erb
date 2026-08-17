@@ -1,281 +1,116 @@
 <% html_title t(:label_agentic_ppm) %>
+<% projected_count = projection_summary.values.sum %>
+<% candidate_methods = delivery_method_evidence.fetch("candidate_methods", []) %>
+<% method_evidence = delivery_method_evidence.fetch("evidence", {}) %>
+<% configured_services = capabilities.values.count { |state| state == :configured } %>
+<% attention_count = source_review_signals.size %>
 
-<h1><%= t(:label_agentic_ppm) %></h1>
+<div class="agentic-ppm-workspace">
+  <section class="agentic-ppm-hero" aria-labelledby="agentic-ppm-heading">
+    <p class="agentic-ppm-eyebrow"><%= t(:agentic_ppm_intelligence_eyebrow) %></p>
+    <h2 id="agentic-ppm-heading"><%= t(:agentic_ppm_intelligence_headline, project: project.name) %></h2>
+    <p class="agentic-ppm-hero-copy"><%= t(:agentic_ppm_intelligence_narrative) %></p>
+    <dl class="agentic-ppm-hero-metrics" aria-label="<%= t(:agentic_ppm_evidence_baseline) %>">
+      <div class="agentic-ppm-hero-metric"><dt><%= t(:agentic_ppm_projected_records) %></dt><dd><%= projected_count %></dd></div>
+      <div class="agentic-ppm-hero-metric"><dt><%= t(:agentic_ppm_relationship_records) %></dt><dd><%= relationship_evidence.size %></dd></div>
+      <div class="agentic-ppm-hero-metric"><dt><%= t(:agentic_ppm_scheduled_work_packages) %></dt><dd><%= scheduled_work_packages.size %></dd></div>
+    </dl>
+  </section>
 
-<section class="op-enterprise-banner" aria-labelledby="agentic-ppm-heading">
-  <h2 id="agentic-ppm-heading"><%= t(:agentic_ppm_project_intelligence) %></h2>
-  <p><%= t(:agentic_ppm_project_intelligence_description, project: project.name) %></p>
-  <dl class="op-card-container" aria-label="<%= t(:agentic_ppm_evidence_baseline) %>">
-    <dt><%= t(:agentic_ppm_projected_records) %></dt>
-    <dd><%= projection_summary.values.sum %></dd>
-    <dt><%= t(:agentic_ppm_relationship_records) %></dt>
-    <dd><%= relationship_evidence.size %></dd>
-    <dt><%= t(:agentic_ppm_scheduled_work_packages) %></dt>
-    <dd><%= scheduled_work_packages.size %></dd>
-  </dl>
-</section>
-
-<section class="op-card-container" aria-label="<%= t(:agentic_ppm_capability_state) %>">
-  <h3><%= t(:agentic_ppm_capability_state) %></h3>
-  <table class="generic-table" aria-label="<%= t(:agentic_ppm_service_capabilities) %>">
-    <thead>
-      <tr>
-        <th><%= t(:label_service) %></th>
-        <th><%= t(:label_status) %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% capabilities.each do |service, state| %>
-        <tr>
-          <td><%= service.to_s.humanize %></td>
-          <td><%= state == :configured ? t(:agentic_ppm_configured) : t(:agentic_ppm_not_configured) %></td>
-        </tr>
+  <div class="agentic-ppm-grid">
+    <section class="agentic-ppm-panel" aria-label="<%= t(:agentic_ppm_portfolio_pulse) %>">
+      <header class="agentic-ppm-panel-header">
+        <div>
+          <h3><%= t(:agentic_ppm_portfolio_pulse) %></h3>
+          <p><%= t(:agentic_ppm_portfolio_pulse_description) %></p>
+        </div>
+        <span class="agentic-ppm-status-pill"><%= t(:agentic_ppm_evidence_baseline) %></span>
+      </header>
+      <div class="agentic-ppm-metric-grid">
+        <div class="agentic-ppm-metric-card"><span><%= t(:agentic_ppm_delivery_method_evidence) %></span><strong><%= candidate_methods.size %></strong><small><%= candidate_methods.map(&:humanize).join(", ").presence || t(:agentic_ppm_not_available) %></small></div>
+        <div class="agentic-ppm-metric-card"><span><%= t(:agentic_ppm_source_review_signals) %></span><strong><%= attention_count %></strong><small><%= attention_count.positive? ? t(:agentic_ppm_attention_brief) : t(:agentic_ppm_no_attention_brief) %></small></div>
+        <div class="agentic-ppm-metric-card"><span><%= t(:agentic_ppm_capability_state) %></span><strong><%= configured_services %></strong><small><%= t(:agentic_ppm_configured) %> / <%= capabilities.size %></small></div>
+      </div>
+      <% if candidate_methods.any? %>
+        <div class="agentic-ppm-pulse-grid" aria-label="<%= t(:agentic_ppm_delivery_method_evidence) %>">
+          <% candidate_methods.each do |method| %>
+            <% evidence = method_evidence.fetch(method, {}) %>
+            <article class="agentic-ppm-pulse-card">
+              <h4><%= method.to_s.humanize %></h4>
+              <p><% if evidence["matched_work_packages"].present? %><%= evidence.fetch("matched_work_packages").map { |match| t(:agentic_ppm_work_package_evidence, id: match["work_package_id"], type: match["type"]) }.join(", ") %><% else %><%= t(:agentic_ppm_composite_evidence, methods: evidence.fetch("requires_all", []).map(&:humanize).join(", ")) %><% end %></p>
+            </article>
+          <% end %>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-</section>
+    </section>
 
-<section class="op-card-container" aria-label="<%= t(:agentic_ppm_delivery_method_evidence) %>">
-  <h3><%= t(:agentic_ppm_delivery_method_evidence) %></h3>
-  <p><%= t(:agentic_ppm_delivery_method_description) %></p>
-  <% candidate_methods = delivery_method_evidence.fetch("candidate_methods", []) %>
-  <% method_evidence = delivery_method_evidence.fetch("evidence", {}) %>
-  <% if candidate_methods.any? %>
-    <table class="generic-table" aria-label="<%= t(:agentic_ppm_delivery_method_evidence) %>">
-      <thead>
-        <tr>
-          <th><%= t(:agentic_ppm_delivery_method) %></th>
-          <th><%= t(:agentic_ppm_source_evidence) %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% candidate_methods.each do |method| %>
-          <% evidence = method_evidence.fetch(method, {}) %>
-          <tr>
-            <td><strong><%= method.to_s.humanize %></strong></td>
-            <td>
-              <% if evidence["matched_work_packages"].present? %>
-                <ul>
-                  <% evidence.fetch("matched_work_packages").each do |match| %>
-                    <li><%= t(:agentic_ppm_work_package_evidence, id: match["work_package_id"], type: match["type"]) %></li>
-                  <% end %>
-                </ul>
-              <% else %>
-                <%= t(:agentic_ppm_composite_evidence, methods: evidence.fetch("requires_all", []).map(&:humanize).join(", ")) %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p><%= t(:agentic_ppm_no_delivery_method_evidence) %></p>
-  <% end %>
-</section>
-
-<section class="op-card-container" aria-label="<%= t(:agentic_ppm_schedule_evidence) %>">
-  <h3><%= t(:agentic_ppm_schedule_evidence) %></h3>
-  <p><%= t(:agentic_ppm_schedule_evidence_description) %></p>
-  <% if scheduled_work_packages.any? %>
-    <table class="generic-table" aria-label="<%= t(:agentic_ppm_schedule_evidence) %>">
-      <thead>
-        <tr>
-          <th><%= t(:label_work_package) %></th>
-          <th><%= t(:label_type) %></th>
-          <th><%= t(:label_status) %></th>
-          <th><%= t(:label_start_date) %></th>
-          <th><%= t(:label_due_date) %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% scheduled_work_packages.each do |work_package| %>
-          <tr>
-            <td><%= work_package.subject %></td>
-            <td><%= work_package.type.name %></td>
-            <td><%= work_package.status.name %></td>
-            <td><%= format_date(work_package.start_date) %></td>
-            <td><%= format_date(work_package.due_date) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p><%= t(:agentic_ppm_no_schedule_evidence) %></p>
-  <% end %>
-</section>
-
-<section class="op-card-container" aria-label="Ontology evidence">
-  <h3>Ontology evidence</h3>
-  <p><%= t(:agentic_ppm_ontology_evidence_description) %></p>
-  <table class="generic-table" aria-label="Projected entity counts">
-    <thead>
-      <tr>
-        <th>Entity type</th>
-        <th>Records</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% projection_summary.sort.each do |entity_type, count| %>
-        <tr>
-          <td><%= entity_type.humanize %></td>
-          <td><%= count %></td>
-        </tr>
+    <aside class="agentic-ppm-panel" aria-label="<%= t(:agentic_ppm_attention_brief) %>">
+      <header class="agentic-ppm-panel-header">
+        <div><h3><%= t(:agentic_ppm_attention_brief) %></h3><p><%= t(:agentic_ppm_attention_brief_description) %></p></div>
+        <span class="agentic-ppm-status-pill <%= '-attention' if attention_count.positive? %>"><%= attention_count %></span>
+      </header>
+      <% if source_review_signals.any? %>
+        <ul class="agentic-ppm-attention-list">
+          <% source_review_signals.first(3).each do |signal| %>
+            <li class="agentic-ppm-attention-item"><div><strong><%= signal.fetch(:subject) %></strong><span><%= signal.fetch(:summary) %> · <%= signal.fetch(:status) %></span></div></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="agentic-ppm-empty-state"><%= t(:agentic_ppm_no_attention_brief) %></p>
       <% end %>
-    </tbody>
-  </table>
+    </aside>
+  </div>
 
-  <section aria-label="<%= t(:agentic_ppm_evidence_explorer) %>">
-    <h4><%= t(:agentic_ppm_evidence_explorer) %></h4>
-    <p><%= t(:agentic_ppm_evidence_explorer_description) %></p>
+  <section class="agentic-ppm-panel" id="agentic-ppm-evidence" aria-label="<%= t(:agentic_ppm_evidence_controls) %>">
+    <header class="agentic-ppm-panel-header"><div><h3><%= t(:agentic_ppm_evidence_controls) %></h3><p><%= t(:agentic_ppm_evidence_controls_description) %></p></div><span class="agentic-ppm-status-pill"><%= t(:agentic_ppm_evidence_explorer) %></span></header>
     <%= form_with url: project_agentic_ppm_path(project), method: :get, local: true do |form| %>
-      <p>
-        <%= form.label :relationship_type, t(:agentic_ppm_relationship_filter) %>
-        <%= form.select :relationship_type,
-                        options_for_select([[t(:agentic_ppm_all_relationships), ""]] + relationship_types.map { |type| [type.humanize, type] }, selected_relationship_type) %>
-      </p>
-      <p>
-        <%= form.label :entity_key, t(:agentic_ppm_entity_inspection) %>
-        <%= form.select :entity_key,
-                        options_for_select([[t(:agentic_ppm_select_entity), ""]] + entity_options, selected_entity_key) %>
-      </p>
-      <p>
-        <%= form.label :alert_key, t(:agentic_ppm_source_review_alert) %>
-        <%= form.select :alert_key,
-                        options_for_select([[t(:agentic_ppm_select_source_review_alert), ""]] + source_review_signal_options, selected_source_review_signal&.fetch(:key)) %>
-      </p>
-      <p>
-        <%= form.submit t(:agentic_ppm_apply_evidence_filters), class: "button -primary" %>
-        <%= link_to t(:agentic_ppm_clear_evidence_filters), project_agentic_ppm_path(project), class: "button -secondary" %>
-      </p>
+      <div class="agentic-ppm-filter-grid">
+        <div><%= form.label :relationship_type, t(:agentic_ppm_relationship_filter) %><%= form.select :relationship_type, options_for_select([[t(:agentic_ppm_all_relationships), ""]] + relationship_types.map { |type| [type.humanize, type] }, selected_relationship_type) %></div>
+        <div><%= form.label :entity_key, t(:agentic_ppm_entity_inspection) %><%= form.select :entity_key, options_for_select([[t(:agentic_ppm_select_entity), ""]] + entity_options, selected_entity_key) %></div>
+        <div><%= form.label :alert_key, t(:agentic_ppm_source_review_alert) %><%= form.select :alert_key, options_for_select([[t(:agentic_ppm_select_source_review_alert), ""]] + source_review_signal_options, selected_source_review_signal&.fetch(:key)) %></div>
+      </div>
+      <div class="agentic-ppm-filter-actions"><%= form.submit t(:agentic_ppm_apply_evidence_filters), class: "button -primary" %><%= link_to t(:agentic_ppm_clear_evidence_filters), project_agentic_ppm_path(project), class: "button -secondary" %></div>
+    <% end %>
+    <% if inspected_entity.present? %>
+      <details class="agentic-ppm-details" open><summary><%= t(:agentic_ppm_selected_entity_details) %></summary><table class="generic-table"><tbody><% inspection_attributes.each do |label, value| %><tr><th scope="row"><%= label %></th><td><%= value %></td></tr><% end %></tbody></table></details>
+    <% end %>
+    <% if relationship_evidence.any? %>
+      <details class="agentic-ppm-details" open><summary><%= t(:agentic_ppm_relationship_records) %> (<%= relationship_evidence.size %>)</summary><table class="generic-table"><thead><tr><th>Relationship</th><th>From</th><th>To</th></tr></thead><tbody><% relationship_evidence.each do |record| %><tr><td><%= record.payload["relationship_type"].to_s.humanize %></td><td><%= record.payload["from_key"] %></td><td><%= record.payload["to_key"] %></td></tr><% end %></tbody></table></details>
+    <% else %>
+      <p class="agentic-ppm-empty-state"><%= t(:agentic_ppm_no_relationship_evidence) %></p>
+    <% end %>
+    <% if selected_source_review_signal.present? %>
+      <details class="agentic-ppm-details" open><summary><%= t(:agentic_ppm_source_review_alert_details) %></summary><p><%= t(:agentic_ppm_source_review_alert_details_description) %></p><table class="generic-table"><tbody><% source_review_signal_details.each do |label, value| %><tr><th scope="row"><%= label %></th><td><%= value %></td></tr><% end %></tbody></table></details>
     <% end %>
   </section>
 
-  <% if inspected_entity.present? %>
-    <section aria-label="<%= t(:agentic_ppm_entity_inspection) %>">
-      <h4><%= t(:agentic_ppm_entity_inspection) %></h4>
-      <table class="generic-table" aria-label="<%= t(:agentic_ppm_selected_entity_details) %>">
-        <tbody>
-          <% inspection_attributes.each do |label, value| %>
-            <tr>
-              <th scope="row"><%= label %></th>
-              <td><%= value %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+  <div class="agentic-ppm-grid">
+    <section class="agentic-ppm-panel" aria-label="<%= t(:agentic_ppm_safe_next_actions) %>">
+      <header class="agentic-ppm-panel-header"><div><h3><%= t(:agentic_ppm_safe_next_actions) %></h3><p><%= t(:agentic_ppm_safe_next_actions_description) %></p></div></header>
+      <div class="agentic-ppm-quick-actions">
+        <a href="#agentic-ppm-evidence" class="agentic-ppm-action-card"><%= t(:agentic_ppm_review_evidence) %><small><%= t(:agentic_ppm_review_evidence_description) %></small></a>
+        <% if User.current.allowed_in_project?(:manage_agentic_ppm_rules, project) %><%= link_to agentic_ppm_rules_path(project), class: "agentic-ppm-action-card" do %><%= t(:agentic_ppm_open_rules) %><small><%= t(:agentic_ppm_open_rules_description) %></small><% end %><% end %>
+        <% if User.current.allowed_in_project?(:run_agentic_ppm_agents, project) %><%= link_to project_agentic_ppm_conversations_path(project), class: "agentic-ppm-action-card" do %><%= t(:agentic_ppm_open_conversations) %><small><%= t(:agentic_ppm_open_conversations_description) %></small><% end %><% end %>
+      </div>
     </section>
-  <% end %>
+    <aside class="agentic-ppm-panel" aria-label="<%= t(:agentic_ppm_capability_state) %>">
+      <header class="agentic-ppm-panel-header"><div><h3><%= t(:agentic_ppm_capability_state) %></h3><p><%= t(:agentic_ppm_service_capabilities) %></p></div></header>
+      <ul class="agentic-ppm-service-list"><% capabilities.each do |service, state| %><li><span><%= service.to_s.humanize %></span><span class="agentic-ppm-status-pill <%= '-unavailable' unless state == :configured %>"><%= state == :configured ? t(:agentic_ppm_configured) : t(:agentic_ppm_not_configured) %></span></li><% end %></ul>
+    </aside>
+  </div>
 
-  <% if relationship_evidence.any? %>
-    <h4>Relationship evidence</h4>
-    <table class="generic-table" aria-label="Projected relationships">
-      <thead>
-        <tr>
-          <th>Relationship</th>
-          <th>From</th>
-          <th>To</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% relationship_evidence.each do |record| %>
-          <tr>
-            <td><%= record.payload["relationship_type"].to_s.humanize %></td>
-            <td><%= record.payload["from_key"] %></td>
-            <td><%= record.payload["to_key"] %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p><%= t(:agentic_ppm_no_relationship_evidence) %></p>
-  <% end %>
-</section>
-
-<section class="op-card-container" aria-label="<%= t(:agentic_ppm_source_review_signals) %>">
-  <h3><%= t(:agentic_ppm_source_review_signals) %></h3>
-  <p><%= t(:agentic_ppm_source_review_signals_description) %></p>
-  <% if source_review_signals.any? %>
-    <table class="generic-table" aria-label="<%= t(:agentic_ppm_source_review_signals) %>">
-      <thead>
-        <tr>
-          <th><%= t(:agentic_ppm_review_signal) %></th>
-          <th><%= t(:label_work_package) %></th>
-          <th><%= t(:label_due_date) %></th>
-          <th><%= t(:label_status) %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% source_review_signals.each do |signal| %>
-          <tr>
-            <td><%= signal.fetch(:summary) %></td>
-            <td><%= signal.fetch(:subject) %></td>
-            <td><%= signal[:due_date].present? ? format_date(signal.fetch(:due_date)) : t(:agentic_ppm_not_available) %></td>
-            <td><%= signal.fetch(:status) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p><%= t(:agentic_ppm_no_source_review_signals) %></p>
-  <% end %>
-
-  <% if selected_source_review_signal.present? %>
-    <section aria-label="<%= t(:agentic_ppm_source_review_alert_details) %>">
-      <h4><%= t(:agentic_ppm_source_review_alert_details) %></h4>
-      <p><%= t(:agentic_ppm_source_review_alert_details_description) %></p>
-      <table class="generic-table" aria-label="<%= t(:agentic_ppm_source_review_alert_details) %>">
-        <tbody>
-          <% source_review_signal_details.each do |label, value| %>
-            <tr>
-              <th scope="row"><%= label %></th>
-              <td><%= value %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </section>
-  <% end %>
-</section>
-
-<section class="op-card-container" aria-label="<%= t(:agentic_ppm_specialists) %>">
-  <h3><%= t(:agentic_ppm_specialists) %></h3>
-  <p><%= t(:agentic_ppm_specialists_description) %></p>
-  <table class="generic-table" aria-label="<%= t(:agentic_ppm_specialist_contracts) %>">
-    <thead>
-      <tr>
-        <th><%= t(:agentic_ppm_specialist) %></th>
-        <th><%= t(:agentic_ppm_responsibility) %></th>
-        <th><%= t(:agentic_ppm_escalation) %></th>
-        <th><%= t(:label_status) %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% specialist_contracts.each do |contract| %>
-        <tr>
-          <td><strong><%= contract.fetch("name") %></strong></td>
-          <td><%= contract.fetch("responsibility") %></td>
-          <td><%= contract.fetch("escalation") %></td>
-          <td><%= t(:agentic_ppm_not_configured) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</section>
-
-<% if User.current.allowed_in_project?(:run_agentic_ppm_agents, project) %>
-  <section class="op-card-container" aria-label="<%= t(:agentic_ppm_direct_conversations) %>">
-    <h3><%= t(:agentic_ppm_direct_conversations) %></h3>
-    <p><%= t(:agentic_ppm_direct_conversations_description) %></p>
-    <%= form_with url: project_agentic_ppm_agent_runs_path(project), method: :post do |form| %>
-      <p>
-        <%= form.label :specialist, t(:agentic_ppm_specialist) %>
-        <%= form.select :specialist, options_for_select(interactive_specialist_options) %>
-      </p>
-      <p>
-        <%= form.label :prompt, t(:agentic_ppm_prompt) %>
-        <%= form.text_area :prompt, required: true, rows: 4 %>
-      </p>
-      <%= form.submit t(:agentic_ppm_send_to_specialist), class: "button -primary" %>
+  <section class="agentic-ppm-panel" aria-label="<%= t(:agentic_ppm_ontology_evidence_description) %>">
+    <header class="agentic-ppm-panel-header"><div><h3><%= t(:agentic_ppm_schedule_evidence) %></h3><p><%= t(:agentic_ppm_schedule_evidence_description) %></p></div></header>
+    <% if scheduled_work_packages.any? %>
+      <details class="agentic-ppm-details"><summary><%= t(:agentic_ppm_schedule_evidence) %> (<%= scheduled_work_packages.size %>)</summary><table class="generic-table"><thead><tr><th><%= t(:label_work_package) %></th><th><%= t(:label_type) %></th><th><%= t(:label_status) %></th><th><%= t(:label_start_date) %></th><th><%= t(:label_due_date) %></th></tr></thead><tbody><% scheduled_work_packages.each do |work_package| %><tr><td><%= work_package.subject %></td><td><%= work_package.type.name %></td><td><%= work_package.status.name %></td><td><%= format_date(work_package.start_date) %></td><td><%= format_date(work_package.due_date) %></td></tr><% end %></tbody></table></details>
+    <% else %>
+      <p class="agentic-ppm-empty-state"><%= t(:agentic_ppm_no_schedule_evidence) %></p>
     <% end %>
+    <details class="agentic-ppm-details"><summary><%= t(:agentic_ppm_projected_records) %> (<%= projected_count %>)</summary><table class="generic-table"><thead><tr><th>Entity type</th><th>Records</th></tr></thead><tbody><% projection_summary.sort.each do |entity_type, count| %><tr><td><%= entity_type.humanize %></td><td><%= count %></td></tr><% end %></tbody></table></details>
   </section>
-<% end %>
+
+  <section class="agentic-ppm-panel" aria-label="<%= t(:agentic_ppm_specialists) %>">
+    <header class="agentic-ppm-panel-header"><div><h3><%= t(:agentic_ppm_specialists) %></h3><p><%= t(:agentic_ppm_specialists_description) %></p></div><span class="agentic-ppm-status-pill -unavailable"><%= t(:agentic_ppm_not_configured) %></span></header>
+    <ul class="agentic-ppm-specialist-grid"><% specialist_contracts.each do |contract| %><li><strong><%= contract.fetch("name") %></strong><span><%= contract.fetch("responsibility") %></span><span><%= t(:agentic_ppm_escalation) %>: <%= contract.fetch("escalation") %></span></li><% end %></ul>
+  </section>
+</div>
