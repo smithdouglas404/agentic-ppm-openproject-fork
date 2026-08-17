@@ -1,0 +1,88 @@
+<% html_title t(:agentic_ppm_conversation_workspace) %>
+
+<h1><%= t(:agentic_ppm_conversation_workspace) %></h1>
+
+<section class="op-enterprise-banner" aria-labelledby="agentic-ppm-conversation-heading">
+  <h2 id="agentic-ppm-conversation-heading"><%= t(:agentic_ppm_conversation_workspace) %></h2>
+  <p><%= t(:agentic_ppm_conversation_workspace_description, project: project.name) %></p>
+  <% if runtime_configured %>
+    <p><strong><%= t(:agentic_ppm_agent_runtime_configured) %></strong></p>
+  <% else %>
+    <p><strong><%= t(:agentic_ppm_agent_runtime_unavailable) %></strong></p>
+  <% end %>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_direct_conversations) %>">
+  <h3><%= t(:agentic_ppm_start_conversation) %></h3>
+  <p><%= t(:agentic_ppm_direct_conversations_description) %></p>
+  <%= form_with url: project_agentic_ppm_agent_runs_path(project), method: :post do |form| %>
+    <%= hidden_field_tag :return_to, "conversations" %>
+    <p>
+      <%= form.label :specialist, t(:agentic_ppm_specialist) %>
+      <%= form.select :specialist, options_for_select(specialist_contracts.map { |contract| [contract.fetch("name"), contract.fetch("invocation_key")] }) %>
+    </p>
+    <p>
+      <%= form.label :prompt, t(:agentic_ppm_prompt) %>
+      <%= form.text_area :prompt, required: true, rows: 5, aria: { describedby: "agentic-ppm-conversation-boundary" } %>
+    </p>
+    <p id="agentic-ppm-conversation-boundary"><%= t(:agentic_ppm_conversation_boundary) %></p>
+    <%= form.submit t(:agentic_ppm_send_to_specialist), class: "button -primary" %>
+  <% end %>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_pmo_vro_contracts) %>">
+  <h3><%= t(:agentic_ppm_pmo_vro_contracts) %></h3>
+  <table class="generic-table" aria-label="<%= t(:agentic_ppm_pmo_vro_contracts) %>">
+    <thead>
+      <tr>
+        <th><%= t(:agentic_ppm_specialist) %></th>
+        <th><%= t(:agentic_ppm_responsibility) %></th>
+        <th><%= t(:agentic_ppm_escalation) %></th>
+        <th><%= t(:agentic_ppm_allowed_tools) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% specialist_contracts.each do |contract| %>
+        <tr>
+          <td><strong><%= contract.fetch("name") %></strong></td>
+          <td><%= contract.fetch("responsibility") %></td>
+          <td><%= contract.fetch("escalation") %></td>
+          <td><%= contract.fetch("permitted_tools").join(", ") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_conversation_history) %>">
+  <h3><%= t(:agentic_ppm_conversation_history) %></h3>
+  <p><%= t(:agentic_ppm_conversation_history_description) %></p>
+  <% if agent_runs.any? %>
+    <table class="generic-table" aria-label="<%= t(:agentic_ppm_conversation_history) %>">
+      <thead>
+        <tr>
+          <th><%= t(:agentic_ppm_specialist) %></th>
+          <th><%= t(:agentic_ppm_prompt) %></th>
+          <th><%= t(:label_status) %></th>
+          <th><%= t(:agentic_ppm_requested_by) %></th>
+          <th><%= t(:label_updated_on) %></th>
+          <th><%= t(:agentic_ppm_agent_response) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% agent_runs.each do |run| %>
+          <tr>
+            <td><%= run.specialist %></td>
+            <td><%= run.prompt %></td>
+            <td><%= run.state.humanize %></td>
+            <td><%= run.user.name %></td>
+            <td><%= format_time(run.updated_at) %></td>
+            <td><%= run.response.presence || t(:agentic_ppm_no_agent_response) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p><%= t(:agentic_ppm_no_conversation_history) %></p>
+  <% end %>
+</section>

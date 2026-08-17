@@ -13,7 +13,10 @@ module OpenProject
                      { "agentic_ppm/project_dashboard" => %i[show] },
                      permissible_on: :project
           permission :run_agentic_ppm_agents,
-                     { "agentic_ppm/agent_runs" => %i[create] },
+                     {
+                       "agentic_ppm/agent_runs" => %i[create],
+                       "agentic_ppm/agent_conversations" => %i[show]
+                     },
                      permissible_on: :project
           permission :manage_agentic_ppm,
                      { "agentic_ppm/project_settings" => %i[show update] },
@@ -47,6 +50,14 @@ module OpenProject
              caption: :agentic_ppm_business_rules,
              icon: "note",
              if: ->(project) { project.module_enabled?(:agentic_ppm) && User.current.allowed_in_project?(:manage_agentic_ppm_rules, project) }
+
+        menu :project_menu,
+             :agentic_ppm_conversations,
+             { controller: "/agentic_ppm/agent_conversations", action: :show },
+             after: :agentic_ppm,
+             caption: :agentic_ppm_conversation_workspace,
+             icon: "chat",
+             if: ->(project) { project.module_enabled?(:agentic_ppm) && User.current.allowed_in_project?(:run_agentic_ppm_agents, project) }
 
         menu :admin_menu,
              :agentic_ppm,

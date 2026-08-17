@@ -11,7 +11,15 @@ module AgenticPpm
       ).call
 
       flash[:notice] = result.available ? I18n.t(:agentic_ppm_agent_request_queued) : I18n.t(:agentic_ppm_agent_runtime_unavailable)
-      redirect_to project_agentic_ppm_path(@project)
+      redirect_to redirect_destination
+    end
+
+    private
+
+    def redirect_destination
+      return project_agentic_ppm_conversations_path(@project) if params[:return_to] == "conversations"
+
+      project_agentic_ppm_path(@project)
     end
   end
 end
