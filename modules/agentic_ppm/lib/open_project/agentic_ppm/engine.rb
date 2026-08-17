@@ -19,7 +19,7 @@ module OpenProject
                      { "agentic_ppm/project_settings" => %i[show update] },
                      permissible_on: :project
           permission :manage_agentic_ppm_rules,
-                     { "agentic_ppm/rules" => %i[index create update publish rollback] },
+                     { "agentic_ppm/rules" => %i[index create update transition] },
                      permissible_on: :project
           permission :manage_agentic_ppm_integrations,
                      { "agentic_ppm/integrations" => %i[index create update sync] },
@@ -37,6 +37,14 @@ module OpenProject
              icon: "op-boards",
              if: ->(project) { project.module_enabled?(:agentic_ppm) }
 
+        menu :project_menu,
+             :agentic_ppm_rules,
+             { controller: "/agentic_ppm/rules", action: :index },
+             after: :agentic_ppm,
+             caption: :agentic_ppm_business_rules,
+             icon: "op-work-package",
+             if: ->(project) { project.module_enabled?(:agentic_ppm) && User.current.allowed_in_project?(:manage_agentic_ppm_rules, project) }
+
         menu :admin_menu,
              :agentic_ppm,
              { controller: "/agentic_ppm/admin/settings", action: :show },
@@ -44,6 +52,8 @@ module OpenProject
              caption: :label_agentic_ppm,
              if: -> { User.current.admin? }
       end
+
+      patches %i[Project]
     end
   end
 end
