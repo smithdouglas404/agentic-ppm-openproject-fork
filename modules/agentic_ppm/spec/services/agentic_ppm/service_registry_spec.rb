@@ -24,7 +24,16 @@ RSpec.describe AgenticPpm::ServiceRegistry do
   describe ".specialists" do
     it "provides the required specialist names" do
       expect(described_class.specialists).to contain_exactly(
-        "PMO", "VRO", "OKR/KPI", "OCM", "Governance", "FinOps", "TMO", "Business Planning"
+        "PMO Agent", "VRO Agent", "OKR/KPI Agent", "OCM Agent", "Governance Agent", "FinOps Agent", "TMO Agent", "Business Planning Agent"
+      )
+    end
+  end
+
+  describe ".interactive_specialist_options" do
+    it "keeps exact display names separate from supported inactive-runtime invocation keys" do
+      expect(described_class.interactive_specialist_options).to contain_exactly(
+        ["PMO Agent", "PMO"],
+        ["VRO Agent", "VRO"]
       )
     end
   end

@@ -18,7 +18,8 @@ module AgenticPpm
              locals: {
                project: @project,
                capabilities: AgenticPpm::ServiceRegistry.capability_states,
-               specialists: AgenticPpm::ServiceRegistry.specialists,
+               specialist_contracts: AgenticPpm::ServiceRegistry.specialist_contracts,
+               interactive_specialist_options: AgenticPpm::ServiceRegistry.interactive_specialist_options,
                projection_summary: projection_records.group(:entity_type).count,
                relationship_evidence: projection_records.where(entity_type: "relationship").order(updated_at: :desc).limit(12),
                delivery_method_evidence: project_projection&.payload&.fetch("delivery_method_evidence", {}) || {},

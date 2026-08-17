@@ -150,11 +150,26 @@
 <section class="op-card-container" aria-label="<%= t(:agentic_ppm_specialists) %>">
   <h3><%= t(:agentic_ppm_specialists) %></h3>
   <p><%= t(:agentic_ppm_specialists_description) %></p>
-  <ul>
-    <% specialists.each do |specialist| %>
-      <li><%= specialist %></li>
-    <% end %>
-  </ul>
+  <table class="generic-table" aria-label="<%= t(:agentic_ppm_specialist_contracts) %>">
+    <thead>
+      <tr>
+        <th><%= t(:agentic_ppm_specialist) %></th>
+        <th><%= t(:agentic_ppm_responsibility) %></th>
+        <th><%= t(:agentic_ppm_escalation) %></th>
+        <th><%= t(:label_status) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% specialist_contracts.each do |contract| %>
+        <tr>
+          <td><strong><%= contract.fetch("name") %></strong></td>
+          <td><%= contract.fetch("responsibility") %></td>
+          <td><%= contract.fetch("escalation") %></td>
+          <td><%= t(:agentic_ppm_not_configured) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </section>
 
 <% if User.current.allowed_in_project?(:run_agentic_ppm_agents, project) %>
@@ -164,7 +179,7 @@
     <%= form_with url: project_agentic_ppm_agent_runs_path(project), method: :post do |form| %>
       <p>
         <%= form.label :specialist, t(:agentic_ppm_specialist) %>
-        <%= form.select :specialist, options_for_select(["PMO", "VRO"]) %>
+        <%= form.select :specialist, options_for_select(interactive_specialist_options) %>
       </p>
       <p>
         <%= form.label :prompt, t(:agentic_ppm_prompt) %>

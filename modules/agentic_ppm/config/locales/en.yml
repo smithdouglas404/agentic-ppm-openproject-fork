@@ -30,3 +30,6 @@ en:
   agentic_ppm_schedule_evidence: "Schedule evidence"
   agentic_ppm_schedule_evidence_description: "Dates below are source records from OpenProject work packages; they are not generated predictions."
   agentic_ppm_no_schedule_evidence: "No scheduled work packages are currently available."
+  agentic_ppm_specialist_contracts: "Specialist agent contracts"
+  agentic_ppm_responsibility: "Responsibility"
+  agentic_ppm_escalation: "Escalation boundary"
