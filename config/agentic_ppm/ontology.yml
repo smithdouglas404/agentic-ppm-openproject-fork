@@ -7,6 +7,40 @@ source_systems:
       - work_package
       - membership
       - workflow_state
+canonical_entity_types:
+  - entity_type: project
+    system_of_record: openproject
+    current_projection: supported
+  - entity_type: work_package
+    system_of_record: openproject
+    current_projection: supported
+  - entity_type: milestone
+    system_of_record: openproject
+    current_projection: supported_when_work_package_type_is_milestone
+  - entity_type: person
+    system_of_record: openproject
+    current_projection: supported_as_actor
+  - entity_type: risk
+    system_of_record: governed_external_or_native_risk_module
+    current_projection: planned
+  - entity_type: decision
+    system_of_record: governed_external_or_native_governance_module
+    current_projection: planned
+  - entity_type: objective
+    system_of_record: authorized_okr_kpi_module
+    current_projection: planned
+  - entity_type: kpi
+    system_of_record: authorized_okr_kpi_module
+    current_projection: planned
+  - entity_type: cost
+    system_of_record: authorized_finops_source
+    current_projection: planned
+  - entity_type: service
+    system_of_record: authorized_servicenow_or_dynatrace_source
+    current_projection: planned
+  - entity_type: change
+    system_of_record: authorized_servicenow_or_ocm_source
+    current_projection: planned
 entity_mappings:
   project:
     source: Project
@@ -54,6 +88,54 @@ relationship_mappings:
     from: work_package
     to: work_package
     source: Relation.relation_type
+canonical_relationship_types:
+  - relationship_type: contains
+    from: project
+    to: work_package
+    current_projection: supported
+  - relationship_type: depends_on
+    from: work_package
+    to: work_package
+    current_projection: supported_when_native_relation_is_mapped
+  - relationship_type: assigned_to
+    from: work_package
+    to: person
+    current_projection: supported_as_actor
+  - relationship_type: governed_by
+    from: project
+    to: decision
+    current_projection: planned
+  - relationship_type: contributes_to
+    from: work_package
+    to: objective
+    current_projection: planned
+  - relationship_type: funds
+    from: cost
+    to: project
+    current_projection: planned
+  - relationship_type: impacts
+    from: change
+    to: service
+    current_projection: planned
+  - relationship_type: mitigates
+    from: work_package
+    to: risk
+    current_projection: planned
+fact_provenance:
+  required_attributes:
+    - confidence
+    - observed_at
+    - source_system
+    - source_record
+    - mapping_profile
+    - authorization_provenance
+  current_openproject_projection:
+    source_system: openproject
+    source_record: source_type_and_source_id
+    mapping_profile: config/agentic_ppm/ontology.yml
+    authorization_provenance: project_scoped_openproject_permission
+    observed_at: persisted
+    confidence: source_asserted
 delivery_method_evidence:
   version: 1
   principle: "Delivery method is inferred from configured ontology mappings and source evidence, never hard-coded from a project label."
