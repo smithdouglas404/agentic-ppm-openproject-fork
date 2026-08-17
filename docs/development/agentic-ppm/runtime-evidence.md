@@ -32,6 +32,7 @@
 | Model provider policy | Inactive | Claude-preferred but provider-neutral policy configuration exists; no provider credential, invocation, model selection, fallback, or evaluation evidence is activated yet. |
 | Letta specialist template contract | Inactive | Exact agent identities, scopes, tool and action policy, memory constraints, and trace fields are defined; no Letta service, credential, agent provisioning, or invocation proof exists. |
 | Mem0 memory governance contract | Inactive | Scope, extraction, retrieval, retention, deletion, citation, and observability policy is defined; no memory backend connection, write, retrieval, or deletion proof exists. |
+| Langflow visual governance contract | Inactive | Embedding, role, validation, simulation, publication, rollback, and audit policy is defined; no Langflow service, credential, embedded editor, external validation result, or visual-flow execution proof exists. |
 | Native business-rule administration | Pending deployed proof | A project-scoped permission-gated native rule surface uses the lifecycle service, but no external visual-flow validation is fabricated; render it and prove a safe draft or rollback path before treating it as verified. |
 | Projection lifecycle completion and failure provenance | Pending deployed proof | The native job now marks successful records as projected and stores bounded known-project error provenance before re-raising; run both safe success and controlled failure tests before treating it as verified. |
 

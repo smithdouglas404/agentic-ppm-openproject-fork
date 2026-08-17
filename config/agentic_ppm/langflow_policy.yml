@@ -1,0 +1,53 @@
+version: 1
+activation: requires_authorized_service_and_credentials
+embedding:
+  allowed_context: project_scoped_business_rule_administration
+  flow_reference: immutable_versioned_external_identifier
+  prohibit_embedded_secret_values: true
+  prohibit_direct_openproject_transaction_execution: true
+authorization:
+  draft_and_edit_permission: manage_agentic_ppm_rules
+  submit_permission: manage_agentic_ppm_rules
+  approve_permission: manage_agentic_ppm_rules
+  publish_permission: manage_agentic_ppm_rules
+  rollback_permission: manage_agentic_ppm_rules
+  project_scope_required: true
+lifecycle:
+  draft: editable
+  submitted: awaiting_governed_approval
+  approved: requires_validated_versioned_flow_reference
+  published: requires_approved_state_and_validated_external_result
+  rolled_back: preserve_publication_evidence
+validation:
+  require_external_validation_result: true
+  required_result_fields:
+    - valid
+    - flow_reference
+    - flow_version
+    - validated_at
+    - validator_identity
+    - policy_version
+  simulation:
+    required_before_publish: true
+    source_data: authorized_sanitized_or_synthetic_only
+    require_simulation_trace: true
+publication:
+  require_native_lifecycle_service: true
+  require_audit_record: true
+  require_openproject_authorization_recheck: true
+  prohibit_visual_flow_permission_bypass: true
+rollback:
+  require_native_lifecycle_service: true
+  require_previous_published_evidence: true
+  require_audit_record: true
+audit:
+  required_fields:
+    - project_id
+    - rule_id
+    - actor_id
+    - state_transition
+    - flow_reference
+    - flow_version
+    - validation_result_reference
+    - authorization_decision
+    - observed_at
