@@ -7,7 +7,7 @@ RSpec.describe AgenticPpm::DashboardEvidenceService do
       closed
     end
   end
-  WorkPackage = Struct.new(:id, :subject, :due_date, :status, keyword_init: true)
+  WorkPackage = Struct.new(:id, :subject, :start_date, :due_date, :status, keyword_init: true)
 
   let(:project) { instance_double(Project) }
   let(:observed_at) { Time.zone.parse("2026-08-17 12:00:00") }
@@ -27,8 +27,13 @@ RSpec.describe AgenticPpm::DashboardEvidenceService do
       entity_key: "openproject:work_package:2",
       projection_records: records,
       scheduled_work_packages: [
-        WorkPackage.new(id: 2, subject: "Release readiness", due_date: Date.new(2026, 8, 12), status: Status.new("In progress", false)),
-        WorkPackage.new(id: 3, subject: "Completed work", due_date: Date.new(2026, 8, 10), status: Status.new("Closed", true))
+        WorkPackage.new(id: 2, subject: "Release readiness", start_date: Date.new(2026, 8, 1), due_date: Date.new(2026, 8, 12), status: Status.new("In progress", false)),
+        WorkPackage.new(id: 3, subject: "Completed work", start_date: Date.new(2026, 8, 1), due_date: Date.new(2026, 8, 10), status: Status.new("Closed", true))
+      ],
+      reviewable_work_packages: [
+        WorkPackage.new(id: 2, subject: "Release readiness", start_date: Date.new(2026, 8, 1), due_date: Date.new(2026, 8, 12), status: Status.new("In progress", false)),
+        WorkPackage.new(id: 3, subject: "Incomplete plan", start_date: nil, due_date: nil, status: Status.new("New", false)),
+        WorkPackage.new(id: 4, subject: "Completed work", start_date: nil, due_date: nil, status: Status.new("Closed", true))
       ]
     ).call
 
@@ -42,20 +47,44 @@ RSpec.describe AgenticPpm::DashboardEvidenceService do
     expect(result[:source_review_signals]).to include(
       hash_including(kind: "past_due_schedule", work_package_id: 2, due_date: Date.new(2026, 8, 12))
     )
+    expect(result[:source_review_signals]).to include(
+      hash_including(kind: "missing_schedule", work_package_id: 3, detail: "Missing start date and due date")
+    )
   end
 
-  it "does not treat an unknown filter or entity key as selected evidence" do
+  it "returns only a selected source-review alert drill-down that maps to current source evidence" do
+    result = described_class.new(
+      project: project,
+      alert_key: "missing_schedule:3",
+      projection_records: records,
+      scheduled_work_packages: [],
+      reviewable_work_packages: [
+        WorkPackage.new(id: 3, subject: "Incomplete plan", start_date: nil, due_date: nil, status: Status.new("New", false))
+      ]
+    ).call
+
+    expect(result[:selected_source_review_signal]).to include(kind: "missing_schedule", work_package_id: 3)
+    expect(result[:source_review_signal_details]).to include(
+      "Source work package" => "Incomplete plan",
+      "Source detail" => "Missing start date and due date"
+    )
+  end
+
+  it "does not treat unknown filter, entity, or source-review alert keys as selected evidence" do
     result = described_class.new(
       project: project,
       relationship_type: "blocks",
       entity_key: "openproject:work_package:999",
+      alert_key: "missing_schedule:999",
       projection_records: records,
-      scheduled_work_packages: []
+      scheduled_work_packages: [],
+      reviewable_work_packages: []
     ).call
 
     expect(result[:selected_relationship_type]).to be_nil
     expect(result[:relationship_evidence].size).to eq(2)
     expect(result[:selected_entity_key]).to be_nil
     expect(result[:inspected_entity]).to be_nil
+    expect(result[:selected_source_review_signal]).to be_nil
   end
 end

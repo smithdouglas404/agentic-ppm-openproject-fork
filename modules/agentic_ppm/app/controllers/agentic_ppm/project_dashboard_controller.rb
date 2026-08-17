@@ -16,7 +16,8 @@ module AgenticPpm
       dashboard_evidence = AgenticPpm::DashboardEvidenceService.new(
         project: @project,
         relationship_type: params[:relationship_type],
-        entity_key: params[:entity_key]
+        entity_key: params[:entity_key],
+        alert_key: params[:alert_key]
       ).call
 
       render :show,
@@ -34,6 +35,9 @@ module AgenticPpm
                inspected_entity: dashboard_evidence.fetch(:inspected_entity),
                inspection_attributes: dashboard_evidence.fetch(:inspection_attributes),
                source_review_signals: dashboard_evidence.fetch(:source_review_signals),
+               source_review_signal_options: dashboard_evidence.fetch(:source_review_signal_options),
+               selected_source_review_signal: dashboard_evidence.fetch(:selected_source_review_signal),
+               source_review_signal_details: dashboard_evidence.fetch(:source_review_signal_details),
                delivery_method_evidence: project_projection&.payload&.fetch("delivery_method_evidence", {}) || {},
                scheduled_work_packages: dashboard_evidence.fetch(:scheduled_work_packages)
              }
