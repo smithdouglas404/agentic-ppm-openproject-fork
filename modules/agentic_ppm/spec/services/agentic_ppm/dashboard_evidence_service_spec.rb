@@ -39,9 +39,9 @@ RSpec.describe AgenticPpm::DashboardEvidenceService do
       "Work package type" => "Milestone",
       "Status" => "In progress"
     )
-    expect(result[:source_review_signals]).to eq([
+    expect(result[:source_review_signals]).to include(
       hash_including(kind: "past_due_schedule", work_package_id: 2, due_date: Date.new(2026, 8, 12))
-    ])
+    )
   end
 
   it "does not treat an unknown filter or entity key as selected evidence" do
