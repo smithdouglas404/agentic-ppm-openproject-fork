@@ -59,3 +59,4 @@ en:
   agentic_ppm_integration_pending_verification: "Disabled pending verification"
   agentic_ppm_integration_no_connections: "No governed integration connections have been registered."
   agentic_ppm_integration_connection_saved_disabled: "Connection metadata saved. The connection remains disabled pending verification."
+  agentic_ppm_integration_unsupported_authentication_mode: "The selected authentication mode is not approved by this provider policy."

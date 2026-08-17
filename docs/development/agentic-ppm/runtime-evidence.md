@@ -32,6 +32,7 @@
 | Langflow visual business-user workflow | Inactive | Deploy and authorize Langflow, then demonstrate governed draft, validation, approval, publish, and rollback through OpenProject permissions. |
 | Inngest AgentKit runtime | Inactive | Adapter contract and CI coverage exist, but no external service is enabled. |
 | Jira, ServiceNow, Dynatrace, and FinOps data | Inactive | Obtain authorized connector credentials and demonstrate ingestion, mapping, provenance, and revocation behavior. |
+| Policy-backed Jira and ServiceNow onboarding | Pending isolated and deployed proof | The source validates approved authentication modes and persists read-only activation, policy version, allowed sync modes, and required provenance metadata; run the isolated module suite and prove the protected onboarding route before treating it as verified. |
 | Canonical ontology contract | Pending deployed proof | The configuration now defines required entity, relationship, and fact-provenance vocabulary; inspect the native configuration through an isolated test or running route before treating the contract as verified. |
 | Model provider policy | Inactive | Claude-preferred but provider-neutral policy configuration exists; no provider credential, invocation, model selection, fallback, or evaluation evidence is activated yet. |
 | Letta specialist template contract | Inactive | Exact agent identities, scopes, tool and action policy, memory constraints, and trace fields are defined; no Letta service, credential, agent provisioning, or invocation proof exists. |

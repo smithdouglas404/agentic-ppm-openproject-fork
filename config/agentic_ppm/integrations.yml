@@ -3,10 +3,65 @@ providers:
     source_entities: [project, issue, epic, sprint, release, dependency]
     ontology_targets: [project, work_package, milestone, relationship]
     credential_reference_environment: JIRA_AGENTIC_CREDENTIAL_REFERENCE
+    policy_version: 1
+    activation: disabled_by_default
+    allowed_sync_modes: [read_only]
+    authorization:
+      preferred_mode: oauth_2_3lo
+      allowed_modes: [oauth_2_3lo]
+      required_scopes: [read:jira-work, read:board-scope:jira-software, read:project:jira, read:sprint:jira-software, read:issue-details:jira, read:jql:jira]
+      project_permission_requirement: browse_projects_and_view_board_or_issue
+    endpoints:
+      boards: /rest/agile/1.0/board
+      issues: /rest/api/3/search/jql
+      sprints: /rest/agile/1.0/sprint/{sprintId}
+      sprint_issues: /rest/software/1.0/sprint/{sprintId}/issue
+    field_allow_lists:
+      issue: [id, key, summary, issuetype, status, parent, sprint, closedSprints, epic, fixVersions, issuelinks, updated]
+      sprint: [id, name, state, startDate, endDate, completeDate, originBoardId, goal]
+      board: [id, name, type, location]
+    pagination:
+      maximum_page_size: 100
+      cursor_or_offset_checkpoint: required
+    mapping:
+      issue: work_package
+      epic: work_package
+      sprint: milestone
+      fix_version: milestone
+      issue_link: relationship
+    required_provenance: [source_id, source_key, authorizing_account, project_scope, requested_scopes, mapping_profile, observed_at, correlation_id]
+    prohibited_operations: [issue_write, webhook_registration, scope_expansion, browser_direct_credential_entry]
   servicenow:
     source_entities: [demand, change_request, incident, service_offering, risk]
     ontology_targets: [demand, change, incident, service, risk]
     credential_reference_environment: SERVICENOW_AGENTIC_CREDENTIAL_REFERENCE
+    policy_version: 1
+    activation: disabled_by_default
+    allowed_sync_modes: [read_only]
+    authorization:
+      preferred_mode: oauth_2_0
+      allowed_modes: [oauth_2_0, approved_instance_api_token]
+      required_role_evidence: explicit_table_read_authorization
+    endpoints:
+      table: /api/now/table/{table}
+      change_management: /api/now/change
+    table_allow_list: [demand, change_request, incident, cmdb_ci_service, sn_risk_risk]
+    field_allow_lists:
+      common: [sys_id, number, short_description, state, sys_updated_on, assignment_group, assigned_to]
+      change_request: [sys_id, number, short_description, state, sys_updated_on, assignment_group, assigned_to, start_date, end_date, risk, cmdb_ci]
+      incident: [sys_id, number, short_description, state, sys_updated_on, assignment_group, assigned_to, priority, impact, urgency, cmdb_ci]
+    pagination:
+      maximum_page_size: 100
+      sysparm_limit_required: true
+      checkpoint_by: sys_updated_on_and_sys_id
+    mapping:
+      demand: demand
+      change_request: change
+      incident: incident
+      cmdb_ci_service: service
+      sn_risk_risk: risk
+    required_provenance: [source_sys_id, authorizing_principal, instance_url, table_name, field_allow_list, mapping_profile, observed_at, correlation_id]
+    prohibited_operations: [record_write, role_elevation, unapproved_table_discovery, unapproved_field_ingestion, browser_direct_credential_entry]
   dynatrace:
     source_entities: [service, problem, sla, deployment]
     ontology_targets: [service, incident, risk, relationship]
