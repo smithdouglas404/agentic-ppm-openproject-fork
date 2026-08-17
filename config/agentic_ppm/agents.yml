@@ -1,4 +1,25 @@
 version: 1
+letta_contract:
+  activation: requires_authorized_service_and_credentials
+  identity_template: "agentic_ppm/%{invocation_key}"
+  agent_state_scope: project_user_agent
+  conversation_scope: project_and_authorized_user
+  memory_scope: workspace_project_user_agent_policy
+  tool_policy: deny_by_default_then_permitted_tools
+  project_permission_requirement: view_agentic_ppm_and_run_agentic_ppm_agents
+  trace_requirements:
+    - openproject_user_id
+    - project_id
+    - agent_invocation_key
+    - authorization_decision
+    - evidence_references
+    - model_provider_trace
+    - memory_retrieval_trace
+  prohibited_capabilities:
+    - direct_openproject_write_without_governed_workflow
+    - cross_project_evidence_access_without_permission
+    - raw_connector_credential_access
+    - unscoped_memory_retrieval
 agents:
   - invocation_key: PMO
     name: PMO Agent
@@ -9,6 +30,7 @@ agents:
     escalation: Escalate unresolved cross-project delivery risk to the authorized PMO owner.
     permission_boundary: view_agentic_ppm and run_agentic_ppm_agents in the current project.
     interactive: true
+    letta_template: agentic_ppm/PMO
   - invocation_key: VRO
     name: VRO Agent
     responsibility: Value-realization hypothesis tracking and benefits-evidence synthesis.
@@ -18,6 +40,7 @@ agents:
     escalation: Escalate material benefit variance to the value-realization owner.
     permission_boundary: view_agentic_ppm and run_agentic_ppm_agents in the current project.
     interactive: true
+    letta_template: agentic_ppm/VRO
   - invocation_key: OKR_KPI
     name: OKR/KPI Agent
     responsibility: Objective, key-result, and indicator evidence interpretation.
@@ -27,6 +50,7 @@ agents:
     escalation: Escalate missing measurement ownership to the authorized objective owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
     interactive: false
+    letta_template: agentic_ppm/OKR_KPI
   - invocation_key: OCM
     name: OCM Agent
     responsibility: Organizational-change readiness, adoption, and stakeholder-evidence interpretation.
@@ -36,6 +60,7 @@ agents:
     escalation: Escalate material adoption risk to the authorized change owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
     interactive: false
+    letta_template: agentic_ppm/OCM
   - invocation_key: GOVERNANCE
     name: Governance Agent
     responsibility: Decision, control, policy, and approval-evidence interpretation.
@@ -45,6 +70,7 @@ agents:
     escalation: Escalate control or decision exceptions to the authorized governance owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
     interactive: false
+    letta_template: agentic_ppm/GOVERNANCE
   - invocation_key: FINOPS
     name: FinOps Agent
     responsibility: Cost, funding, allocation, and financial-evidence interpretation.
@@ -54,6 +80,7 @@ agents:
     escalation: Escalate material funding or cost variance to the authorized finance owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
     interactive: false
+    letta_template: agentic_ppm/FINOPS
   - invocation_key: TMO
     name: TMO Agent
     responsibility: Transformation sequencing, cross-workstream, and dependency-evidence interpretation.
@@ -63,6 +90,7 @@ agents:
     escalation: Escalate material transformation blockers to the authorized transformation owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
     interactive: false
+    letta_template: agentic_ppm/TMO
   - invocation_key: BUSINESS_PLANNING
     name: Business Planning Agent
     responsibility: Business-plan assumption, capacity, and strategic-alignment evidence interpretation.
@@ -72,3 +100,4 @@ agents:
     escalation: Escalate conflicting planning assumptions to the authorized planning owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
     interactive: false
+    letta_template: agentic_ppm/BUSINESS_PLANNING

@@ -30,6 +30,7 @@
 | Jira, ServiceNow, Dynatrace, and FinOps data | Inactive | Obtain authorized connector credentials and demonstrate ingestion, mapping, provenance, and revocation behavior. |
 | Canonical ontology contract | Pending deployed proof | The configuration now defines required entity, relationship, and fact-provenance vocabulary; inspect the native configuration through an isolated test or running route before treating the contract as verified. |
 | Model provider policy | Inactive | Claude-preferred but provider-neutral policy configuration exists; no provider credential, invocation, model selection, fallback, or evaluation evidence is activated yet. |
+| Letta specialist template contract | Inactive | Exact agent identities, scopes, tool and action policy, memory constraints, and trace fields are defined; no Letta service, credential, agent provisioning, or invocation proof exists. |
 | Native business-rule administration | Pending deployed proof | A project-scoped permission-gated native rule surface uses the lifecycle service, but no external visual-flow validation is fabricated; render it and prove a safe draft or rollback path before treating it as verified. |
 | Projection lifecycle completion and failure provenance | Pending deployed proof | The native job now marks successful records as projected and stores bounded known-project error provenance before re-raising; run both safe success and controlled failure tests before treating it as verified. |
 
