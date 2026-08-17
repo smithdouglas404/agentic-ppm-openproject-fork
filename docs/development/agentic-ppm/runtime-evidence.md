@@ -13,6 +13,7 @@
 | Persistent schema | The isolated PostgreSQL database contains the native Agentic PPM projection, agent-run, integration-connection, sync-run, and business-rule tables. | 2026-08-16 |
 | Source-to-ontology projection | The representative project projection persisted project, work-package, actor, and relationship records, including native source identities. | 2026-08-16 |
 | Projection lifecycle success state | Direct isolated-database inspection showed 26 representative projection records in `projected` state after the native `agentic_ppm:run_projection` task completed. | 2026-08-17 |
+| Projection lifecycle failure provenance | A controlled in-process projection-service failure was re-raised and persisted as a `failed` record with phase `project_projection_job` and bounded `RuntimeError` provenance; direct database inspection confirmed the record. | 2026-08-17 |
 | Concurrent delivery methods | Project projection payload contains configuration-derived `waterfall`, `scaled_agile`, and `hybrid` evidence based on a native Milestone and Sprint work package. | 2026-08-16 |
 | Schedules and dependency | Representative work packages hold native start/due dates. Projection record `openproject:relationship:follows:6:2` preserves the `follows` relation from the Sprint to the stage-gate Milestone. | 2026-08-16 |
 | Stable representative source identity | The seed persisted configured source-key markers and reconciled the legacy Sprint record as superseded; direct database inspection showed one active marker-backed Sprint source record. | 2026-08-16 |
@@ -37,7 +38,6 @@
 | Langflow visual governance contract | Inactive | Embedding, role, validation, simulation, publication, rollback, and audit policy is defined; no Langflow service, credential, embedded editor, external validation result, or visual-flow execution proof exists. |
 | Inngest AgentKit evaluation | Native GoodJob retained | The documented decision matrix keeps Inngest AgentKit disabled because no demonstrated workflow gap or authorized service proof currently justifies a second durable workflow authority. |
 | Lightweight isolated module-test path | Pending workflow proof | The hosted workflow now uses a module-specific Rails/PostgreSQL image and avoids frontend and browser setup; a completed current-branch module-suite run is still required before it is treated as verified. |
-| Projection lifecycle completion and failure provenance | Pending deployed proof | The native job now marks successful records as projected and stores bounded known-project error provenance before re-raising; run both safe success and controlled failure tests before treating it as verified. |
 
 ## Gate Operation
 
