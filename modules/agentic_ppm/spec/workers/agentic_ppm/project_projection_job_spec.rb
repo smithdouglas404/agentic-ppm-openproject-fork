@@ -14,7 +14,7 @@ RSpec.describe AgenticPpm::ProjectProjectionJob do
   end
 
   it "marks records for the idempotency key as projected after every source projection succeeds" do
-    allow(ProjectionRecord).to receive(:where).with(project:, idempotency_key:).and_return(projection_relation)
+    allow(AgenticPpm::ProjectionRecord).to receive(:where).with(project:, idempotency_key:).and_return(projection_relation)
     expect(projection_relation).to receive(:update_all).with(hash_including(projection_state: "projected"))
 
     described_class.new.perform(42, idempotency_key:)
@@ -22,7 +22,7 @@ RSpec.describe AgenticPpm::ProjectProjectionJob do
 
   it "persists bounded failure provenance for a known project and re-raises the source failure" do
     allow(AgenticPpm::Ontology::ProjectProjectionService).to receive(:new).and_raise(StandardError, "source projection failed")
-    expect(ProjectionRecord).to receive(:upsert).with(
+    expect(AgenticPpm::ProjectionRecord).to receive(:upsert).with(
       hash_including(
         project_id: 42,
         entity_key: "openproject:projection_failure:42",
