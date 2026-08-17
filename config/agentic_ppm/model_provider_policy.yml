@@ -1,0 +1,55 @@
+version: 1
+default_provider_preference: anthropic
+provider_order:
+  - anthropic
+  - openai_compatible
+  - local_approved
+providers:
+  anthropic:
+    status: requires_authorized_activation
+    model_policy: installation_or_workspace_approved
+    preferred_for: governed_tool_reasoning
+    data_handling: transmit_only_authorized_normalized_context
+  openai_compatible:
+    status: requires_authorized_activation
+    model_policy: installation_or_workspace_approved
+    preferred_for: approved_provider_fallback
+    data_handling: transmit_only_authorized_normalized_context
+  local_approved:
+    status: requires_authorized_activation
+    model_policy: installation_or_workspace_approved
+    preferred_for: constrained_or_residency_required_workloads
+    data_handling: retain_only_under_approved_residency_policy
+normalization_contract:
+  required_request_fields:
+    - normalized_messages
+    - approved_tool_definitions
+    - authorization_context
+    - evidence_references
+    - correlation_id
+    - token_limit
+  prohibited_request_fields:
+    - raw_unscoped_workspace_memory
+    - unapproved_connector_credentials
+    - user_session_secrets
+fallback_policy:
+  permitted_only_when:
+    - provider_is_approved_for_workspace
+    - authorization_policy_allows_destination
+    - evidence_context_can_be_transmitted_under_data_policy
+  never_fallback_for:
+    - write_or_transactional_actions
+    - unknown_provider_errors_without_trace
+    - evidence_context_without_authorization_provenance
+token_policy:
+  maximum_prompt_tokens: workspace_approved
+  maximum_completion_tokens: workspace_approved
+  reject_over_limit_requests: true
+evaluation_contract:
+  required_dimensions:
+    - evidence_citation_completeness
+    - permission_boundary_adherence
+    - tool_policy_adherence
+    - groundedness
+    - transparent_degraded_behavior
+  release_gate: required_before_provider_activation

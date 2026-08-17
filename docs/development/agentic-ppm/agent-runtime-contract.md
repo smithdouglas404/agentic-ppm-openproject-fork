@@ -27,6 +27,8 @@ The eight Agentic PPM specialists will be created as **persistent Letta agents**
 
 The reasoning model is an OpenProject-native, configuration-driven provider contract. Claude may be selected as the initial provider because it supports tool use and capable reasoning, but no agent code, prompt, memory record, workflow, or database migration may assume a Claude-specific identifier or request format.
 
+`config/agentic_ppm/model_provider_policy.yml` is the source of truth for provider preference, activation state, normalized request fields, data handling, fallback eligibility, token-policy enforcement, and evaluation gates. Its default preference is `anthropic`, but all providers remain inactive until workspace or installation approval, credential provisioning, data-policy review, and evaluation evidence are complete.
+
 | Contract responsibility | Requirement |
 | --- | --- |
 | Provider selection | Workspace or installation configuration, constrained by approved providers and model policies |

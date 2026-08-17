@@ -29,6 +29,7 @@
 | Inngest AgentKit runtime | Inactive | Adapter contract and CI coverage exist, but no external service is enabled. |
 | Jira, ServiceNow, Dynatrace, and FinOps data | Inactive | Obtain authorized connector credentials and demonstrate ingestion, mapping, provenance, and revocation behavior. |
 | Canonical ontology contract | Pending deployed proof | The configuration now defines required entity, relationship, and fact-provenance vocabulary; inspect the native configuration through an isolated test or running route before treating the contract as verified. |
+| Model provider policy | Inactive | Claude-preferred but provider-neutral policy configuration exists; no provider credential, invocation, model selection, fallback, or evaluation evidence is activated yet. |
 | Projection lifecycle completion and failure provenance | Pending deployed proof | The native job now marks successful records as projected and stores bounded known-project error provenance before re-raising; run both safe success and controlled failure tests before treating it as verified. |
 
 ## Gate Operation
