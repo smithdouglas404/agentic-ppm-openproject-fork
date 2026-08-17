@@ -42,7 +42,7 @@ module OpenProject
              { controller: "/agentic_ppm/rules", action: :index },
              after: :agentic_ppm,
              caption: :agentic_ppm_business_rules,
-             icon: "op-work-package",
+             icon: "note",
              if: ->(project) { project.module_enabled?(:agentic_ppm) && User.current.allowed_in_project?(:manage_agentic_ppm_rules, project) }
 
         menu :admin_menu,

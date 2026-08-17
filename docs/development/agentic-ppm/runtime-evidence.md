@@ -6,7 +6,7 @@
 
 | Capability | Evidence | Recorded |
 |---|---|---|
-| Native OpenProject runtime | The fork starts through `agentic-ppm-openproject.service` on the Cloud Computer with a one-worker production Puma profile. Local configured-host login returned HTTP 200 after each recorded restart. | 2026-08-16 |
+| Native OpenProject runtime | The fork starts through `agentic-ppm-openproject.service` on the Cloud Computer using Puma single mode with one minimum and two maximum threads. Local configured-host login returned HTTP 200 after the recovery restart. | 2026-08-17 |
 | Native Agentic PPM module | The project-scoped dashboard route returned HTTP 200 for the representative project through authenticated administrator and controlled project-member sessions. | 2026-08-16 |
 | Native dashboard evidence panels | Authenticated administrator rendering returned HTTP 200 with delivery-method, schedule, relationship/dependency, and capability panels. The page displayed the projected Sprint source record and the native `follows` relationship. | 2026-08-16 |
 | Native eight-agent contract | Authenticated dashboard rendering returned HTTP 200 with PMO Agent, VRO Agent, OKR/KPI Agent, OCM Agent, Governance Agent, FinOps Agent, TMO Agent, and Business Planning Agent. Each contract declares scoped inputs, permitted tools, outputs, escalation, and inactive-runtime boundaries. | 2026-08-17 |
@@ -18,6 +18,7 @@
 | Least-privilege access | Non-admin `agentic-ppm-member` holds only `view_agentic_ppm`, project, and work-package view permissions. The member reached the dashboard, while agent controls were withheld. | 2026-08-16 |
 | Exact browser assets | A CI-built frontend artifact from this fork was installed with native manifest and Rails assets. Login and manifest-mapped entrypoints returned HTTP 200. | 2026-08-16 |
 | Module regressions | The private-fork isolated PostgreSQL module workflow passed after test-support load-order repair; business-rule publish and rollback coverage is included. | 2026-08-16 |
+| Native business-rule administration | Protected administrator authentication reached the project-scoped Business Rules interface with HTTP 200 and the rendered `Governed business-rule lifecycle` boundary. The interface remains unable to fabricate external visual-flow validation. | 2026-08-17 |
 
 ## Explicitly Unverified or Inactive
 
@@ -35,7 +36,6 @@
 | Langflow visual governance contract | Inactive | Embedding, role, validation, simulation, publication, rollback, and audit policy is defined; no Langflow service, credential, embedded editor, external validation result, or visual-flow execution proof exists. |
 | Inngest AgentKit evaluation | Native GoodJob retained | The documented decision matrix keeps Inngest AgentKit disabled because no demonstrated workflow gap or authorized service proof currently justifies a second durable workflow authority. |
 | Lightweight isolated module-test path | Pending workflow proof | The hosted workflow now uses a module-specific Rails/PostgreSQL image and avoids frontend and browser setup; a completed current-branch module-suite run is still required before it is treated as verified. |
-| Native business-rule administration | Pending deployed proof | A project-scoped permission-gated native rule surface uses the lifecycle service, but no external visual-flow validation is fabricated; render it and prove a safe draft or rollback path before treating it as verified. |
 | Projection lifecycle completion and failure provenance | Pending deployed proof | The native job now marks successful records as projected and stores bounded known-project error provenance before re-raising; run both safe success and controlled failure tests before treating it as verified. |
 
 ## Gate Operation

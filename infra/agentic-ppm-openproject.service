@@ -16,9 +16,9 @@ Environment=BUNDLE_GEMFILE=/home/ubuntu/agentic-ppm-openproject/Gemfile
 Environment=BUNDLE_WITHOUT=development:production
 Environment=HOST=0.0.0.0
 Environment=PORT=3002
-Environment=OPENPROJECT_WEB__WORKERS=1
-Environment=OPENPROJECT_WEB__MIN_THREADS=1
-Environment=OPENPROJECT_WEB__MAX_THREADS=2
+Environment=OPENPROJECT_WEB__WORKERS=0
+Environment=RAILS_MIN_THREADS=1
+Environment=RAILS_MAX_THREADS=2
 ExecStart=/opt/ruby-4.0.6/bin/bundle exec rails server
 Restart=on-failure
 RestartSec=15

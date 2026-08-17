@@ -30,7 +30,7 @@ module AgenticPpm
         flash[:error] = @rule.errors.full_messages.to_sentence
       end
 
-      redirect_to project_agentic_ppm_rules_path(@project)
+      redirect_to agentic_ppm_rules_path(@project)
     end
 
     def transition
@@ -39,7 +39,7 @@ module AgenticPpm
     rescue ArgumentError => error
       flash[:error] = error.message
     ensure
-      redirect_to project_agentic_ppm_rules_path(@project)
+      redirect_to agentic_ppm_rules_path(@project)
     end
 
     private

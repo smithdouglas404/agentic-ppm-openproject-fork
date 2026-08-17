@@ -10,7 +10,7 @@
 
 <section class="op-card-container" aria-label="<%= t(:agentic_ppm_create_rule) %>">
   <h2><%= t(:agentic_ppm_create_rule) %></h2>
-  <%= form_with model: @new_rule, url: project_agentic_ppm_rules_path(@project), method: :post do |form| %>
+  <%= form_with model: @new_rule, url: agentic_ppm_rules_path(@project), method: :post do |form| %>
     <% if @new_rule.errors.any? %>
       <div class="op-toast -error"><%= @new_rule.errors.full_messages.to_sentence %></div>
     <% end %>
@@ -52,7 +52,7 @@
             <td><%= rule.visual_flow_reference.presence || t(:label_none) %></td>
             <td>
               <% AgenticPpm::Rules::LifecycleService::TRANSITIONS.fetch(rule.state).each do |target_state| %>
-                <%= button_to t(:agentic_ppm_transition_to, state: target_state.humanize), transition_project_agentic_ppm_rule_path(@project, rule), params: { target_state: target_state }, class: "button -small" %>
+                <%= button_to t(:agentic_ppm_transition_to, state: target_state.humanize), transition_agentic_ppm_rule_path(@project, rule), params: { target_state: target_state }, class: "button -small" %>
               <% end %>
             </td>
           </tr>
