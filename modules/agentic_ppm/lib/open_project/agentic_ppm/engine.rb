@@ -56,7 +56,7 @@ module OpenProject
              { controller: "/agentic_ppm/agent_conversations", action: :show },
              after: :agentic_ppm,
              caption: :agentic_ppm_conversation_workspace,
-             icon: "chat",
+             icon: "note",
              if: ->(project) { project.module_enabled?(:agentic_ppm) && User.current.allowed_in_project?(:run_agentic_ppm_agents, project) }
 
         menu :admin_menu,
