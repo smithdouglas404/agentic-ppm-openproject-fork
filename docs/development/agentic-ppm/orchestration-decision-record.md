@@ -39,6 +39,19 @@ AgentKit does **not** replace Letta as the persistent specialist-agent runtime i
 
 The current baseline remains: **Letta for persistent specialists; Mem0 for scoped memory; Memgraph for semantic graph intelligence; OpenProject-native services for authorization and workflow policy; Langflow for governed visual composition; and Inngest only if a durable event-workflow evaluation supports it.**
 
+## Current Evaluation and Decision
+
+| Criterion | Native OpenProject ActiveJob / GoodJob | Inngest AgentKit | Current decision |
+| --- | --- | --- | --- |
+| Projection retries and idempotency | Native project projection uses a GoodJob-backed `ProjectProjectionJob`, explicit idempotency keys, and persisted projection records. | No authorized endpoint or service proof is available. | Retain native job ownership. |
+| Project authorization and transactional policy | Runs inside the OpenProject module boundary and reuses project permissions and native records. | Would require a policy gateway and external tenancy proof. | Do not move authority out of OpenProject. |
+| Human approval and business-rule lifecycle | Native rule transitions provide draft, submission, approval, publication, rollback, and audit-facing records. | Durable waits may be valuable only for a future demonstrated long-running flow. | Keep native lifecycle authoritative. |
+| Event fan-out and multi-agent coordination | No demonstrated production flow currently exceeds native job and governed handoff capabilities. | Potentially appropriate for a proven multi-service, resumable network. | Defer until a documented gap exists. |
+| Scheduling | Business-critical cron is prohibited; native idempotent entry points and GoodJob are available. | Could add schedules only after service, tenancy, and data-residency proof. | Adapter remains disabled. |
+| Observability | Native agent runs, projection records, job failures, and evidence ledger provide the current trace boundary. | Requires a unified trace contract and authorized service proof. | Do not split workflow history yet. |
+
+> **Decision:** GoodJob remains the current durable workflow mechanism for native Agentic PPM projections and governed OpenProject work. The disabled `inngest_agentkit` adapter remains an intentional integration boundary, not an active scheduler. Re-evaluate only when a named workflow requires a durable external wait, resumable human approval, multi-service branching, or multi-agent network that cannot be expressed safely in the native boundary.
+
 ## References
 
 [1] [Langflow documentation](https://docs.langflow.org/)
