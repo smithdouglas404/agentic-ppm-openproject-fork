@@ -106,7 +106,7 @@
 
 <section class="op-card-container" aria-label="Ontology evidence">
   <h3>Ontology evidence</h3>
-  <p>Source-backed records projected from this OpenProject project.</p>
+  <p><%= t(:agentic_ppm_ontology_evidence_description) %></p>
   <table class="generic-table" aria-label="Projected entity counts">
     <thead>
       <tr>
@@ -123,6 +123,43 @@
       <% end %>
     </tbody>
   </table>
+
+  <section aria-label="<%= t(:agentic_ppm_evidence_explorer) %>">
+    <h4><%= t(:agentic_ppm_evidence_explorer) %></h4>
+    <p><%= t(:agentic_ppm_evidence_explorer_description) %></p>
+    <%= form_with url: project_agentic_ppm_path(project), method: :get, local: true do |form| %>
+      <p>
+        <%= form.label :relationship_type, t(:agentic_ppm_relationship_filter) %>
+        <%= form.select :relationship_type,
+                        options_for_select([[t(:agentic_ppm_all_relationships), ""]] + relationship_types.map { |type| [type.humanize, type] }, selected_relationship_type) %>
+      </p>
+      <p>
+        <%= form.label :entity_key, t(:agentic_ppm_entity_inspection) %>
+        <%= form.select :entity_key,
+                        options_for_select([[t(:agentic_ppm_select_entity), ""]] + entity_options, selected_entity_key) %>
+      </p>
+      <p>
+        <%= form.submit t(:agentic_ppm_apply_evidence_filters), class: "button -primary" %>
+        <%= link_to t(:agentic_ppm_clear_evidence_filters), project_agentic_ppm_path(project), class: "button -secondary" %>
+      </p>
+    <% end %>
+  </section>
+
+  <% if inspected_entity.present? %>
+    <section aria-label="<%= t(:agentic_ppm_entity_inspection) %>">
+      <h4><%= t(:agentic_ppm_entity_inspection) %></h4>
+      <table class="generic-table" aria-label="<%= t(:agentic_ppm_selected_entity_details) %>">
+        <tbody>
+          <% inspection_attributes.each do |label, value| %>
+            <tr>
+              <th scope="row"><%= label %></th>
+              <td><%= value %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+  <% end %>
 
   <% if relationship_evidence.any? %>
     <h4>Relationship evidence</h4>
@@ -144,6 +181,37 @@
         <% end %>
       </tbody>
     </table>
+  <% else %>
+    <p><%= t(:agentic_ppm_no_relationship_evidence) %></p>
+  <% end %>
+</section>
+
+<section class="op-card-container" aria-label="<%= t(:agentic_ppm_source_review_signals) %>">
+  <h3><%= t(:agentic_ppm_source_review_signals) %></h3>
+  <p><%= t(:agentic_ppm_source_review_signals_description) %></p>
+  <% if source_review_signals.any? %>
+    <table class="generic-table" aria-label="<%= t(:agentic_ppm_source_review_signals) %>">
+      <thead>
+        <tr>
+          <th><%= t(:agentic_ppm_review_signal) %></th>
+          <th><%= t(:label_work_package) %></th>
+          <th><%= t(:label_due_date) %></th>
+          <th><%= t(:label_status) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% source_review_signals.each do |signal| %>
+          <tr>
+            <td><%= t(:agentic_ppm_past_due_schedule_signal) if signal.fetch(:kind) == "past_due_schedule" %></td>
+            <td><%= signal.fetch(:subject) %></td>
+            <td><%= format_date(signal.fetch(:due_date)) %></td>
+            <td><%= signal.fetch(:status) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p><%= t(:agentic_ppm_no_source_review_signals) %></p>
   <% end %>
 </section>
 

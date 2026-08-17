@@ -13,6 +13,11 @@ module AgenticPpm
         source_type: "openproject",
         source_id: @project.id
       )
+      dashboard_evidence = AgenticPpm::DashboardEvidenceService.new(
+        project: @project,
+        relationship_type: params[:relationship_type],
+        entity_key: params[:entity_key]
+      ).call
 
       render :show,
              locals: {
@@ -20,14 +25,17 @@ module AgenticPpm
                capabilities: AgenticPpm::ServiceRegistry.capability_states,
                specialist_contracts: AgenticPpm::ServiceRegistry.specialist_contracts,
                interactive_specialist_options: AgenticPpm::ServiceRegistry.interactive_specialist_options,
-               projection_summary: projection_records.group(:entity_type).count,
-               relationship_evidence: projection_records.where(entity_type: "relationship").order(updated_at: :desc).limit(12),
+               projection_summary: dashboard_evidence.fetch(:projection_summary),
+               relationship_types: dashboard_evidence.fetch(:relationship_types),
+               selected_relationship_type: dashboard_evidence.fetch(:selected_relationship_type),
+               relationship_evidence: dashboard_evidence.fetch(:relationship_evidence),
+               entity_options: dashboard_evidence.fetch(:entity_options),
+               selected_entity_key: dashboard_evidence.fetch(:selected_entity_key),
+               inspected_entity: dashboard_evidence.fetch(:inspected_entity),
+               inspection_attributes: dashboard_evidence.fetch(:inspection_attributes),
+               source_review_signals: dashboard_evidence.fetch(:source_review_signals),
                delivery_method_evidence: project_projection&.payload&.fetch("delivery_method_evidence", {}) || {},
-               scheduled_work_packages: @project.work_packages
-                                               .where.not(start_date: nil)
-                                               .includes(:type, :status)
-                                               .order(:start_date, :id)
-                                               .limit(12)
+               scheduled_work_packages: dashboard_evidence.fetch(:scheduled_work_packages)
              }
     end
   end
