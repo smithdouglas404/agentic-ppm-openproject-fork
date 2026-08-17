@@ -13,6 +13,7 @@
 | Source-to-ontology projection | The representative project projection persisted project, work-package, actor, and relationship records, including native source identities. | 2026-08-16 |
 | Concurrent delivery methods | Project projection payload contains configuration-derived `waterfall`, `scaled_agile`, and `hybrid` evidence based on a native Milestone and Sprint work package. | 2026-08-16 |
 | Schedules and dependency | Representative work packages hold native start/due dates. Projection record `openproject:relationship:follows:6:2` preserves the `follows` relation from the Sprint to the stage-gate Milestone. | 2026-08-16 |
+| Stable representative source identity | The seed persisted configured source-key markers and reconciled the legacy Sprint record as superseded; direct database inspection showed one active marker-backed Sprint source record. | 2026-08-16 |
 | Least-privilege access | Non-admin `agentic-ppm-member` holds only `view_agentic_ppm`, project, and work-package view permissions. The member reached the dashboard, while agent controls were withheld. | 2026-08-16 |
 | Exact browser assets | A CI-built frontend artifact from this fork was installed with native manifest and Rails assets. Login and manifest-mapped entrypoints returned HTTP 200. | 2026-08-16 |
 | Module regressions | The private-fork isolated PostgreSQL module workflow passed after test-support load-order repair; business-rule publish and rollback coverage is included. | 2026-08-16 |
@@ -26,7 +27,6 @@
 | Langflow visual business-user workflow | Inactive | Deploy and authorize Langflow, then demonstrate governed draft, validation, approval, publish, and rollback through OpenProject permissions. |
 | Inngest AgentKit runtime | Inactive | Adapter contract and CI coverage exist, but no external service is enabled. |
 | Jira, ServiceNow, Dynatrace, and FinOps data | Inactive | Obtain authorized connector credentials and demonstrate ingestion, mapping, provenance, and revocation behavior. |
-| Stable representative-seed identity | Pending deployed proof | The seed now writes configured work-package keys into controlled descriptions and reconciles the known legacy Sprint subject; rerun and inspect the Cloud Computer records before treating it as verified. |
 
 ## Gate Operation
 
