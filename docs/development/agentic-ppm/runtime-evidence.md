@@ -9,6 +9,7 @@
 | Native OpenProject runtime | The fork starts through `agentic-ppm-openproject.service` on the Cloud Computer with a one-worker production Puma profile. Local configured-host login returned HTTP 200 after each recorded restart. | 2026-08-16 |
 | Native Agentic PPM module | The project-scoped dashboard route returned HTTP 200 for the representative project through authenticated administrator and controlled project-member sessions. | 2026-08-16 |
 | Native dashboard evidence panels | Authenticated administrator rendering returned HTTP 200 with delivery-method, schedule, relationship/dependency, and capability panels. The page displayed the projected Sprint source record and the native `follows` relationship. | 2026-08-16 |
+| Native eight-agent contract | Authenticated dashboard rendering returned HTTP 200 with PMO Agent, VRO Agent, OKR/KPI Agent, OCM Agent, Governance Agent, FinOps Agent, TMO Agent, and Business Planning Agent. Each contract declares scoped inputs, permitted tools, outputs, escalation, and inactive-runtime boundaries. | 2026-08-17 |
 | Persistent schema | The isolated PostgreSQL database contains the native Agentic PPM projection, agent-run, integration-connection, sync-run, and business-rule tables. | 2026-08-16 |
 | Source-to-ontology projection | The representative project projection persisted project, work-package, actor, and relationship records, including native source identities. | 2026-08-16 |
 | Concurrent delivery methods | Project projection payload contains configuration-derived `waterfall`, `scaled_agile`, and `hybrid` evidence based on a native Milestone and Sprint work package. | 2026-08-16 |
@@ -27,7 +28,6 @@
 | Langflow visual business-user workflow | Inactive | Deploy and authorize Langflow, then demonstrate governed draft, validation, approval, publish, and rollback through OpenProject permissions. |
 | Inngest AgentKit runtime | Inactive | Adapter contract and CI coverage exist, but no external service is enabled. |
 | Jira, ServiceNow, Dynatrace, and FinOps data | Inactive | Obtain authorized connector credentials and demonstrate ingestion, mapping, provenance, and revocation behavior. |
-| Native eight-agent contract | Pending deployed proof | Exact specialist names, responsibilities, scopes, outputs, escalations, and inactive-runtime boundaries are configuration-driven; render the OpenProject dashboard before treating the presentation as verified. |
 
 ## Gate Operation
 

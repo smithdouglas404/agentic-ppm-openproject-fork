@@ -4,6 +4,7 @@ agents:
     name: PMO Agent
     responsibility: Portfolio delivery oversight, dependency awareness, and decision-readiness synthesis.
     scoped_inputs: Project work packages, milestones, schedules, relationships, and approved portfolio evidence.
+    permitted_tools: read_project_evidence, read_dependency_relationships, record_audited_agent_run
     outputs: Evidence-cited delivery posture, dependency signals, and escalation-ready portfolio summaries.
     escalation: Escalate unresolved cross-project delivery risk to the authorized PMO owner.
     permission_boundary: view_agentic_ppm and run_agentic_ppm_agents in the current project.
@@ -12,6 +13,7 @@ agents:
     name: VRO Agent
     responsibility: Value-realization hypothesis tracking and benefits-evidence synthesis.
     scoped_inputs: Approved benefit hypotheses, milestones, outcome evidence, and delivery status.
+    permitted_tools: read_project_evidence, read_value_evidence, record_audited_agent_run
     outputs: Evidence-cited value posture and benefit-realization questions for accountable owners.
     escalation: Escalate material benefit variance to the value-realization owner.
     permission_boundary: view_agentic_ppm and run_agentic_ppm_agents in the current project.
@@ -20,6 +22,7 @@ agents:
     name: OKR/KPI Agent
     responsibility: Objective, key-result, and indicator evidence interpretation.
     scoped_inputs: Authorized objectives, KPIs, measures, and linked work-package evidence.
+    permitted_tools: read_project_evidence, read_objective_evidence, record_audited_agent_run
     outputs: Traceable objective-contribution and KPI-evidence summaries.
     escalation: Escalate missing measurement ownership to the authorized objective owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
@@ -28,6 +31,7 @@ agents:
     name: OCM Agent
     responsibility: Organizational-change readiness, adoption, and stakeholder-evidence interpretation.
     scoped_inputs: Approved change impacts, readiness work, stakeholder evidence, and milestones.
+    permitted_tools: read_project_evidence, read_change_evidence, record_audited_agent_run
     outputs: Evidence-cited readiness posture and change-risk follow-up questions.
     escalation: Escalate material adoption risk to the authorized change owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
@@ -36,6 +40,7 @@ agents:
     name: Governance Agent
     responsibility: Decision, control, policy, and approval-evidence interpretation.
     scoped_inputs: Authorized governance records, controls, decisions, and policy references.
+    permitted_tools: read_project_evidence, read_governance_evidence, record_audited_agent_run
     outputs: Evidence-cited governance posture and approval-readiness questions.
     escalation: Escalate control or decision exceptions to the authorized governance owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
@@ -44,6 +49,7 @@ agents:
     name: FinOps Agent
     responsibility: Cost, funding, allocation, and financial-evidence interpretation.
     scoped_inputs: Authorized cost, funding, allocation, and delivery evidence.
+    permitted_tools: read_project_evidence, read_financial_evidence, record_audited_agent_run
     outputs: Evidence-cited financial posture and accountable-finance follow-up questions.
     escalation: Escalate material funding or cost variance to the authorized finance owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
@@ -52,6 +58,7 @@ agents:
     name: TMO Agent
     responsibility: Transformation sequencing, cross-workstream, and dependency-evidence interpretation.
     scoped_inputs: Transformation work packages, milestones, dependencies, and approved outcome evidence.
+    permitted_tools: read_project_evidence, read_dependency_relationships, record_audited_agent_run
     outputs: Evidence-cited transformation sequencing posture and escalation-ready dependencies.
     escalation: Escalate material transformation blockers to the authorized transformation owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
@@ -60,6 +67,7 @@ agents:
     name: Business Planning Agent
     responsibility: Business-plan assumption, capacity, and strategic-alignment evidence interpretation.
     scoped_inputs: Authorized planning assumptions, capacity evidence, objectives, and delivery records.
+    permitted_tools: read_project_evidence, read_planning_evidence, record_audited_agent_run
     outputs: Evidence-cited planning posture and accountable owner follow-up questions.
     escalation: Escalate conflicting planning assumptions to the authorized planning owner.
     permission_boundary: view_agentic_ppm in the current project; future invocation requires explicit policy approval.
