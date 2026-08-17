@@ -156,6 +156,17 @@ setup_tests() {
 	wait_for_background
 }
 
+setup_agentic_ppm_tests() {
+	echo "Preparing isolated Agentic PPM module-test environment..."
+	execute_quiet "mkdir -p spec/support/runtime-logs/"
+	execute_quiet "cp docker/ci/database.yml config/"
+	create_db_cluster
+
+	execute "gem install bundler --no-document"
+	execute "BUNDLE_JOBS=8 bundle install --quiet && bundle clean --force"
+	backend_stuff
+}
+
 run_units() {
 	shopt -s extglob globstar nullglob
 	reset_dbs
@@ -199,11 +210,16 @@ run_all() {
 	cleanup
 }
 
-export -f cleanup execute execute_quiet run_psql create_db_cluster reset_dbs setup_tests setup_hocuspocus start_hocuspocus backend_stuff frontend_stuff run_units run_agentic_ppm_specs run_features run_all
+export -f cleanup execute execute_quiet run_psql create_db_cluster reset_dbs setup_tests setup_agentic_ppm_tests setup_hocuspocus start_hocuspocus backend_stuff frontend_stuff run_units run_agentic_ppm_specs run_features run_all
 
 if [ "$1" == "setup-tests" ]; then
 	shift
 	setup_tests
+fi
+
+if [ "$1" == "setup-agentic-ppm-tests" ]; then
+	shift
+	setup_agentic_ppm_tests
 fi
 
 if [ "$1" == "run-units" ]; then
