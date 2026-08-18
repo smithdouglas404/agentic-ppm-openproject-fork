@@ -73,6 +73,8 @@ RSpec.describe AgenticPpm::AgentRunsController do
   it "defines project-scoped list and detail contracts with trace fields" do
     source = File.read(Rails.root.join("modules/agentic_ppm/app/controllers/agentic_ppm/agent_runs_controller.rb"))
     expect(source).to include("AgenticPpm::AgentRun.where(project: @project)")
+    expect(source).to include("params[:idempotency_key].presence")
+    expect(source).to include("correlation_id:")
     expect(source).to include("trace_references:")
     expect(source).to include("memory_trace:")
     expect(source).to include("graph_evidence:")

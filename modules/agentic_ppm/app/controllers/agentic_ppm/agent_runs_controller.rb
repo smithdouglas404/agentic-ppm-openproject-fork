@@ -30,7 +30,8 @@ module AgenticPpm
         project: @project,
         user: User.current,
         specialist: params.require(:specialist),
-        prompt: params.require(:prompt)
+        prompt: params.require(:prompt),
+        correlation_id: params[:idempotency_key].presence || params[:correlation_id].presence || SecureRandom.uuid
       ).call
 
       respond_to do |format|

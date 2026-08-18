@@ -11,6 +11,9 @@ module AgenticPpm
       end
 
       def call
+        existing = AgentRun.find_by(project:, correlation_id:)
+        return Result.new(run: existing, available: existing.state != "unavailable") if existing
+
         run = AgentRun.create!(
           project:,
           user:,
