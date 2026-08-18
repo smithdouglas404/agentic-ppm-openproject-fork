@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   scope "projects/:project_id" do
     get "agentic-ppm/api/connectors", to: "agentic_ppm/integration_connections#index", as: :project_agentic_ppm_connectors
+    post "agentic-ppm/api/uploads", to: "agentic_ppm/source_records#create", as: :project_agentic_ppm_uploads
     get "agentic-ppm", to: "agentic_ppm/project_dashboard#show", as: :project_agentic_ppm
     get "agentic-ppm/api/dashboard", to: "agentic_ppm/dashboard_api#show", as: :project_agentic_ppm_dashboard_api
     get "agentic-ppm/api/graph", to: "agentic_ppm/graph_api#show", as: :project_agentic_ppm_graph_api
@@ -46,5 +47,6 @@ Rails.application.routes.draw do
     patch "rules/:id", to: "agentic_ppm/rules#update", as: :api_v1_project_agentic_ppm_rule
     get "observability", to: "agentic_ppm/observability_api#show", as: :api_v1_project_agentic_ppm_observability
     get "connectors", to: "agentic_ppm/integration_connections#index", as: :api_v1_project_agentic_ppm_connectors
+    post "uploads", to: "agentic_ppm/source_records#create", as: :api_v1_project_agentic_ppm_uploads
   end
 end
