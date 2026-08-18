@@ -10,5 +10,7 @@ RSpec.describe AgenticPpm::SourceRecordsController do
     expect(source).to include("column_mapping")
     expect(source).to include("methodology")
     expect(source).to include("agent_assignment")
+    expect(source).to include('code: "conflict"')
+    expect(source).to include("content_sha256")
   end
 end

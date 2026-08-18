@@ -4,6 +4,12 @@ module AgenticPpm
 
     def create
       upload = params.require(:file)
+      duplicate = AgenticPpm::SourceRecord.find_by(project: @project, content_sha256: params.require(:content_sha256))
+      if duplicate
+        render json: { error: { code: "conflict", message: "Identical source content already exists", source_record_id: duplicate.id } }, status: :conflict
+        return
+      end
+
       record = AgenticPpm::SourceRecord.new(
         project: @project,
         created_by: User.current,
