@@ -1,0 +1,28 @@
+version: 1
+scope_hierarchy:
+  required:
+    - workspace_id
+    - tenant_id
+    - project_id
+    - openproject_user_id
+    - authorization_policy
+cross_project_access:
+  default: deny
+  allowed_cases:
+    - explicitly_authorized_portfolio_relationship
+    - governed_cross_project_dependency_query
+  required_evidence:
+    - current_openproject_permission
+    - source_project_ids
+    - destination_project_ids
+    - authorization_provenance
+    - correlation_id
+agent_operations:
+  require_project_scope: true
+  require_current_user_authorization: true
+  prohibit_unscoped_memory_retrieval: true
+  prohibit_unscoped_graph_traversal: true
+connector_operations:
+  require_source_project_scope: true
+  prohibit_cross_tenant_credentials: true
+  disabled_by_default: true
