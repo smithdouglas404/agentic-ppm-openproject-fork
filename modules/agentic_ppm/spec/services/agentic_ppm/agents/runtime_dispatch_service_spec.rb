@@ -6,7 +6,8 @@ RSpec.describe AgenticPpm::Agents::RuntimeDispatchService do
       AgenticPpm::AgentRun,
       specialist: "PMO",
       project_id: 42,
-      correlation_id: "corr-42"
+      correlation_id: "corr-42",
+      evidence_references: []
     )
   end
 
@@ -33,7 +34,8 @@ RSpec.describe AgenticPpm::Agents::RuntimeDispatchService do
           project_id: "42",
           scope: "project:42",
           agent_identity: "pmo-orchestrator",
-          memory_scope: "project_user_agent"
+          memory_scope: "project_user_agent",
+          evidence_references: []
         },
         headers: { "X-Agent-Key" => "test-agent-key" }
       )
@@ -50,7 +52,8 @@ RSpec.describe AgenticPpm::Agents::RuntimeDispatchService do
       AgenticPpm::AgentRun,
       specialist: "VRO",
       project_id: 42,
-      correlation_id: "corr-vro-42"
+      correlation_id: "corr-vro-42",
+      evidence_references: ["openproject:entity:42"]
     )
     http_client = instance_double(AgenticPpm::Integrations::HttpClient)
     allow(AgenticPpm::Integrations::HttpClient).to receive(:new).with(
@@ -74,7 +77,8 @@ RSpec.describe AgenticPpm::Agents::RuntimeDispatchService do
           project_id: "42",
           scope: "project:42",
           agent_identity: "vro-agent",
-          memory_scope: "project_user_agent"
+          memory_scope: "project_user_agent",
+          evidence_references: ["openproject:entity:42"]
         },
         headers: { "X-Agent-Key" => "test-agent-key" }
       )
