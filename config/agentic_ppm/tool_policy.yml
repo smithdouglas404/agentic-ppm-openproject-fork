@@ -1,0 +1,45 @@
+version: 1
+default_decision: deny
+source_scopes:
+  required:
+    - workspace_id
+    - project_id
+    - openproject_user_id
+    - authorization_policy
+    - correlation_id
+allowed_tools:
+  read_openproject_project:
+    mutating: false
+    requires_project_scope: true
+    requires_current_authorization: true
+  read_openproject_work_packages:
+    mutating: false
+    requires_project_scope: true
+    requires_current_authorization: true
+  query_memgraph:
+    mutating: false
+    requires_project_scope: true
+    requires_source_provenance: true
+  retrieve_mem0:
+    mutating: false
+    requires_project_scope: true
+    requires_current_authorization: true
+    requires_citations: true
+  write_mem0:
+    mutating: true
+    requires_project_scope: true
+    requires_current_authorization: true
+    requires_citations: true
+    requires_trace_event: true
+  invoke_langflow_validation:
+    mutating: false
+    requires_project_scope: true
+    requires_governed_rule_reference: true
+model_providers:
+  allowed_aliases:
+    - configured_litellm_alias
+  direct_provider_calls: deny
+governed_mutations:
+  require_human_approval: true
+  require_native_openproject_lifecycle: true
+  require_audit_record: true
