@@ -2,6 +2,29 @@ module AgenticPpm
   class AgentRunsController < ApplicationController
     load_and_authorize_with_permission_in_project :run_agentic_ppm_agents
 
+    def index
+      runs = AgenticPpm::AgentRun.where(project: @project).order(created_at: :desc)
+      runs = runs.where(specialist: params[:specialist]) if params[:specialist].present?
+      runs = runs.where(state: params[:state]) if params[:state].present?
+      runs = runs.where("created_at >= ?", Time.iso8601(params[:from])) if params[:from].present?
+      runs = runs.where("created_at <= ?", Time.iso8601(params[:to])) if params[:to].present?
+
+      render json: {
+        project_id: @project.id,
+        agent_runs: runs.limit(100).map { |run| serialized_run(run) },
+        filters: params.slice(:specialist, :state, :from, :to)
+      }
+    rescue ArgumentError
+      render json: { error: { code: "validation_error", message: "Invalid date filter" } }, status: :unprocessable_entity
+    end
+
+    def show
+      run = AgenticPpm::AgentRun.find_by!(project: @project, id: params[:id])
+      render json: { agent_run: serialized_run(run).merge(audit: audit_context(run)) }
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: { code: "not_found", message: "Agent run is not available in this project scope" } }, status: :not_found
+    end
+
     def create
       result = AgenticPpm::Agents::InvocationService.new(
         project: @project,
@@ -36,8 +59,20 @@ module AgenticPpm
         prompt: run.prompt,
         response: run.response,
         evidence_references: run.evidence_references,
+        trace_references: run.respond_to?(:trace_references) ? run.trace_references : [],
+        memory_trace: run.respond_to?(:memory_trace) ? run.memory_trace : {},
+        graph_evidence: run.respond_to?(:graph_evidence) ? run.graph_evidence : {},
         created_at: run.created_at&.iso8601,
         updated_at: run.updated_at&.iso8601
+      }
+    end
+
+    def audit_context(run)
+      {
+        project_id: run.project_id,
+        correlation_id: run.correlation_id,
+        evidence_references: run.evidence_references,
+        authorization: "project-scoped"
       }
     end
 
