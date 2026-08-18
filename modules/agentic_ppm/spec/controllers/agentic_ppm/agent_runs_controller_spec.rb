@@ -40,7 +40,8 @@ RSpec.describe AgenticPpm::AgentRunsController do
       project: project,
       user: user,
       specialist: "PMO",
-      prompt: "Which delivery risks need review?"
+      prompt: "Which delivery risks need review?",
+      correlation_id: kind_of(String)
     )
     expect(response).to redirect_to(project_agentic_ppm_conversations_path(project))
     expect(flash[:notice]).to eq(I18n.t(:agentic_ppm_agent_runtime_unavailable))

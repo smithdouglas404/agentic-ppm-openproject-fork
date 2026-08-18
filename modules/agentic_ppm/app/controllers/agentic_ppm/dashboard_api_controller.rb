@@ -1,6 +1,6 @@
 module AgenticPpm
   class DashboardApiController < ApplicationController
-    include AgenticPpm::ApiContract
+    include AgenticPpm::APIContract
     load_and_authorize_with_permission_in_project :view_agentic_ppm
 
     def show
@@ -39,7 +39,13 @@ module AgenticPpm
     private
 
     def project_agent_runs
-      AgenticPpm::AgentRun.where(project: @project).order(created_at: :desc).limit(50).map do |run|
+      runs = AgenticPpm::AgentRun.where(project: @project)
+      runs = if runs.respond_to?(:order)
+               runs.order(created_at: :desc).limit(50)
+             else
+               runs.sort_by { |run| run.created_at || Time.at(0) }.reverse.first(50)
+             end
+      runs.map do |run|
         {
           id: run.id,
           specialist: run.specialist,

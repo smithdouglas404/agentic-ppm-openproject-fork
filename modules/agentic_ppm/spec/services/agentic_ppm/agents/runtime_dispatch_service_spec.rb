@@ -2,43 +2,17 @@ require "spec_helper"
 
 RSpec.describe AgenticPpm::Agents::RuntimeDispatchService do
   let(:run) do
-    instance_double(
-      AgenticPpm::AgentRun,
-      specialist: "PMO",
-      project_id: 42,
-      correlation_id: "corr-42",
-      evidence_references: []
-    )
+    instance_double(AgenticPpm::AgentRun, specialist: "PMO", project_id: 42, correlation_id: "corr-42", evidence_references: [])
   end
 
   it "dispatches a project-scoped PMO request to the protected local runtime" do
     http_client = instance_double(AgenticPpm::Integrations::HttpClient)
-    allow(AgenticPpm::Integrations::HttpClient).to receive(:new).with(
-      base_url: "http://agent-runtime:8000",
-      authorization: nil
-    ).and_return(http_client)
+    allow(AgenticPpm::Integrations::HttpClient).to receive(:new).with(base_url: "http://agent-runtime:8000", authorization: nil).and_return(http_client)
     allow(http_client).to receive(:post).and_return("status" => "running", "job_id" => "pmo-42")
-
-    with_env(
-      "AGENTIC_PPM_AGENT_RUNTIME_BASE_URL" => "http://agent-runtime:8000",
-      "AGENTIC_PPM_AGENT_RUNTIME_KEY" => "test-agent-key",
-      "AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS" => "true"
-    ) do
+    with_env("AGENTIC_PPM_AGENT_RUNTIME_BASE_URL" => "http://agent-runtime:8000", "AGENTIC_PPM_AGENT_RUNTIME_KEY" => "test-agent-key", "AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS" => "true") do
       result = described_class.new(run:).call
-
       expect(result).to include("status" => "running", "job_id" => "pmo-42")
-      expect(http_client).to have_received(:post).with(
-        "/api/agents/pmo/run",
-        payload: {
-          trigger: "OpenProject AgentRun corr-42",
-          project_id: "42",
-          scope: "project:42",
-          agent_identity: "pmo-orchestrator",
-          memory_scope: "project_user_agent",
-          evidence_references: []
-        },
-        headers: { "X-Agent-Key" => "test-agent-key" }
-      )
+      expect(http_client).to have_received(:post).with("/api/agents/pmo/run", payload: { trigger: "OpenProject AgentRun corr-42", project_id: "42", scope: "project:42", agent_identity: "pmo-orchestrator", memory_scope: "project_user_agent", evidence_references: [], correlation_id: "corr-42" }, headers: { "X-Agent-Key" => "test-agent-key" })
     end
   end
 
@@ -48,40 +22,14 @@ RSpec.describe AgenticPpm::Agents::RuntimeDispatchService do
   end
 
   it "dispatches a project-scoped VRO request to the protected local runtime" do
-    vro_run = instance_double(
-      AgenticPpm::AgentRun,
-      specialist: "VRO",
-      project_id: 42,
-      correlation_id: "corr-vro-42",
-      evidence_references: ["openproject:entity:42"]
-    )
+    vro_run = instance_double(AgenticPpm::AgentRun, specialist: "VRO", project_id: 42, correlation_id: "corr-vro-42", evidence_references: ["openproject:entity:42"])
     http_client = instance_double(AgenticPpm::Integrations::HttpClient)
-    allow(AgenticPpm::Integrations::HttpClient).to receive(:new).with(
-      base_url: "http://agent-runtime:8000",
-      authorization: nil
-    ).and_return(http_client)
+    allow(AgenticPpm::Integrations::HttpClient).to receive(:new).with(base_url: "http://agent-runtime:8000", authorization: nil).and_return(http_client)
     allow(http_client).to receive(:post).and_return("status" => "running", "job_id" => "vro-42")
-
-    with_env(
-      "AGENTIC_PPM_AGENT_RUNTIME_BASE_URL" => "http://agent-runtime:8000",
-      "AGENTIC_PPM_AGENT_RUNTIME_KEY" => "test-agent-key",
-      "AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS" => "true"
-    ) do
+    with_env("AGENTIC_PPM_AGENT_RUNTIME_BASE_URL" => "http://agent-runtime:8000", "AGENTIC_PPM_AGENT_RUNTIME_KEY" => "test-agent-key", "AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS" => "true") do
       result = described_class.new(run: vro_run).call
-
       expect(result).to include("status" => "running", "job_id" => "vro-42")
-      expect(http_client).to have_received(:post).with(
-        "/api/agents/vro/run",
-        payload: {
-          trigger: "OpenProject AgentRun corr-vro-42",
-          project_id: "42",
-          scope: "project:42",
-          agent_identity: "vro-agent",
-          memory_scope: "project_user_agent",
-          evidence_references: ["openproject:entity:42"]
-        },
-        headers: { "X-Agent-Key" => "test-agent-key" }
-      )
+      expect(http_client).to have_received(:post).with("/api/agents/vro/run", payload: { trigger: "OpenProject AgentRun corr-vro-42", project_id: "42", scope: "project:42", agent_identity: "vro-agent", memory_scope: "project_user_agent", evidence_references: ["openproject:entity:42"], correlation_id: "corr-vro-42" }, headers: { "X-Agent-Key" => "test-agent-key" })
     end
   end
 

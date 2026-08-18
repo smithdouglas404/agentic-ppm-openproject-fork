@@ -1,6 +1,6 @@
 module AgenticPpm
   class BusinessRule < ApplicationRecord
-    CATEGORIES = %w[agent_routing alert approval retrieval integration].freeze
+    CATEGORIES = %w[agent_routing alert approval retrieval integration governance].freeze
 
     self.table_name = "agentic_ppm_business_rules"
 

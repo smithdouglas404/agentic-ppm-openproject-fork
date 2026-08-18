@@ -1,5 +1,5 @@
 module AgenticPpm
-  module ApiContract
+  module APIContract
     extend ActiveSupport::Concern
 
     included do

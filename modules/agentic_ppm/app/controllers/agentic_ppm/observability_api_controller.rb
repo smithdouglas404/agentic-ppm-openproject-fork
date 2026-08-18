@@ -1,7 +1,7 @@
 module AgenticPpm
   class ObservabilityApiController < ApplicationController
-    include AgenticPpm::ApiContract
-    load_and_authorize_with_permission :view_agentic_ppm
+    include AgenticPpm::APIContract
+    load_and_authorize_with_permission_in_project :view_agentic_ppm
 
     def show
       render json: {

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe AgenticPpm::ApiContract do
+RSpec.describe AgenticPpm::APIContract do
   it "defines the shared native API response contract" do
     source = File.read(Rails.root.join("modules/agentic_ppm/app/controllers/concerns/agentic_ppm/api_contract.rb"))
     expect(source).to include("X-Correlation-ID")

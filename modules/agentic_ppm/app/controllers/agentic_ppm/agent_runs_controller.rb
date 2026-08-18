@@ -1,6 +1,6 @@
 module AgenticPpm
   class AgentRunsController < ApplicationController
-    include AgenticPpm::ApiContract
+    include AgenticPpm::APIContract
     load_and_authorize_with_permission_in_project :run_agentic_ppm_agents
 
     def index

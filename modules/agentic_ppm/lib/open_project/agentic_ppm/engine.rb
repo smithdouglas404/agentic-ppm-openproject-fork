@@ -3,6 +3,7 @@ module OpenProject
     class Engine < ::Rails::Engine
       engine_name :openproject_agentic_ppm
 
+
       include OpenProject::Plugins::ActsAsOpEngine
 
       register "openproject-agentic_ppm",
