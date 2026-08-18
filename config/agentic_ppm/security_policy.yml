@@ -1,0 +1,36 @@
+version: 1
+secret_handling:
+  storage_mode: credential_reference_only
+  prohibited_persistence:
+    - raw_api_keys
+    - passwords
+    - oauth_refresh_tokens
+    - session_tokens
+    - private_key_material
+  prohibited_logging:
+    - request_headers
+    - authorization_values
+    - provider_payload_credentials
+    - decrypted_secret_values
+  required_metadata:
+    - credential_reference
+    - provider
+    - created_at
+    - rotated_at
+    - rotation_owner
+    - scope
+  access:
+    require_current_openproject_authorization: true
+    require_project_scope: true
+    fail_closed_when_reference_missing: true
+  rotation:
+    required: true
+    preserve_prior_reference_for_audit: true
+    invalidate_prior_reference_after_success: true
+transport:
+  require_tls_for_external_services: true
+  prohibit_userinfo_in_endpoint_urls: true
+audit:
+  record_credential_reference_only: true
+  record_correlation_id: true
+  record_authorization_decision: true
