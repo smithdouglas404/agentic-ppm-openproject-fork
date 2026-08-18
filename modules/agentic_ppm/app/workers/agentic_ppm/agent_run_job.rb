@@ -23,7 +23,17 @@ module AgenticPpm
       run.update!(
         state: result.fetch("status", "running") == "complete" ? "completed" : "running",
         response: JSON.generate(result),
-        evidence_references: Array(result["evidence_references"] || result["evidence_refs"])
+        evidence_references: evidence_references_from(result)
+      )
+    end
+
+    def evidence_references_from(result)
+      Array(
+        result["evidence_references"] ||
+        result["evidence_refs"] ||
+        result.dig("output", "evidence_references") ||
+        result.dig("output", "evidence_refs") ||
+        result.dig("output", "finding", "evidence_references")
       )
     end
 

@@ -42,11 +42,21 @@ module AgenticPpm
 
     private
 
+    def evidence_references_from(result)
+      Array(
+        result["evidence_references"] ||
+        result["evidence_refs"] ||
+        result.dig("output", "evidence_references") ||
+        result.dig("output", "evidence_refs") ||
+        result.dig("output", "finding", "evidence_references")
+      )
+    end
+
     def persist!(run, state, result)
       run.update!(
         state:,
         response: JSON.generate(result),
-        evidence_references: Array(result["evidence_references"] || result["evidence_refs"])
+        evidence_references: evidence_references_from(result)
       )
     end
   end
