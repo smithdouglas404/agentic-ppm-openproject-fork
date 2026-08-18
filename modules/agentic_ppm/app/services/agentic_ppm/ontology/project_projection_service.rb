@@ -30,6 +30,11 @@ module AgenticPpm
           entity_key: "openproject:project:#{project.id}",
           projection_state: "pending",
           idempotency_key:,
+          ontology_version: "1",
+          mapping_profile: "openproject-native-v1",
+          authorization_provenance: "openproject-project-scope",
+          confidence: 1.0,
+          correlation_id: idempotency_key,
           payload: {
             identifier: project.identifier,
             name: project.name,

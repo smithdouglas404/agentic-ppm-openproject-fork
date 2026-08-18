@@ -32,6 +32,11 @@ module AgenticPpm
             entity_key: "openproject:relationship:#{relation.relation_type}:#{relation.from_id}:#{relation.to_id}",
             projection_state: "pending",
             idempotency_key:,
+            ontology_version: "1",
+            mapping_profile: "openproject-native-v1",
+            authorization_provenance: "openproject-project-scope",
+            confidence: 1.0,
+            correlation_id: idempotency_key,
             payload: {
               relationship_type: relation.relation_type,
               from_key: "openproject:work_package:#{relation.from_id}",

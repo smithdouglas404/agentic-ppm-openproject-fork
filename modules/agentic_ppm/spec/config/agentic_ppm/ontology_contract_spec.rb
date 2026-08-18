@@ -34,4 +34,21 @@ RSpec.describe "Agentic PPM canonical ontology contract" do
       "mapping_profile", "authorization_provenance"
     )
   end
+
+  it "writes the required provenance envelope from every native projection service" do
+    projection_files = %w[
+      project_projection_service.rb
+      work_package_projection_service.rb
+      work_package_relation_projection_service.rb
+    ].map { |name| Rails.root.join("modules/agentic_ppm/app/services/agentic_ppm/ontology", name) }
+
+    projection_files.each do |path|
+      source = File.read(path)
+      expect(source).to include('ontology_version: "1"')
+      expect(source).to include('mapping_profile: "openproject-native-v1"')
+      expect(source).to include('authorization_provenance: "openproject-project-scope"')
+      expect(source).to include("confidence: 1.0")
+      expect(source).to include("correlation_id: idempotency_key")
+    end
+  end
 end
