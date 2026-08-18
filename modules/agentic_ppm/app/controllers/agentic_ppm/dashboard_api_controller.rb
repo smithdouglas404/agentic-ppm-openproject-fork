@@ -1,5 +1,6 @@
 module AgenticPpm
   class DashboardApiController < ApplicationController
+    include AgenticPpm::ApiContract
     load_and_authorize_with_permission_in_project :view_agentic_ppm
 
     def show

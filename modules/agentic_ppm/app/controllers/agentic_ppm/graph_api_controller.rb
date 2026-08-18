@@ -1,5 +1,6 @@
 module AgenticPpm
   class GraphApiController < ApplicationController
+    include AgenticPpm::ApiContract
     load_and_authorize_with_permission :view_agentic_ppm
 
     MAX_LIMIT = 500

@@ -1,5 +1,6 @@
 module AgenticPpm
   class AgentRunsController < ApplicationController
+    include AgenticPpm::ApiContract
     load_and_authorize_with_permission_in_project :run_agentic_ppm_agents
 
     def index
@@ -9,10 +10,16 @@ module AgenticPpm
       runs = runs.where("created_at >= ?", Time.iso8601(params[:from])) if params[:from].present?
       runs = runs.where("created_at <= ?", Time.iso8601(params[:to])) if params[:to].present?
 
+      page = [params.fetch(:page, 1).to_i, 1].max
+      per_page = [[params.fetch(:per_page, 100).to_i, 1].max, 100].min
+      total = runs.count
+      page_runs = runs.offset((page - 1) * per_page).limit(per_page)
+
       render json: {
         project_id: @project.id,
-        agent_runs: runs.limit(100).map { |run| serialized_run(run) },
-        filters: params.slice(:specialist, :state, :from, :to)
+        agent_runs: page_runs.map { |run| serialized_run(run) },
+        filters: params.slice(:specialist, :state, :from, :to),
+        pagination: pagination_payload(page:, per_page:, total:)
       }
     rescue ArgumentError
       render json: { error: { code: "validation_error", message: "Invalid date filter" } }, status: :unprocessable_entity
