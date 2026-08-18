@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     get "api/v1/agentic-ppm/agent-runs", to: "agentic_ppm/agent_runs#index", as: :project_agentic_ppm_v1_agent_runs
     post "api/v1/agentic-ppm/agent-runs", to: "agentic_ppm/agent_runs#create", as: :project_agentic_ppm_v1_agent_runs_create
     get "api/v1/agentic-ppm/agent-runs/:id", to: "agentic_ppm/agent_runs#show", as: :project_agentic_ppm_v1_agent_run
+    post "agentic-ppm/findings/:id/review", to: "agentic_ppm/findings#review", as: :project_agentic_ppm_finding_review
+    post "api/v1/agentic-ppm/findings/:id/review", to: "agentic_ppm/findings#review", as: :project_agentic_ppm_v1_finding_review
     resources :agentic_ppm_rules, path: "agentic-ppm/rules", controller: "agentic_ppm/rules", only: %i[index create update] do
       post :transition, on: :member
       post :validate, on: :member
