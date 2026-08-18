@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     get "agentic-ppm/api/dashboard", to: "agentic_ppm/dashboard_api#show", as: :project_agentic_ppm_dashboard_api
     get "agentic-ppm/api/graph", to: "agentic_ppm/graph_api#show", as: :project_agentic_ppm_graph_api
     get "agentic-ppm/api/entities/:entity_key", to: "agentic_ppm/entity_api#show", as: :project_agentic_ppm_entity_api
+    get "agentic-ppm/api/observability", to: "agentic_ppm/observability_api#show", as: :project_agentic_ppm_observability_api
+    get "api/v1/agentic-ppm/observability", to: "agentic_ppm/observability_api#show", as: :project_agentic_ppm_v1_observability_api
     get "api/v1/agentic-ppm/entities/:entity_key", to: "agentic_ppm/entity_api#show", as: :project_agentic_ppm_v1_entity_api
     get "api/v1/agentic-ppm/graph", to: "agentic_ppm/graph_api#show", as: :project_agentic_ppm_v1_graph_api
     get "agentic-ppm/conversations", to: "agentic_ppm/agent_conversations#show", as: :project_agentic_ppm_conversations
