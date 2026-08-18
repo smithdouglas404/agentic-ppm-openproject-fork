@@ -30,4 +30,19 @@ Rails.application.routes.draw do
       post :simulate, on: :member
     end
   end
+
+  scope "api/v1/projects/:project_id/agentic-ppm" do
+    get "dashboard", to: "agentic_ppm/dashboard_api#show", as: :api_v1_project_agentic_ppm_dashboard
+    get "graph", to: "agentic_ppm/graph_api#show", as: :api_v1_project_agentic_ppm_graph
+    get "entities/:entity_key", to: "agentic_ppm/entity_api#show", as: :api_v1_project_agentic_ppm_entity
+    get "agent-runs", to: "agentic_ppm/agent_runs#index", as: :api_v1_project_agentic_ppm_agent_runs
+    post "agent-runs", to: "agentic_ppm/agent_runs#create", as: :api_v1_project_agentic_ppm_agent_runs_create
+    get "agent-runs/:id", to: "agentic_ppm/agent_runs#show", as: :api_v1_project_agentic_ppm_agent_run
+    post "findings/:id/approve", to: "agentic_ppm/findings#review", defaults: { status: "approved" }, as: :api_v1_project_agentic_ppm_finding_approve
+    post "findings/:id/review", to: "agentic_ppm/findings#review", as: :api_v1_project_agentic_ppm_finding_review
+    get "rules", to: "agentic_ppm/rules#index", as: :api_v1_project_agentic_ppm_rules
+    post "rules", to: "agentic_ppm/rules#create", as: :api_v1_project_agentic_ppm_rules_create
+    patch "rules/:id", to: "agentic_ppm/rules#update", as: :api_v1_project_agentic_ppm_rule
+    get "observability", to: "agentic_ppm/observability_api#show", as: :api_v1_project_agentic_ppm_observability
+  end
 end
