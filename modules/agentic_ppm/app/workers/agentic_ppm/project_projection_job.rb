@@ -10,6 +10,10 @@ module AgenticPpm
       AgenticPpm::Ontology::WorkPackageProjectionService.new(project:, idempotency_key:).call
       AgenticPpm::Ontology::WorkPackageRelationProjectionService.new(project:, idempotency_key:).call
       mark_projected!(project, idempotency_key)
+      handoff = AgenticPpm::Agents::OpenprojectEvidenceHandoffService.new(project:, idempotency_key:).call
+      if handoff["accepted"] != false
+        AgenticPpm::Agents::EvidenceTriggerService.new(project:, idempotency_key:).call
+      end
     rescue StandardError => error
       record_failure!(project, idempotency_key, error) if defined?(project) && project
       raise
