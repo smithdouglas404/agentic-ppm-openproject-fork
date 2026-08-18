@@ -42,7 +42,9 @@ module AgenticPpm
             project_id: run.project_id.to_s,
             scope: "project:#{run.project_id}",
             agent_identity: LETTA_IDENTITIES.fetch(run.specialist),
-            memory_scope: "project_user_agent"
+            memory_scope: "project_user_agent",
+            correlation_id: run.correlation_id,
+            evidence_references: Array(run.evidence_references)
           },
           headers: {
             "X-Agent-Key" => ENV.fetch("AGENTIC_PPM_AGENT_RUNTIME_KEY")
