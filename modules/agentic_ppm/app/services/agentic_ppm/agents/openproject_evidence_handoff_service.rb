@@ -37,7 +37,7 @@ module AgenticPpm
 
       def payload
         {
-          project_id: project.id,
+          project_id: project.id.to_s,
           idempotency_key: idempotency_key,
           generated_at: Time.current.iso8601,
           records: records.map do |record|

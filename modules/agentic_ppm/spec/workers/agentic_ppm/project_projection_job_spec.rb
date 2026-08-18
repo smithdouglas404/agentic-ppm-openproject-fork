@@ -11,6 +11,7 @@ RSpec.describe AgenticPpm::ProjectProjectionJob do
     allow(AgenticPpm::Ontology::ProjectProjectionService).to receive(:new).and_return(instance_double(AgenticPpm::Ontology::ProjectProjectionService, call: true))
     allow(AgenticPpm::Ontology::WorkPackageProjectionService).to receive(:new).and_return(instance_double(AgenticPpm::Ontology::WorkPackageProjectionService, call: true))
     allow(AgenticPpm::Ontology::WorkPackageRelationProjectionService).to receive(:new).and_return(instance_double(AgenticPpm::Ontology::WorkPackageRelationProjectionService, call: true))
+    allow(AgenticPpm::Agents::OpenprojectEvidenceHandoffService).to receive(:new).and_return(instance_double(AgenticPpm::Agents::OpenprojectEvidenceHandoffService, call: { "accepted" => false }))
   end
 
   it "marks records for the idempotency key as projected after every source projection succeeds" do
