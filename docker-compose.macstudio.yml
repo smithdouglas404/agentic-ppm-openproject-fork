@@ -1,0 +1,245 @@
+# Mac Studio Docker Desktop overlay for the native Agentic PPM OpenProject fork.
+# Start from the fork root with:
+#   docker compose -f docker-compose.yml -f docker-compose.macstudio.yml --env-file .env.macstudio up -d --build
+# The fork remains the product. The governance-agent-server image is retained as
+# a rich UI/runtime workspace during migration; OpenProject owns authority.
+
+services:
+  backend:
+    environment:
+      AGENTIC_PPM_DURABLE_WORKFLOW_ENABLED: "${AGENTIC_PPM_DURABLE_WORKFLOW_ENABLED:-true}"
+      AGENTIC_PPM_AGENT_RUNTIME_BASE_URL: http://agent-runtime
+      AGENTIC_PPM_AGENT_RUNTIME_KEY: ${AGENTIC_PPM_AGENT_RUNTIME_KEY:?set AGENTIC_PPM_AGENT_RUNTIME_KEY}
+      AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS: "${AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS:-true}"
+    depends_on:
+      agent-runtime:
+        condition: service_started
+
+  worker:
+    environment:
+      AGENTIC_PPM_DURABLE_WORKFLOW_ENABLED: "${AGENTIC_PPM_DURABLE_WORKFLOW_ENABLED:-true}"
+      AGENTIC_PPM_AGENT_RUNTIME_BASE_URL: http://agent-runtime
+      AGENTIC_PPM_AGENT_RUNTIME_KEY: ${AGENTIC_PPM_AGENT_RUNTIME_KEY:?set AGENTIC_PPM_AGENT_RUNTIME_KEY}
+      AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS: "${AGENTIC_PPM_ALLOW_INSECURE_SERVICE_URLS:-true}"
+    depends_on:
+      agent-runtime:
+        condition: service_started
+
+  agent-runtime:
+    build:
+      context: ../governance-agent-server
+      dockerfile: Dockerfile
+    image: agentic-ppm-agent-runtime:macstudio
+    environment:
+      PORT: "80"
+      AGENT_BACKEND_KEY: ${AGENT_BACKEND_KEY:?set AGENT_BACKEND_KEY}
+      LITELLM_URL: http://litellm:4000
+      LITELLM_BASE_URL: http://litellm:4000
+      LITELLM_API_KEY: ${LITELLM_API_KEY:?set LITELLM_API_KEY}
+      MEMGRAPH_URI: bolt://memgraph:7687
+      MEMGRAPH_USER: memgraph
+      MEMGRAPH_PASSWORD: ${MEMGRAPH_PASSWORD:?set MEMGRAPH_PASSWORD}
+      MEM0_URL: http://mem0:8888
+      MEM0_BASE_URL: http://mem0:8888
+      MEM0_API_KEY: ${MEM0_API_KEY:?set MEM0_API_KEY}
+      LETTA_URL: http://letta:8283
+      LETTA_TOKEN: ${LETTA_TOKEN:?set LETTA_TOKEN}
+      FUSEKI_URL: http://fuseki:3030
+      LANGFLOW_URL: http://langflow:7860
+      DOCS_DIR: /data/documents
+      KG_DATA_DIR: /app/kg-data
+      SOURCE_DATA_DIR: /data/source
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD:-governance}@governance-db:3306/${MYSQL_DATABASE:-governance}
+    volumes:
+      - agent-kg-data:/app/kg-data
+      - agent-documents:/data/documents
+      - agent-source-data:/data/source
+    depends_on:
+      memgraph:
+        condition: service_healthy
+      mem0:
+        condition: service_started
+      letta:
+        condition: service_started
+      litellm:
+        condition: service_started
+    networks:
+      - network
+
+  rich-ui:
+    image: agentic-ppm-agent-runtime:macstudio
+    environment:
+      PORT: "80"
+      AGENT_BACKEND_KEY: ${AGENT_BACKEND_KEY:?set AGENT_BACKEND_KEY}
+      LITELLM_URL: http://litellm:4000
+      LITELLM_BASE_URL: http://litellm:4000
+      LITELLM_API_KEY: ${LITELLM_API_KEY:?set LITELLM_API_KEY}
+      MEMGRAPH_URI: bolt://memgraph:7687
+      MEMGRAPH_USER: memgraph
+      MEMGRAPH_PASSWORD: ${MEMGRAPH_PASSWORD:?set MEMGRAPH_PASSWORD}
+      MEM0_URL: http://mem0:8888
+      MEM0_BASE_URL: http://mem0:8888
+      MEM0_API_KEY: ${MEM0_API_KEY:?set MEM0_API_KEY}
+      LETTA_URL: http://letta:8283
+      LETTA_TOKEN: ${LETTA_TOKEN:?set LETTA_TOKEN}
+      FUSEKI_URL: http://fuseki:3030
+      LANGFLOW_URL: http://langflow:7860
+      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD:-governance}@governance-db:3306/${MYSQL_DATABASE:-governance}
+    ports:
+      - "${RICH_UI_PORT:-8080}:80"
+    volumes:
+      - agent-kg-data:/app/kg-data
+      - agent-documents:/data/documents
+      - agent-source-data:/data/source
+    depends_on:
+      agent-runtime:
+        condition: service_started
+      governance-db:
+        condition: service_healthy
+    networks:
+      - network
+
+  governance-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-governance}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-governance}
+    volumes:
+      - governance-db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+    networks:
+      - network
+
+  agent-postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: ${AGENT_POSTGRES_USER:-agentic}
+      POSTGRES_PASSWORD: ${AGENT_POSTGRES_PASSWORD:?set AGENT_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${AGENT_POSTGRES_DB:-agentic}
+    volumes:
+      - agent-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks:
+      - network
+
+  mem0:
+    image: ${MEM0_IMAGE:-mem0/mem0-api-server:latest}
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      JWT_SECRET: ${MEM0_JWT_SECRET:?set MEM0_JWT_SECRET}
+      ADMIN_API_KEY: ${MEM0_API_KEY:?set MEM0_API_KEY}
+      POSTGRES_HOST: agent-postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: ${AGENT_POSTGRES_USER:-agentic}
+      POSTGRES_PASSWORD: ${AGENT_POSTGRES_PASSWORD:?set AGENT_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${AGENT_POSTGRES_DB:-agentic}
+    ports:
+      - "${MEM0_PORT:-8888}:8888"
+    depends_on:
+      agent-postgres:
+        condition: service_healthy
+    networks:
+      - network
+
+  letta:
+    image: ${LETTA_IMAGE:-letta/letta:latest}
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SECURE: "true"
+      LETTA_SERVER_PASSWORD: ${LETTA_TOKEN:?set LETTA_TOKEN}
+      LETTA_PG_URI: postgresql://${AGENT_POSTGRES_USER:-agentic}:${AGENT_POSTGRES_PASSWORD:?set AGENT_POSTGRES_PASSWORD}@agent-postgres:5432/${AGENT_POSTGRES_DB:-agentic}
+      LETTA_MEMFS_SERVICE_URL: local
+    ports:
+      - "${LETTA_PORT:-8283}:8283"
+    depends_on:
+      agent-postgres:
+        condition: service_healthy
+    networks:
+      - network
+
+  litellm:
+    image: ${LITELLM_IMAGE:-ghcr.io/berriai/litellm:main-latest}
+    environment:
+      LITELLM_MASTER_KEY: ${LITELLM_API_KEY:?set LITELLM_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes:
+      - ./infra/litellm/config.yaml:/app/config.yaml:ro
+    command: ["--config", "/app/config.yaml", "--port", "4000", "--num_workers", "1"]
+    ports:
+      - "${LITELLM_PORT:-4000}:4000"
+    networks:
+      - network
+
+  langflow:
+    image: ${LANGFLOW_IMAGE:-langflowai/langflow:latest}
+    environment:
+      LANGFLOW_AUTO_LOGIN: "false"
+      LANGFLOW_SUPERUSER: ${LANGFLOW_SUPERUSER:?set LANGFLOW_SUPERUSER}
+      LANGFLOW_SUPERUSER_PASSWORD: ${LANGFLOW_SUPERUSER_PASSWORD:?set LANGFLOW_SUPERUSER_PASSWORD}
+      LANGFLOW_DATABASE_URL: postgresql://${AGENT_POSTGRES_USER:-agentic}:${AGENT_POSTGRES_PASSWORD:?set AGENT_POSTGRES_PASSWORD}@agent-postgres:5432/${AGENT_POSTGRES_DB:-agentic}
+      LANGFLOW_CONFIG_DIR: /var/lib/langflow
+    volumes:
+      - langflow-data:/var/lib/langflow
+    ports:
+      - "${LANGFLOW_PORT:-7860}:7860"
+    depends_on:
+      agent-postgres:
+        condition: service_healthy
+    networks:
+      - network
+
+  memgraph:
+    image: ${MEMGRAPH_IMAGE:-memgraph/memgraph-platform:latest}
+    environment:
+      MEMGRAPH_USER: memgraph
+      MEMGRAPH_PASSWORD: ${MEMGRAPH_PASSWORD:?set MEMGRAPH_PASSWORD}
+    volumes:
+      - memgraph-data:/var/lib/memgraph
+    ports:
+      - "${MEMGRAPH_BOLT_PORT:-7687}:7687"
+      - "${MEMGRAPH_LAB_PORT:-3002}:3000"
+    healthcheck:
+      test: ["CMD", "mg_client", "--host", "localhost", "--port", "7687", "-u", "memgraph", "-p", "${MEMGRAPH_PASSWORD}", "--execute", "RETURN 1;"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    networks:
+      - network
+
+  fuseki:
+    image: ${FUSEKI_IMAGE:-stain/jena-fuseki:latest}
+    environment:
+      ADMIN_PASSWORD: ${FUSEKI_ADMIN_PASSWORD:?set FUSEKI_ADMIN_PASSWORD}
+      JVM_ARGS: -Xmx2g
+    volumes:
+      - fuseki-data:/fuseki
+      - ./ontology:/staging/ontology:ro
+    ports:
+      - "${FUSEKI_PORT:-3030}:3030"
+    networks:
+      - network
+
+volumes:
+  agent-kg-data:
+  agent-documents:
+  agent-source-data:
+  governance-db-data:
+  agent-postgres-data:
+  langflow-data:
+  memgraph-data:
+  fuseki-data:
