@@ -1,0 +1,47 @@
+version: 1
+defaults:
+  health_check_timeout_seconds: 3
+  failure_mode: explicit_capability_state
+  never_claim_ready_on_missing_credentials: true
+  never_fail_open_on_timeout: true
+services:
+  openproject:
+    required_for_product: true
+    readiness_requires_database: true
+  agent_runtime:
+    required_for_agent_runs: true
+    readiness_requires_langgraph_and_langchain: true
+  letta:
+    required_for_stateful_agent_runs: true
+    readiness_requires_endpoint_and_credential: true
+  mem0:
+    required_for_memory_operations: true
+    readiness_requires_endpoint_and_credential: true
+  memgraph:
+    required_for_graph_operations: true
+    readiness_requires_endpoint_and_credential: true
+  langflow:
+    required_for_visual_rule_operations: true
+    readiness_requires_endpoint_and_credential: true
+  litellm:
+    required_for_model_operations: true
+    readiness_requires_endpoint_and_credential: true
+  connectors:
+    required_for_external_sync: false
+    default_capability_state: disabled
+  graph_projection:
+    required_for_current_graph_evidence: true
+states:
+  healthy: operational_and_authenticated
+  configured: configuration_present_but_live_probe_pending
+  degraded: dependency_missing_or_probe_failed
+  unavailable: disabled_or_not_configured
+  syncing: configured_and_in_progress
+observability:
+  required_fields:
+    - service
+    - state
+    - checked_at
+    - correlation_id
+    - authorization_decision
+    - failure_classification
