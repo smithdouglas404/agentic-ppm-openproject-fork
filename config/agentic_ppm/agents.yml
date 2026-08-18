@@ -22,6 +22,7 @@ letta_contract:
     - unscoped_memory_retrieval
 agents:
   - invocation_key: PMO
+    runtime_route: /api/agents/pmo/run
     name: PMO Agent
     responsibility: Portfolio delivery oversight, dependency awareness, and decision-readiness synthesis.
     scoped_inputs: Project work packages, milestones, schedules, relationships, and approved portfolio evidence.
@@ -32,6 +33,7 @@ agents:
     interactive: true
     letta_template: agentic_ppm/PMO
   - invocation_key: VRO
+    runtime_route: /api/agents/vro/run
     name: VRO Agent
     responsibility: Value-realization hypothesis tracking and benefits-evidence synthesis.
     scoped_inputs: Approved benefit hypotheses, milestones, outcome evidence, and delivery status.
@@ -42,6 +44,7 @@ agents:
     interactive: true
     letta_template: agentic_ppm/VRO
   - invocation_key: OKR_KPI
+    runtime_route: /api/agents/okr-kpi/run
     name: OKR/KPI Agent
     responsibility: Objective, key-result, and indicator evidence interpretation.
     scoped_inputs: Authorized objectives, KPIs, measures, and linked work-package evidence.
@@ -52,6 +55,7 @@ agents:
     interactive: false
     letta_template: agentic_ppm/OKR_KPI
   - invocation_key: OCM
+    runtime_route: /api/agents/ocm/run
     name: OCM Agent
     responsibility: Organizational-change readiness, adoption, and stakeholder-evidence interpretation.
     scoped_inputs: Approved change impacts, readiness work, stakeholder evidence, and milestones.
@@ -62,6 +66,7 @@ agents:
     interactive: false
     letta_template: agentic_ppm/OCM
   - invocation_key: GOVERNANCE
+    runtime_route: /api/agents/governance/run
     name: Governance Agent
     responsibility: Decision, control, policy, and approval-evidence interpretation.
     scoped_inputs: Authorized governance records, controls, decisions, and policy references.
@@ -72,6 +77,7 @@ agents:
     interactive: false
     letta_template: agentic_ppm/GOVERNANCE
   - invocation_key: FINOPS
+    runtime_route: /api/agents/finops/run
     name: FinOps Agent
     responsibility: Cost, funding, allocation, and financial-evidence interpretation.
     scoped_inputs: Authorized cost, funding, allocation, and delivery evidence.
@@ -82,6 +88,7 @@ agents:
     interactive: false
     letta_template: agentic_ppm/FINOPS
   - invocation_key: TMO
+    runtime_route: /api/agents/tmo/run
     name: TMO Agent
     responsibility: Transformation sequencing, cross-workstream, and dependency-evidence interpretation.
     scoped_inputs: Transformation work packages, milestones, dependencies, and approved outcome evidence.
@@ -92,6 +99,7 @@ agents:
     interactive: false
     letta_template: agentic_ppm/TMO
   - invocation_key: BUSINESS_PLANNING
+    runtime_route: /api/agents/business-planning/run
     name: Business Planning Agent
     responsibility: Business-plan assumption, capacity, and strategic-alignment evidence interpretation.
     scoped_inputs: Authorized planning assumptions, capacity evidence, objectives, and delivery records.

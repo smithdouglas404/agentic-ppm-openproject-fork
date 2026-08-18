@@ -23,7 +23,19 @@ module AgenticPpm
         rule.assign_attributes(
           state: target_state,
           approved_by: target_state == "approved" ? actor : rule.approved_by,
-          published_at: target_state == "published" ? Time.current : rule.published_at
+          published_at: target_state == "published" ? Time.current : rule.published_at,
+          last_transition_at: Time.current,
+          authorization_decision: {
+            "project_id" => rule.project_id,
+            "rule_id" => rule.id,
+            "actor_id" => actor.id,
+            "state_transition" => "#{rule.state}->#{target_state}",
+            "flow_reference" => rule.visual_flow_reference,
+            "flow_version" => rule.validation_result.to_h["flow_version"],
+            "validation_result_reference" => rule.validation_result_reference,
+            "authorized" => true,
+            "observed_at" => Time.current.iso8601
+          }
         )
         rule.save!
       end
@@ -35,7 +47,8 @@ module AgenticPpm
       def validate_publishable!
         raise ArgumentError, "An approved rule is required before publication" unless rule.state_approved?
         raise ArgumentError, "A visual flow reference is required before publication" if rule.visual_flow_reference.blank?
-        raise ArgumentError, "A validation result marked valid is required before publication" unless rule.validation_result["valid"] == true
+        raise ArgumentError, "A validation result marked valid is required before publication" unless rule.validation_result.to_h["valid"] == true
+        raise ArgumentError, "A valid simulation trace is required before publication" unless rule.simulation_trace.to_h["valid"] == true
       end
     end
   end

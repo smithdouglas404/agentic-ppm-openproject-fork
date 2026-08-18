@@ -23,4 +23,12 @@ RSpec.describe AgenticPpm::Agents::OpenprojectEvidenceHandoffService do
     expect(result).to include("accepted" => false, "reason" => "agent_runtime_not_configured")
     expect(AgenticPpm::ProjectionRecord).to have_received(:upsert)
   end
+
+  it "uses the receiver's protected X-Agent-Key contract" do
+    source = described_class.instance_method(:call).source_location.first
+    text = File.read(source)
+
+    expect(text).to include('"X-Agent-Key" => ENV.fetch("AGENTIC_PPM_AGENT_RUNTIME_KEY")')
+    expect(text).not_to include("X-OpenProject-Evidence-Key")
+  end
 end

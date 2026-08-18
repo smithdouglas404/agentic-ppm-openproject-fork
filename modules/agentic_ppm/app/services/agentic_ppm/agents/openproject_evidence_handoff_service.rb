@@ -17,7 +17,7 @@ module AgenticPpm
         ).post(
           "/api/openproject/evidence",
           payload: payload,
-          headers: { "X-OpenProject-Evidence-Key" => ENV.fetch("AGENTIC_PPM_AGENT_RUNTIME_KEY") }
+          headers: { "X-Agent-Key" => ENV.fetch("AGENTIC_PPM_AGENT_RUNTIME_KEY") }
         )
 
         record_result!("projected", response)

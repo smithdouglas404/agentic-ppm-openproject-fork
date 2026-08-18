@@ -11,8 +11,7 @@ module AgenticPpm
       end
 
       def get(path, params: {}, headers: {})
-        uri = base_url.dup
-        uri.path = "/" + [base_url.path.chomp("/"), path.sub(%r{\A/}, "")].reject(&:empty?).join("/")
+        uri = request_uri(path)
         uri.query = URI.encode_www_form(params) if params.any?
 
         request = Net::HTTP::Get.new(uri)
@@ -27,8 +26,7 @@ module AgenticPpm
       end
 
       def post(path, payload:, headers: {})
-        uri = base_url.dup
-        uri.path = "/" + [base_url.path.chomp("/"), path.sub(%r{\A/}, "")].reject(&:empty?).join("/")
+        uri = request_uri(path)
 
         request = Net::HTTP::Post.new(uri)
         request["Accept"] = "application/json"
@@ -46,6 +44,20 @@ module AgenticPpm
       private
 
       attr_reader :base_url, :authorization
+
+      def request_uri(path)
+        path_string = path.to_s
+        if path_string.match?(%r{\Ahttps?://}i)
+          raise ArgumentError, "Integration request path must be relative"
+        end
+
+        relative_path = path_string.sub(%r{\A/+}, "")
+        base_path = base_url.path.to_s.sub(%r{\A/+}, "").chomp("/")
+        joined_path = [base_path, relative_path].reject(&:empty?).join("/")
+        uri = base_url.dup
+        uri.path = joined_path.empty? ? "/" : "/#{joined_path}"
+        uri
+      end
 
       def validate_base_url!
         raise ArgumentError, "Integration base URL must use HTTP or HTTPS" unless base_url.is_a?(URI::HTTP)

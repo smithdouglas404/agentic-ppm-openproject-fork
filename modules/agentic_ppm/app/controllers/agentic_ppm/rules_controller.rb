@@ -4,7 +4,7 @@ module AgenticPpm
 
     load_and_authorize_with_permission_in_project :manage_agentic_ppm_rules
 
-    before_action :find_rule, only: %i[update transition]
+    before_action :find_rule, only: %i[update transition validate simulate]
 
     def index
       @rules = @project.business_rules.order(updated_at: :desc)
@@ -37,6 +37,34 @@ module AgenticPpm
       Rules::LifecycleService.new(rule: @rule, actor: User.current).transition_to!(params.require(:target_state))
       flash[:notice] = I18n.t(:agentic_ppm_rule_transitioned, state: @rule.state.humanize)
     rescue ArgumentError => error
+      flash[:error] = error.message
+    ensure
+      redirect_to agentic_ppm_rules_path(@project)
+    end
+
+    def validate
+      result = ServiceAdapters::LangflowAdapter.new.validate_rule(rule: @rule, actor: User.current, project: @project)
+      @rule.update!(
+        validation_result: result,
+        validation_result_reference: result["validation_result_reference"] || result["flow_version"]
+      )
+      flash[:notice] = "Rule validation completed"
+    rescue StandardError => error
+      flash[:error] = error.message
+    ensure
+      redirect_to agentic_ppm_rules_path(@project)
+    end
+
+    def simulate
+      result = ServiceAdapters::LangflowAdapter.new.simulate_rule(
+        rule: @rule,
+        actor: User.current,
+        project: @project,
+        source_data: { "project_id" => @project.id, "rule_id" => @rule.id }
+      )
+      @rule.update!(simulation_trace: result)
+      flash[:notice] = "Rule simulation completed"
+    rescue StandardError => error
       flash[:error] = error.message
     ensure
       redirect_to agentic_ppm_rules_path(@project)

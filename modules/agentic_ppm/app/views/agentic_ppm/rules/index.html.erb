@@ -40,6 +40,8 @@
           <th><%= t(:label_type) %></th>
           <th><%= t(:label_status) %></th>
           <th><%= t(:agentic_ppm_visual_flow_reference) %></th>
+          <th>Validation</th>
+          <th>Simulation</th>
           <th><%= t(:label_actions) %></th>
         </tr>
       </thead>
@@ -50,6 +52,14 @@
             <td><%= rule.category.humanize %></td>
             <td><%= rule.state.humanize %></td>
             <td><%= rule.visual_flow_reference.presence || t(:label_none) %></td>
+            <td>
+              <%= rule.validation_result.present? ? (rule.validation_result["valid"] == true ? "Valid" : "Invalid") : "Not validated" %>
+              <%= button_to "Validate", validate_agentic_ppm_rule_path(@project, rule), method: :post, class: "button -small" %>
+            </td>
+            <td>
+              <%= rule.simulation_trace.present? ? (rule.simulation_trace["valid"] == true ? "Valid" : "Invalid") : "Not simulated" %>
+              <%= button_to "Simulate", simulate_agentic_ppm_rule_path(@project, rule), method: :post, class: "button -small" %>
+            </td>
             <td>
               <% AgenticPpm::Rules::LifecycleService::TRANSITIONS.fetch(rule.state).each do |target_state| %>
                 <%= button_to t(:agentic_ppm_transition_to, state: target_state.humanize), transition_agentic_ppm_rule_path(@project, rule), params: { target_state: target_state }, class: "button -small" %>
