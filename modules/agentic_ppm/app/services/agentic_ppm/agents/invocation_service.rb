@@ -1,7 +1,6 @@
 module AgenticPpm
   module Agents
     class InvocationService
-      INTERACTIVE_SPECIALISTS = %w[PMO VRO].freeze
 
       def initialize(project:, user:, specialist:, prompt:, correlation_id: SecureRandom.uuid)
         @project = project
@@ -22,7 +21,9 @@ module AgenticPpm
           evidence_references: []
         )
 
-        Result.new(run:, available: letta_available?)
+        available = runtime_available?
+        AgenticPpm::AgentRunJob.perform_later(run.id) if available
+        Result.new(run:, available:)
       end
 
       private
@@ -32,11 +33,14 @@ module AgenticPpm
       attr_reader :project, :user, :specialist, :prompt, :correlation_id
 
       def initial_state
-        letta_available? ? "requested" : "unavailable"
+        runtime_available? ? "requested" : "unavailable"
       end
 
-      def letta_available?
-        INTERACTIVE_SPECIALISTS.include?(specialist) && ServiceRegistry.adapter_for(:letta).capability_state == :configured
+      def runtime_available?
+        ServiceRegistry.adapter_for(:durable_workflow).capability_state == :configured &&
+          ENV["AGENTIC_PPM_AGENT_RUNTIME_BASE_URL"].present? &&
+          ENV["AGENTIC_PPM_AGENT_RUNTIME_KEY"].present? &&
+          RuntimeDispatchService::ROUTES.key?(specialist)
       end
     end
   end

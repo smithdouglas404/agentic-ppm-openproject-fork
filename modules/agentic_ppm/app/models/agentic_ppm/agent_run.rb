@@ -7,7 +7,7 @@ module AgenticPpm
 
     validates :specialist, inclusion: { in: %w[PMO VRO OKR/KPI OCM Governance FinOps TMO BusinessPlanning] }
     validates :prompt, :state, :correlation_id, presence: true
-    validates :state, inclusion: { in: %w[requested completed unavailable failed] }
+    validates :state, inclusion: { in: %w[requested running completed unavailable failed] }
 
     def self.persisted_specialist_name(name)
       name == "Business Planning" ? "BusinessPlanning" : name

@@ -10,17 +10,35 @@ module AgenticPpm
         validate_base_url!
       end
 
-      def get(path, params: {})
+      def get(path, params: {}, headers: {})
         uri = base_url.dup
-        uri.path = [base_url.path.chomp("/"), path.sub(%r{\A/}, "")].reject(&:empty?).join("/")
+        uri.path = "/" + [base_url.path.chomp("/"), path.sub(%r{\A/}, "")].reject(&:empty?).join("/")
         uri.query = URI.encode_www_form(params) if params.any?
 
         request = Net::HTTP::Get.new(uri)
         request["Accept"] = "application/json"
         request["Authorization"] = authorization if authorization.present?
+        headers.each { |name, value| request[name] = value }
 
         response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
-        raise "External source request failed with HTTP #{response.code}" unless response.is_a?(Net::HTTPSuccess)
+        raise "External source request failed with HTTP #{response.code}: #{response.body.to_s.first(500)}" unless response.is_a?(Net::HTTPSuccess)
+
+        JSON.parse(response.body)
+      end
+
+      def post(path, payload:, headers: {})
+        uri = base_url.dup
+        uri.path = "/" + [base_url.path.chomp("/"), path.sub(%r{\A/}, "")].reject(&:empty?).join("/")
+
+        request = Net::HTTP::Post.new(uri)
+        request["Accept"] = "application/json"
+        request["Content-Type"] = "application/json"
+        request["Authorization"] = authorization if authorization.present?
+        headers.each { |name, value| request[name] = value }
+        request.body = JSON.generate(payload)
+
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+        raise "External source request failed with HTTP #{response.code}: #{response.body.to_s.first(500)}" unless response.is_a?(Net::HTTPSuccess)
 
         JSON.parse(response.body)
       end

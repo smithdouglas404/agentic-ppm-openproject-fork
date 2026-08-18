@@ -1,4 +1,4 @@
-# OpenProject Agentic PPM Module — Unverified Scaffold
+# OpenProject Agentic PPM Module — Native Extension Boundary
 
 This module is an **unverified OpenProject-native scaffold** for Agentic Portfolio and Transformation Management. It has not yet been booted in a running OpenProject environment, migrated, exercised through a real project, or validated by the OpenProject test suite. It must not be described as an operational module, service integration, agent integration, visual-rule integration, or external-source integration.
 
@@ -16,9 +16,11 @@ The module now persists source-linked projection records for an enabled OpenProj
 
 After the controlled OpenProject evaluation environment is running, execute `bundle exec rake agentic_ppm:seed_representative_project`. The task uses `config/agentic_ppm/representative_project.yml`, creates a real project and native work packages, assigns the controlled user, enables the module, and queues source-to-ontology projection. It is idempotent by project identifier and work-package subject, and it makes no external write beyond the controlled OpenProject evaluation environment.
 
-## Direct PMO and VRO conversations
+## Autonomous specialist-agent execution
 
-The native project page includes an audited PMO/VRO conversation form for users with `run_agentic_ppm_agents`. Until Letta is explicitly configured and healthy, requests are persisted with an `unavailable` state and no response is fabricated. The next service-integration slice will submit these authorized runs to Letta, attach Mem0-scoped retrieval and Memgraph evidence, then return an evidence-linked response.
+The eight named specialists are executable agent contracts, not pages that users must open. OpenProject owns the `AgentRun` control-plane record, project permission check, evidence scope, correlation ID, approval boundary, response, citations, and audit history. When the protected local agent runtime is configured, an authorized PMO or Governance request enqueues the native `AgentRunJob`, which dispatches to the local LangGraph/LangChain runtime and persists the returned asynchronous state and evidence references back into OpenProject. When the runtime is not configured, the request remains explicitly `unavailable` and no response is fabricated.
+
+The project page and conversation form are optional observation and interaction surfaces; they do not define the agent’s identity or execution model. Autonomous triggers may originate from an approved project/evidence workflow, a governed user request, or a later native schedule, while OpenProject remains the authorization and transaction boundary.
 
 ## Jira and ServiceNow adapters
 
