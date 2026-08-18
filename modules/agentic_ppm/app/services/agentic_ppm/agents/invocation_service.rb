@@ -37,7 +37,9 @@ module AgenticPpm
       end
 
       def runtime_available?
-        ServiceRegistry.adapter_for(:durable_workflow).capability_state == :configured &&
+        contract = ContractValidationService.call
+        contract.valid? &&
+          ServiceRegistry.adapter_for(:durable_workflow).capability_state == :configured &&
           ENV["AGENTIC_PPM_AGENT_RUNTIME_BASE_URL"].present? &&
           ENV["AGENTIC_PPM_AGENT_RUNTIME_KEY"].present? &&
           RuntimeDispatchService::ROUTES.key?(specialist)
