@@ -1,0 +1,30 @@
+version: 1
+transport:
+  external_services:
+    require_tls: true
+  internal_services:
+    require_authenticated_network: true
+    allow_plaintext_only_for_local_development: true
+at_rest:
+  native_records:
+    encryption_required: true
+    key_reference_required: true
+  graph_data:
+    encryption_required: true
+    key_reference_required: true
+  documents:
+    encryption_required: true
+    object_storage_server_side_encryption_required: true
+    key_reference_required: true
+  memory:
+    encryption_required: true
+    backend_key_reference_required: true
+key_management:
+  prohibit_raw_keys_in_repository: true
+  prohibit_raw_keys_in_logs: true
+  rotation_required: true
+  audit_reference_only: true
+provenance:
+  record_encryption_policy_version: true
+  record_key_reference: true
+  record_correlation_id: true
