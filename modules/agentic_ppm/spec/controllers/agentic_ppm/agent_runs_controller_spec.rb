@@ -5,7 +5,22 @@ RSpec.describe AgenticPpm::AgentRunsController do
   let(:project_role) { create(:project_role, permissions:, add_public_permissions: false) }
   let(:project) { create(:project, enabled_module_names: ["agentic_ppm"]) }
   let(:user) { create(:user, member_with_roles: { project => project_role }) }
-  let(:result) { double(available: false) }
+  let(:run) do
+    instance_double(
+      AgenticPpm::AgentRun,
+      id: 7,
+      project_id: project.id,
+      specialist: "PMO",
+      state: "unavailable",
+      correlation_id: "corr-7",
+      prompt: "Review risk",
+      response: nil,
+      evidence_references: [],
+      created_at: Time.utc(2026, 8, 17),
+      updated_at: Time.utc(2026, 8, 17)
+    )
+  end
+  let(:result) { double(available: false, run:) }
 
   before do
     login_as(user)
@@ -29,6 +44,22 @@ RSpec.describe AgenticPpm::AgentRunsController do
     )
     expect(response).to redirect_to(project_agentic_ppm_conversations_path(project))
     expect(flash[:notice]).to eq(I18n.t(:agentic_ppm_agent_runtime_unavailable))
+  end
+
+  it "returns the native AgentRun contract as JSON for the retained agent UI" do
+    post :create,
+         params: {
+           project_id: project.id,
+           specialist: "PMO",
+           prompt: "Review risk"
+         },
+         as: :json
+
+    expect(response).to have_http_status(:service_unavailable)
+    expect(response.parsed_body).to include(
+      "available" => false,
+      "agent_run" => include("id" => 7, "project_id" => project.id, "specialist" => "PMO")
+    )
   end
 
   it "forbids a project member without the agent-run permission" do
