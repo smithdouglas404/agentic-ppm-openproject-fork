@@ -1,0 +1,42 @@
+version: 1
+retention:
+  default_classification: governed_agentic_ppm_audit
+  periods:
+    agent_runs: workspace_policy_controlled
+    findings: workspace_policy_controlled
+    projection_records: workspace_policy_controlled
+    sync_runs: workspace_policy_controlled
+    source_records: workspace_policy_controlled
+    memory_operation_traces: workspace_policy_controlled
+  deletion_requires:
+    - retention_policy_decision
+    - authorization_decision
+    - deletion_trigger
+    - correlation_id
+    - audit_tombstone
+export:
+  required_fields:
+    - workspace_id
+    - tenant_id
+    - project_id
+    - actor_id
+    - event_type
+    - state_transition
+    - authorization_decision
+    - correlation_id
+    - observed_at
+    - source_references
+    - policy_versions
+  formats:
+    - jsonl
+    - csv
+  prohibit:
+    - raw_credentials
+    - session_tokens
+    - decrypted_secret_values
+    - unscoped_cross_project_records
+regulated_clients:
+  require_immutable_event_identity: true
+  require_chain_reference: true
+  require_export_manifest_hash: true
+  require_access_log: true
