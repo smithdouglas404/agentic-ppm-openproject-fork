@@ -8,13 +8,15 @@ This package is built and validated in Manus first, then transferred to the user
 
 | Component | Repository | Reference |
 |---|---|---|
-| Native OpenProject fork | `smithdouglas404/agentic-ppm-openproject-fork` | Branch `agentic-ppm-runtime-proof`, commit `07da13fc2661055c296a98710070aa28777f87a2` |
+| Native OpenProject fork | `smithdouglas404/agentic-ppm-openproject-fork` | Branch `agentic-ppm-runtime-proof`, commit `e8ae920bad9be737588f9e5e91f24ef19f6888bd` |
 | Agent runtime: eight routes, identities, receiver, status | `smithdouglas404/governance-agent-server` | Branch `master`, blob `agent_server.py` `5fd5978e3f2c248b37d740b939191c1fb319e5ea` |
 | Agent runtime: LangGraph, LangChain, memory gate | `smithdouglas404/governance-agent-server` | Branch `master`, blob `governance_langgraph.py` `0386290c03483dc023dbd05c8265aa5baacf6da0` |
 | Compose overlay | Native fork | `docker-compose.macstudio.yml` |
 | Secret template | Native fork | `.env.macstudio.example` |
 | Operational runbook | Native fork | `docs/development/agentic-ppm/macstudio-docker-desktop-runbook.md` |
 | Specialist contracts | Native fork | `docs/development/agentic-ppm/eight-specialist-contracts.md` |
+| Domain extension map | Native fork | `docs/development/agentic-ppm/openproject-domain-extension-map.md` |
+| UI-native contract map | Native fork | `docs/development/agentic-ppm/ui-native-contract-map.md` |
 
 The agent runtime’s local-only cleanup removes historical Railway service defaults. Letta, Mem0, RAG, document storage, and Memgraph are discovered only through environment variables and the local Docker network.
 
