@@ -9,7 +9,7 @@ This package is built and validated in Manus first, then transferred to the user
 | Component | Repository | Reference |
 |---|---|---|
 | Native OpenProject fork | `smithdouglas404/agentic-ppm-openproject-fork` | Branch `agentic-ppm-runtime-proof`, commit `35f89dcf029c914b8fc55b05cd588e76e9129208` |
-| Agent runtime: eight routes, receiver, status | `smithdouglas404/governance-agent-server` | Branch `master`, blob `agent_server.py` `396b7738dcff93a51a8ec0682a61757f7457a62f` |
+| Agent runtime: eight routes, identities, receiver, status | `smithdouglas404/governance-agent-server` | Branch `master`, blob `agent_server.py` `5fd5978e3f2c248b37d740b939191c1fb319e5ea` |
 | Agent runtime: LangGraph, LangChain, memory gate | `smithdouglas404/governance-agent-server` | Branch `master`, blob `governance_langgraph.py` `0386290c03483dc023dbd05c8265aa5baacf6da0` |
 | Compose overlay | Native fork | `docker-compose.macstudio.yml` |
 | Secret template | Native fork | `.env.macstudio.example` |
@@ -19,7 +19,7 @@ The agent runtime’s local-only cleanup removes historical Railway service defa
 
 ## Agent execution contract
 
-The runtime exposes exactly eight native specialist routes through one shared LangGraph dispatcher: PMO, VRO, OKR/KPI, OCM, Governance, FinOps, TMO, and Business Planning. LangChain `ChatOpenAI` is the preferred model invocation path and uses the local LiteLLM, Forge, or OpenAI-compatible configuration; the existing fallback path remains available and can be explicitly disabled or selected through configuration.
+The runtime exposes exactly eight native specialist routes through one shared LangGraph dispatcher: PMO, VRO, OKR/KPI, OCM, Governance, FinOps, TMO, and Business Planning. Each route carries its canonical `agentic_ppm/<SPECIALIST>` identity and preserves a legacy alias for existing endpoints. LangChain `ChatOpenAI` is the preferred model invocation path and uses the local LiteLLM, Forge, or OpenAI-compatible configuration; the existing fallback path remains available and can be explicitly disabled or selected through configuration.
 
 Letta resolution recognizes the exact native identities `agentic_ppm/PMO`, `agentic_ppm/VRO`, `agentic_ppm/OKR_KPI`, `agentic_ppm/OCM`, `agentic_ppm/GOVERNANCE`, `agentic_ppm/FINOPS`, `agentic_ppm/TMO`, and `agentic_ppm/BUSINESS_PLANNING`, together with legacy aliases. Mem0 retrieval and writes are scoped by workspace, project, authorized principal, and specialist. Mem0 writes are allowed only when a finding matches an accepted OpenProject source/entity envelope through the evidence-steward gate.
 
